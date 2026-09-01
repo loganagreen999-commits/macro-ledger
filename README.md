@@ -20,7 +20,11 @@ full-screen with its own icon and behaves like any other app.
   In-N-Out, Panda Express, Sweetgreen …).
 - **Add your own foods and brands** — name, serving, macros, and optionally all
   14 micronutrients. Saved foods are searchable forever.
-- **Calories and P/C/F** against daily targets you set.
+- **Goals tab**: a target for calories, each macro and all 14 micronutrients, with an
+  autofill that works them out from your height, weight, age, sex and activity.
+- **Meals tab**: cook a batch, list what went in, say how much it made (six cups,
+  say), and logging "1.5 cups" later works out the rest. Each meal carries a
+  freshness countdown from the day you cooked it.
 - **Micronutrients**: fiber, sugars, saturated fat, cholesterol, sodium,
   potassium, calcium, iron, magnesium, zinc, vitamins A, C, D and B12 — each as
   a percentage of the FDA Daily Value. Limit-type nutrients turn red past 100%.
