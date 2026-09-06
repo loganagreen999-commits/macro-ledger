@@ -14,10 +14,11 @@ full-screen with its own icon and behaves like any other app.
 
 ## What's in it
 
-- **223 foods built in**, including 47 brands (Chobani, Fairlife, Quest,
-  Premier Protein, Clif, RXBAR, Kodiak, Optimum Nutrition, Halo Top …) and
-  restaurant items (Chipotle, McDonald's, Chick-fil-A, Starbucks, Taco Bell,
-  In-N-Out, Panda Express, Sweetgreen …).
+- **514 foods built in**, including 88 brands (Chobani, Fage, Fairlife, Quest,
+  Premier Protein, Clif, RXBAR, KIND, Larabar, Kodiak, Optimum Nutrition,
+  Nabisco, Kellogg's, General Mills, Halo Top, Talenti …) and restaurant items
+  (Chipotle, McDonald's, Chick-fil-A, Wendy's, Burger King, Popeyes, Starbucks,
+  Dunkin', Taco Bell, In-N-Out, Panda Express, Panera, Cava, Sweetgreen …).
 - **Add your own foods and brands** — name, serving, macros, and optionally all
   14 micronutrients. Saved foods are searchable forever.
 - **Goals tab**: a target for calories, each macro and all 14 micronutrients, with an
