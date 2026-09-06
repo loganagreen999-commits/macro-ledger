@@ -1588,51 +1588,59 @@ function readBody(el){
    serving as it comes out of the kitchen. Vector order matches FOODS.      */
 const OG = {
   pasta:[
-    ["spag",  "Spaghetti",              [360,13,72,2,4,3,0.5,10,220,30,3.0,0,0,0,0,60,1.4,0]],
-    ["angel", "Angel Hair",             [360,13,72,2,4,3,0.5,10,220,30,3.0,0,0,0,0,60,1.4,0]],
-    ["rigat", "Rigatoni",               [360,13,72,2,4,3,0.5,10,220,30,3.0,0,0,0,0,60,1.4,0]],
-    ["cavat", "Cavatappi",              [370,13,73,2,4,3,0.5,10,220,30,3.0,0,0,0,0,60,1.4,0]],
-    ["fett",  "Fettuccine",             [440,16,84,4,4,3,1.0,15,250,35,3.4,10,0,0,0.1,65,1.6,45]],
-    ["gfrot", "Gluten Sensitive Rotini",[350,8,76,2,3,2,0.5,10,150,20,1.2,0,0,0,0,40,0.9,0]]
+    ["angel", "Angel Hair",              [350,12,67,2.5,3,2,0,10,0,0,0,0,0,0,0,0,0,0]],
+    ["bucat", "Bucatini",                [410,15,81,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0]],
+    ["fett",  "Fettuccine",              [350,12,67,2.5,3,2,0,10,0,0,0,0,0,0,0,0,0,0]],
+    ["rigat", "Rigatoni",                [440,14,83,6,3,5,0.5,10,0,0,0,0,0,0,0,0,0,0]],
+    ["spag",  "Spaghetti",               [340,12,67,3.5,3,4,0,10,0,0,0,0,0,0,0,0,0,0]],
+    ["gfrot", "Gluten-Free Rotini",      [380,9,77,3.5,5,0,0,260,0,0,0,0,0,0,0,0,0,100]]
   ],
   sauce:[
-    ["none",  "No sauce",               [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]],
-    ["mar",   "Marinara",               [70,2,11,2,2,6,0.5,560,400,30,1.0,40,8,0,0,25,0.3,0]],
-    ["meat",  "Traditional Meat Sauce", [210,12,12,13,2,6,5.0,700,450,40,1.8,40,6,0,1.0,30,2.2,35]],
-    ["alf",   "Alfredo",                [570,13,12,53,0,4,33.0,890,180,350,0.3,320,0,0.4,0.6,20,1.6,155]],
-    ["five",  "Five Cheese Marinara",   [180,8,13,10,2,6,6.0,780,380,220,1.0,110,7,0.2,0.4,25,1.0,30]],
-    ["mush",  "Creamy Mushroom",        [330,7,13,28,1,4,16.0,850,300,160,0.6,180,1,0.2,0.3,20,0.8,80]]
+    ["none",  "No sauce",                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]],
+    ["mar",   "Marinara",                [150,4,17,9,4,10,0.5,1280,0,0,0,0,0,0,0,0,0,0]],
+    ["meat",  "Meat Sauce",              [300,14,19,19,2,13,7,1040,0,0,0,0,0,0,0,0,0,60]],
+    ["five",  "Five Cheese Marinara",    [400,11,17,33,3,10,17,1300,0,0,0,0,0,0,0,0,0,80]],
+    ["alf",   "Alfredo Sauce",           [870,15,11,87,0,2,54,1200,0,0,0,0,0,0,0,0,0,285]],
+    ["spicy", "Spicy Alfredo Sauce",     [980,18,15,97,0,7,60,1400,0,0,0,0,0,0,0,0,0,275]],
+    ["mush",  "Creamy Mushroom Sauce",   [860,10,13,87,0,7,54,1090,0,0,0,0,0,0,0,0,0,250]]
   ],
   topping:[
-    ["none",  "No topping",             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]],
-    ["balls", "Meatballs (3)",          [280,17,9,20,1,3,8.0,800,320,60,1.8,10,1,0.2,1.4,25,3.0,75]],
-    ["saus",  "Italian Sausage (3)",    [320,17,5,26,0,2,10.0,900,300,30,1.5,0,1,0.3,1.2,22,2.6,70]],
-    ["fritta","Crispy Chicken Fritta",  [370,24,20,22,1,1,4.0,850,350,40,1.6,10,1,0.1,0.4,35,1.2,75]],
-    ["grill", "Grilled Chicken",        [180,33,1,5,0,0,1.5,480,420,20,1.1,10,0,0.1,0.3,35,1.0,95]],
-    ["shrimp","Shrimp Fritta",          [300,15,22,17,1,1,3.0,900,250,60,1.4,10,1,0.1,1.0,30,1.0,105]]
+    ["none",  "No topping",              [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]],
+    ["balls", "Meatballs (3)",           [480,23,7,40,3,0,19,1060,0,0,0,0,0,0,0,0,0,65]],
+    ["saus",  "Italian Sausage (2 links)",[470,27,2,39,0.5,2,14,1140,0,0,0,0,0,0,0,0,0,115]],
+    ["fritta","Crispy Chicken Fritta",   [240,20,14,12,1,0.5,1.5,730,0,0,0,0,0,0,0,0,0,50]],
+    ["grill", "Grilled Chicken",         [130,26,0.5,2.5,0,0,0.5,540,0,0,0,0,0,0,0,0,0,75]],
+    ["shrimp","Crispy Shrimp Fritta",    [220,11,17,12,1,3,2.5,810,0,0,0,0,0,0,0,0,0,85]],
+    ["saute", "Sauteed Shrimp",          [170,33,1,3.5,0.5,0,0,410,0,0,0,0,0,0,0,0,0,245]],
+    ["brocc", "Broccoli",                [150,4,8,13,3,2,1,220,0,0,0,0,0,0,0,0,0,0]]
   ],
   soup:[
-    ["none",  "No soup",                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]],
-    ["zuppa", "Zuppa Toscana",          [220,8,12,15,1,2,7.0,960,420,80,0.8,60,10,0.1,0.4,25,0.9,30]],
-    ["fagio", "Pasta e Fagioli",        [130,8,17,3,4,3,1.0,700,450,60,1.8,80,6,0,0.5,35,1.2,10]],
-    ["gnoc",  "Chicken & Gnocchi",      [250,11,25,12,1,4,6.0,1130,380,150,1.0,150,4,0.2,0.5,25,0.9,40]],
-    ["minest","Minestrone",             [110,4,19,1,4,5,0,730,470,60,1.5,180,12,0,0,30,0.6,0]]
+    ["none",  "No soup",                 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]],
+    ["zuppa", "Zuppa Toscana",           [220,7,15,15,2,2,7,790,0,0,0,0,0,0,0,0,0,40]],
+    ["fagio", "Pasta e Fagioli",         [150,8,16,5,3,4,2,710,0,0,0,0,0,0,0,0,0,15]],
+    ["gnoc",  "Chicken & Gnocchi",       [230,11,22,12,1,4,4.5,1290,0,0,0,0,0,0,0,0,0,55]],
+    ["minest","Minestrone",              [110,5,17,1,4,4,0,810,0,0,0,0,0,0,0,0,0,0]],
+    ["stell", "Stellini (regional)",     [200,9,22,7,1,2,2.5,1240,0,0,0,0,0,0,0,0,0,20]]
   ],
   drink:[
-    ["water", "Water",                  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]],
-    ["tea",   "Unsweetened iced tea",   [0,0,0,0,0,0,0,10,60,5,0.1,0,0,0,0,5,0,0]],
-    ["soda",  "Soda (one glass)",       [200,0,54,0,0,54,0,50,0,0,0,0,0,0,0,0,0,0]],
-    ["lemon", "Lemonade (one glass)",   [160,0,42,0,0,40,0,30,40,10,0.2,0,8,0,0,4,0.1,0]],
-    ["wine",  "House wine (6 oz)",      [150,0.1,4.6,0,0,1.7,0,8,220,14,0.5,0,0,0,0,18,0.1,0]]
+    ["water", "Water",                   [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]],
+    ["tea",   "Unsweetened iced tea",    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]],
+    ["coke",  "Coke",                    [140,0,39,0,0,39,0,45,0,0,0,0,0,0,0,0,0,0]],
+    ["sprite","Sprite",                  [140,0,38,0,0,38,0,65,0,0,0,0,0,0,0,0,0,0]],
+    ["drpep", "Dr. Pepper",              [150,0,41,0,0,41,0,55,0,0,0,0,0,0,0,0,0,0]],
+    ["zero",  "Coke Zero / Diet Coke",   [0,0,0,0,0,0,0,40,0,0,0,0,0,0,0,0,0,0]],
+    ["lemon", "Lemonade, classic",       [170,0,43,0,0,42,0,20,0,0,0,0,0,0,0,0,0,0]],
+    ["rlemon","Lemonade, raspberry",     [160,0,45,0,0,42,0,15,0,0,0,0,0,0,0,0,0,0]]
   ],
-  stick:  ["Breadstick",                [140,4,26,3,1,2,0.5,460,60,20,1.6,0,0,0,0,10,0.4,0]],
-  saladD: ["House salad, dressed",      [150,3,12,10,2,4,2.0,800,240,60,0.8,120,12,0,0,20,0.4,5]],
-  saladU: ["House salad, no dressing",  [20,1,4,0,1.5,2,0,105,220,40,0.6,120,12,0,0,18,0.3,0]]
+  stickG: ["Breadstick with garlic topping",[140,4,25,2.5,0.5,1,0.5,460,0,0,0,0,0,0,0,0,0,0]],
+  stickP: ["Breadstick, plain",             [130,4,25,1,1,2,0,280,0,0,0,0,0,0,0,0,0,0]],
+  saladD: ["House salad with Italian dressing",[150,3,13,10,2,4,1.5,770,0,0,0,0,0,0,0,0,0,5]],
+  saladU: ["House salad, no dressing",      [70,2,11,2,2,2,0,250,0,0,0,0,0,0,0,0,0,0]]
 };
 const ogFind=(k,id)=>OG[k].find(x=>x[0]===id)||OG[k][0];
 const zero18=()=>new Array(18).fill(0);
 function ppDefault(){
-  return {bowls:[{pasta:"spag",sauce:"mar",topping:"none"}],sticks:0,
+  return {bowls:[{pasta:"spag",sauce:"mar",topping:"none"}],sticks:0,garlic:true,
           plates:0,shares:0,perBowl:5,dressed:true,soup:"none",soups:0,drink:"water",drinks:1};
 }
 /* every line the current build adds up to, as {label, n[]} */
@@ -1645,8 +1653,9 @@ function ppLines(){
     out.push({label:"Bowl "+(i+1)+": "+pa[1]+(sa[0]!=="none"?" with "+sa[1]:", plain")+
       (to[0]!=="none"?" + "+to[1]:""),n:n});
   });
-  if(p.sticks>0)out.push({label:p.sticks+" breadstick"+(p.sticks===1?"":"s"),
-    n:OG.stick[1].map(v=>v*p.sticks)});
+  if(p.sticks>0){const st=p.garlic?OG.stickG:OG.stickP;
+    out.push({label:p.sticks+" breadstick"+(p.sticks===1?"":"s")+(p.garlic?"":", plain"),
+      n:st[1].map(v=>v*p.sticks)});}
   const salad=(+p.plates||0)+(+p.shares||0)*(+p.perBowl||5);
   if(salad>0){const base=p.dressed?OG.saladD:OG.saladU;
     out.push({label:rnd(salad,2)+" serving"+(salad===1?"":"s")+" house salad, "+
@@ -1671,7 +1680,8 @@ function pastaHTML(){
   const p=S.pp,tot=ppTotal(),lines=ppLines();
   const salad=(+p.plates||0)+(+p.shares||0)*(+p.perBowl||5);
   return '<div class="pphead"><h2>Never Ending Pasta Bowl</h2>'+
-      "<p>Build what you actually ate, not what they carried to the table.</p></div>"+
+      "<p>Build what you actually ate, not what they carried to the table. Figures are Olive Garden&rsquo;s "+
+      "own, sheet US_083126.</p></div>"+
 
     '<div class="sectlab">Pasta bowls<button class="link" id="ppAdd">+ Add a bowl</button></div>'+
     p.bowls.map((b,i)=>
@@ -1683,7 +1693,10 @@ function pastaHTML(){
       "</div>").join("")+
 
     '<div class="sectlab">Breadsticks</div>'+
-    '<div class="card row2"><span>How many did you eat?</span>'+stepper("sticks",p.sticks)+"</div>"+
+    '<div class="card"><div class="row2"><span>How many did you eat?</span>'+stepper("sticks",p.sticks)+"</div>"+
+      '<label class="check"><input type="checkbox" id="ppGarlic"'+(p.garlic?" checked":"")+
+        "><span>With garlic topping</span></label>"+
+      '<p class="footnote">140 kcal each with the topping, 130 without.</p></div>'+
 
     '<div class="sectlab">Salad</div>'+
     '<div class="card">'+
@@ -1695,8 +1708,8 @@ function pastaHTML(){
       '<label class="check"><input type="checkbox" id="ppDressed"'+(p.dressed?" checked":"")+
         "><span>Dressed</span></label>"+
       '<p class="footnote">A plate is one serving. The family bowl they drop on the table is about five, '+
-        "so half a bowl to yourself is 2.5 &mdash; change the number if yours looked bigger. Undressed "+
-        "salad is 20 kcal a serving; the dressing is the other 130.</p>"+
+        "so half a bowl to yourself is 2.5 &mdash; change the number if yours looked bigger. Olive Garden "+
+        "lists a serving at 150 kcal dressed and 70 undressed, so the dressing is the other 80.</p>"+
     "</div>"+
 
     '<div class="sectlab">Soup</div>'+
@@ -1721,8 +1734,11 @@ function pastaHTML(){
       '<button class="btn" id="ppLog"'+(tot[0]>0?"":" disabled")+">Log this to "+esc(mealOfNow().toLowerCase())+"</button>"+
       '<button class="btn ghost" id="ppReset" style="margin-top:9px">Start over</button>'+
     "</div>"+
-    '<p class="footnote">Olive Garden&rsquo;s published figures for the pasta bowl line. Salad '+
-      "and breadstick counts are the ones people guess at, which is why they are separate here.</p>";
+    '<p class="footnote">Every figure here is transcribed from Olive Garden&rsquo;s own nutrition '+
+      "sheet (US_083126), Create Your Own Pasta section. They publish only the FDA panel, so calories, "+
+      "protein, carbs, fat, fiber, sugar, saturated fat, sodium and cholesterol are theirs &mdash; "+
+      "potassium, calcium, iron and the vitamins are not published and count as zero here, so the "+
+      "Micronutrients tab will read low on a pasta night.</p>";
 }
 
 function bindPasta(el){
@@ -1754,6 +1770,8 @@ function bindPasta(el){
   if(pb)pb.onchange=()=>{const v=parseFloat(pb.value);S.pp.perBowl=isFinite(v)&&v>0?v:5;save()};
   const dr=el.querySelector("#ppDressed");
   if(dr)dr.onchange=()=>{S.pp.dressed=dr.checked;save()};
+  const ga=el.querySelector("#ppGarlic");
+  if(ga)ga.onchange=()=>{S.pp.garlic=ga.checked;save()};
   el.querySelector("#ppReset").onclick=()=>{S.pp=ppDefault();save();toast("Cleared")};
   el.querySelector("#ppLog").onclick=()=>{
     const lines=ppLines(); if(!lines.length)return;
