@@ -114,7 +114,68 @@ button{cursor:pointer;border:0;background:none;padding:0}
 .m-f .dot,.m-f .mt i{background:var(--f)} .m-f .lab{color:var(--f)}
 
 /* ---- tabs ---- */
-.seg{display:grid;grid-template-columns:1fr 1fr;gap:3px;background:var(--surface-2);border-radius:11px;padding:3px;margin-bottom:14px}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;background:var(--surface-2);border-radius:11px;padding:3px;margin-bottom:14px}
+
+/* ---- water ---- */
+.card{background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r);
+  box-shadow:var(--shadow);padding:16px;margin-bottom:12px}
+.wtop{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.wbig{font-family:"Fraunces",Georgia,serif;font-size:34px;font-weight:600;letter-spacing:-.02em;
+  line-height:1;font-variant-numeric:tabular-nums}
+.wbig small{font-family:inherit;font-size:14px;font-weight:500;color:var(--ink-3);margin-left:6px}
+.wleft{text-align:right;font-size:11.5px;color:var(--ink-3);line-height:1.45}
+.wleft b{display:block;font-size:14px;color:var(--accent-ink)}
+.cups{display:flex;flex-wrap:wrap;gap:5px;margin:-4px 0 14px}
+.cup{width:15px;height:19px;border-radius:3px 3px 6px 6px;border:1.5px solid var(--line);background:var(--sunk)}
+.cup.on{background:var(--accent);border-color:var(--accent)}
+.pours{display:flex;flex-wrap:wrap;gap:7px}
+.pours button{flex:1 1 auto;min-width:72px;padding:10px 6px;border-radius:10px;background:var(--accent-soft);
+  color:var(--accent-ink);font-size:13px;font-weight:600;border:1px solid transparent}
+.pours button:active{transform:scale(.97)}
+.pours button.cust{background:var(--sunk);color:var(--ink-2);border-color:var(--line)}
+.plist{padding:4px 16px}
+.prow{display:flex;align-items:center;justify-content:space-between;padding:10px 0;
+  border-bottom:1px solid var(--line-soft);font-size:14px;font-variant-numeric:tabular-nums}
+.prow:last-child{border-bottom:0}
+.gline{display:flex;align-items:center;gap:10px;padding:12px 16px}
+.gline input{width:96px;padding:9px 10px;border:1px solid var(--line);border-radius:9px;
+  background:var(--bg);font-size:15px;font-variant-numeric:tabular-nums}
+.gline span{font-size:13px;color:var(--ink-3)}
+.footnote{margin:2px 3px 0;font-size:11.5px;color:var(--ink-3);line-height:1.6}
+
+/* ---- pasta pass ---- */
+.pphead{margin:2px 3px 16px}
+.pphead h2{margin:0 0 3px;font-family:"Fraunces",Georgia,serif;font-size:23px;font-weight:600;letter-spacing:-.02em}
+.pphead p{margin:0;font-size:12.5px;color:var(--ink-2);line-height:1.5}
+.ppbowl label,.card>label{display:block;font-size:10px;font-weight:600;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ink-3);margin:12px 0 5px}
+.ppbowl label:first-of-type{margin-top:4px}
+.card select{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:9px;
+  background:var(--bg);color:var(--ink);font-size:14px;appearance:none;
+  background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237c8a86' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 10px center;background-size:16px;padding-right:32px}
+.bwtop{display:flex;align-items:center;justify-content:space-between}
+.bwtop b{font-size:13.5px}
+.row2{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:9px 0;border-bottom:1px solid var(--line-soft);font-size:14px}
+.card .row2:last-of-type{border-bottom:0}
+.row2>span:first-child{color:var(--ink-2);font-size:13.5px}
+.step{display:flex;align-items:center;gap:2px;background:var(--sunk);border:1px solid var(--line);
+  border-radius:9px;padding:2px;flex-shrink:0}
+.step button{width:32px;height:30px;border-radius:7px;font-size:17px;color:var(--accent-ink);
+  background:var(--surface);line-height:1}
+.step button:active{transform:scale(.94)}
+.step span{min-width:52px;text-align:center;font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
+.mini{width:64px;padding:8px 9px;border:1px solid var(--line);border-radius:9px;background:var(--bg);
+  font-size:14px;text-align:center;font-variant-numeric:tabular-nums}
+.check{display:flex;align-items:center;gap:9px;margin-top:14px;font-size:14px;cursor:pointer}
+.check input{width:19px;height:19px;accent-color:var(--accent)}
+.pptot{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  box-shadow:var(--shadow);padding:16px;margin:18px 0 12px}
+.pplist{margin:14px 0 16px;border-top:1px solid var(--line-soft)}
+.pplist .prow{font-size:13px;color:var(--ink-2)}
+.pplist .prow span:last-child{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:600}
+.pptot .btn[disabled]{opacity:.45}
 .seg button{padding:7px 0;border-radius:8px;font-size:13px;font-weight:600;color:var(--ink-2);letter-spacing:.01em}
 .seg button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
 
@@ -242,7 +303,7 @@ details.more[open] summary::before{content:"− "}
 .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:35;background:var(--surface);
   border-top:1px solid var(--line);display:flex;
   padding:6px calc(8px + env(safe-area-inset-left)) calc(6px + env(safe-area-inset-bottom)) calc(8px + env(safe-area-inset-right))}
-.tabbar>div{max-width:500px;margin:0 auto;width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.tabbar>div{max-width:500px;margin:0 auto;width:100%;display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
 .tabbar button{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0 4px;border-radius:10px;
   color:var(--ink-3);font-size:10.5px;font-weight:600;letter-spacing:.03em}
 .tabbar button svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
@@ -293,6 +354,11 @@ details.more[open] summary::before{content:"− "}
   padding:16px;margin-bottom:12px}
 .autofill h3{margin:0 0 4px;font-family:"Fraunces",Georgia,serif;font-size:17px;font-weight:600;letter-spacing:-.01em}
 .autofill p{margin:0 0 14px;font-size:12.5px;color:var(--ink-2);line-height:1.5}
+.autofill p.sub2{margin:9px 0 0;font-size:11.5px;color:var(--ink-3)}
+.working{background:var(--sunk);border-radius:10px;padding:10px 12px;margin:0 0 12px;
+  font-size:12.5px;color:var(--ink-2);line-height:1.55}
+.working b{color:var(--ink);font-variant-numeric:tabular-nums}
+.working:empty{display:none}
 .unitsw{display:flex;gap:0;background:var(--sunk);border:1px solid var(--line);border-radius:9px;padding:2px;margin-bottom:12px;width:fit-content}
 .unitsw button{padding:5px 13px;border-radius:7px;font-size:12px;font-weight:600;color:var(--ink-3)}
 .unitsw button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
@@ -315,6 +381,7 @@ details.more[open] summary::before{content:"− "}
 <nav class="tabbar"><div>
   <button id="navday" aria-current="true"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>Day</button>
   <button id="navmeals"><svg viewBox="0 0 24 24"><path d="M3 11h18a8 8 0 0 1-8 8h-2a8 8 0 0 1-8-8z"/><path d="M8 7.5c0-1.5-1-2-1-3M12 7.5c0-1.5-1-2-1-3M16 7.5c0-1.5-1-2-1-3"/></svg>Meals</button>
+  <button id="navpasta"><svg viewBox="0 0 24 24"><path d="M4 8.5h16M4 12h16M4 15.5h16"/><path d="M6 5c1.2 1.2 1.2 2 0 3.5M12 5c1.2 1.2 1.2 2 0 3.5M18 5c1.2 1.2 1.2 2 0 3.5"/></svg>Pasta</button>
   <button id="navgoals"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="1"/></svg>Goals</button>
 </div></nav>
 
@@ -708,6 +775,139 @@ const FOODS = [
 ["Peanut M&M's","Mars","1 pack",49,250,4.5,30.0,13.0,2.0,25.0,5.0,25,180,50,0.4,0,0,0,0.1,40,0.7,5],
 ["Unsweetened Almondmilk","Silk","1 cup",240,30,1.0,1.0,2.5,1.0,0,0,170,50,450,0.7,150,0,2.5,1.5,15,0.2,0],
 ["Chocolate Milk","Nesquik","1 bottle",414,270,14.0,44.0,4.5,2.0,40.0,3.0,250,700,500,1.1,250,3.0,5.0,2.0,60,1.8,20],
+/* --- store brands: Sam's Club, Aldi, Publix --- */
+["Rotisserie Chicken, white meat","Member's Mark","3 oz",85,140,24.0,0,4.5,0,0,1.3,390,240,13,0.8,10,0,0.1,0.3,25,0.9,80],
+["Rotisserie Chicken, dark meat","Member's Mark","3 oz",85,180,21.0,0,10.0,0,0,2.8,420,230,12,1.0,15,0,0.1,0.5,22,1.8,90],
+["Boneless Skinless Chicken Breast","Member's Mark","4 oz raw",113,110,25.0,0,1.5,0,0,0.4,55,330,10,0.5,5,0,0,0.3,28,0.8,65],
+["Organic Chicken Breast","Member's Mark","4 oz raw",113,110,25.0,0,1.5,0,0,0.4,50,330,10,0.5,5,0,0,0.3,28,0.8,65],
+["Grilled Chicken Breast Strips","Member's Mark","3 oz",85,110,22.0,1.0,2.0,0,0,0.5,480,300,10,0.6,5,0,0,0.3,25,0.8,60],
+["Ground Beef, 93/7","Member's Mark","4 oz raw",113,170,23.0,0,8.0,0,0,3.5,75,330,15,2.4,0,0,0,2.4,22,5.5,70],
+["Ground Beef, 80/20","Member's Mark","4 oz raw",113,290,19.0,0,23.0,0,0,9.0,75,270,15,2.0,0,0,0,2.2,18,4.5,80],
+["Angus Beef Patty","Member's Mark","1 patty",151,380,26.0,0,30.0,0,0,12.0,95,350,20,2.7,0,0,0,2.8,25,6.0,105],
+["Applewood Smoked Bacon","Member's Mark","2 slices",22,90,6.0,0,7.0,0,0,2.5,350,95,2,0.2,0,0,0.1,0.2,6,0.5,20],
+["Oven Roasted Turkey Breast","Member's Mark","2 oz",56,50,10.0,1.0,0.5,0,1.0,0,440,150,5,0.5,0,0,0,0.2,15,0.5,25],
+["Sliced Deli Ham","Member's Mark","2 oz",56,60,10.0,1.0,1.5,0,1.0,0.5,560,180,5,0.4,0,0,0.2,0.3,12,0.8,30],
+["Atlantic Salmon Fillet","Member's Mark","4 oz",113,230,25.0,0,14.0,0,0,3.0,60,420,12,0.4,15,0,13.0,3.2,32,0.5,70],
+["Cooked Shrimp","Member's Mark","3 oz",85,80,18.0,0,0.5,0,0,0.1,480,180,60,0.4,5,0,0,1.3,30,1.3,160],
+["Large Eggs","Member's Mark","1 egg",50,70,6.0,0,5.0,0,0,1.5,65,65,25,0.9,80,0,1.1,0.5,6,0.6,185],
+["Greek Nonfat Yogurt, Plain","Member's Mark","3/4 cup",170,100,18.0,6.0,0,0,6.0,0,70,240,190,0,0,0,0,1.0,20,1.0,10],
+["Shredded Mozzarella","Member's Mark","1/4 cup",28,80,7.0,1.0,6.0,0,0,3.5,180,25,200,0,45,0,0.1,0.5,7,0.8,20],
+["Shredded Sharp Cheddar","Member's Mark","1/4 cup",28,110,7.0,1.0,9.0,0,0,5.0,180,25,200,0,55,0,0.1,0.5,7,0.9,30],
+["Mozzarella String Cheese","Member's Mark","1 stick",28,80,6.0,1.0,6.0,0,0,3.5,180,25,200,0,45,0,0.1,0.5,7,0.8,20],
+["Organic Creamy Peanut Butter","Member's Mark","2 tbsp",32,190,8.0,7.0,16.0,2.0,2.0,2.5,110,200,20,0.6,0,0,0,0,55,0.9,0],
+["Whole Cashews","Member's Mark","1 oz",28,160,5.0,9.0,13.0,1.0,2.0,2.5,95,180,10,1.9,0,0,0,0,80,1.6,0],
+["Roasted Almonds","Member's Mark","1 oz",28,170,6.0,6.0,15.0,3.0,1.0,1.1,90,200,75,1.1,0,0,0,0,75,0.9,0],
+["Trail Mix, Nut & Chocolate","Member's Mark","1/4 cup",40,200,5.0,19.0,13.0,2.0,13.0,3.5,45,220,40,1.1,0,0,0,0,55,1.0,0],
+["Restaurant Style Tortilla Chips","Member's Mark","10 chips",28,140,2.0,19.0,7.0,1.0,0,1.0,80,50,40,0.4,0,0,0,0,25,0.4,0],
+["Organic Hummus","Member's Mark","2 tbsp",30,70,2.0,4.0,5.0,2.0,0,0.5,130,60,15,0.5,0,0,0,0,15,0.3,0],
+["Organic Salsa","Member's Mark","2 tbsp",32,10,0,2.0,0,0.5,1.0,0,160,70,5,0.1,10,3.0,0,0,5,0.1,0],
+["Organic Extra Virgin Olive Oil","Member's Mark","1 tbsp",14,120,0,0,14.0,0,0,2.0,0,0,0,0,0,0,0,0,0,0,0],
+["Organic Quinoa, dry","Member's Mark","1/4 cup",43,160,6.0,29.0,2.5,3.0,0,0,5,230,20,2.0,0,0,0,0,90,1.4,0],
+["Jasmine Rice, dry","Member's Mark","1/4 cup",45,160,3.0,36.0,0,0,0,0,0,45,10,1.5,0,0,0,0,15,0.6,0],
+["Frozen Wild Blueberries","Member's Mark","1 cup",140,80,1.0,19.0,0.5,4.0,12.0,0,0,110,10,0.4,3,10.0,0,0,8,0.2,0],
+["Frozen Broccoli Florets","Member's Mark","1 cup",85,30,2.0,5.0,0,2.0,1.0,0,25,290,45,0.7,35,70.0,0,0,20,0.4,0],
+["Organic Spring Mix","Member's Mark","2 cups",60,15,1.4,2.5,0.2,1.5,0.5,0,15,220,50,1.0,200,15.0,0,0,15,0.3,0],
+["Chicken Bake","Sam's Club Cafe","1 bake",340,770,45.0,72.0,32.0,3.0,6.0,14.0,1500,600,500,4.0,150,3.0,0.4,1.2,60,3.5,110],
+["Cheese Pizza Slice","Sam's Club Cafe","1 slice",250,700,32.0,80.0,26.0,4.0,8.0,13.0,1400,500,700,5.0,200,2.0,0.4,1.5,60,4.0,60],
+["Pepperoni Pizza Slice","Sam's Club Cafe","1 slice",260,760,35.0,80.0,32.0,4.0,8.0,15.0,1700,520,700,5.0,200,2.0,0.4,1.8,60,4.5,75],
+["All Beef Hot Dog with bun","Sam's Club Cafe","1 hot dog",180,430,17.0,35.0,25.0,1.0,6.0,10.0,1200,250,90,3.0,0,1.0,0.2,1.2,25,2.5,55],
+["Frozen Yogurt, vanilla","Sam's Club Cafe","1 cup",200,290,8.0,52.0,6.0,0,45.0,4.0,150,350,250,0.2,60,1.0,0.2,0.7,25,1.0,25],
+["Chocolate Chip Cookie","Member's Mark","1 cookie",57,270,3.0,36.0,13.0,1.0,22.0,7.0,190,110,20,1.4,50,0,0.1,0.1,20,0.4,25],
+["Butter Croissant","Member's Mark","1 croissant",71,280,6.0,30.0,15.0,1.0,7.0,9.0,300,80,30,1.6,140,0,0.2,0.2,12,0.5,45],
+["Cheese Pizza, frozen","Member's Mark","1/6 pizza",134,320,15.0,38.0,12.0,2.0,4.0,6.0,640,220,300,2.5,90,1.0,0.2,0.7,30,1.8,25],
+["Chicken Street Tacos kit","Member's Mark","2 tacos",170,300,22.0,28.0,10.0,3.0,2.0,3.0,700,320,120,1.8,20,4.0,0,0.4,40,1.5,55],
+["Mac & Cheese Bites","Member's Mark","6 pieces",85,250,8.0,26.0,13.0,1.0,3.0,5.0,530,120,150,1.2,60,0,0.1,0.3,20,0.9,20],
+["Protein Shake, Chocolate","Member's Mark","1 bottle",325,160,30.0,5.0,3.0,1.0,1.0,1.0,220,600,500,1.5,150,0,5.0,1.5,120,3.0,20],
+["Greek Yogurt, Plain Nonfat","Friendly Farms","3/4 cup",170,100,18.0,6.0,0,0,6.0,0,70,240,190,0,0,0,0,1.0,20,1.0,10],
+["Greek Yogurt, Vanilla","Friendly Farms","5.3 oz cup",150,130,12.0,17.0,0,0,14.0,0,55,190,150,0,0,0,0,0.8,17,0.8,10],
+["Protein Shake, Chocolate","Friendly Farms","1 bottle",325,160,30.0,5.0,3.0,1.0,1.0,1.0,220,600,500,1.5,150,0,5.0,1.5,120,3.0,20],
+["Whole Milk","Friendly Farms","1 cup",244,150,8.0,12.0,8.0,0,12.0,4.6,105,380,300,0,110,0,2.9,1.1,27,1.0,25],
+["2% Milk","Friendly Farms","1 cup",244,120,8.0,12.0,5.0,0,12.0,3.0,120,390,300,0,150,0,2.9,1.3,27,1.0,20],
+["Cottage Cheese, 4%","Friendly Farms","1/2 cup",113,110,12.0,4.0,5.0,0,4.0,2.2,380,100,70,0.1,45,0,0,0.6,6,0.4,20],
+["Unsweetened Almond Milk","Friendly Farms","1 cup",240,30,1.0,1.0,2.5,1.0,0,0,170,50,450,0.7,150,0,2.5,1.5,15,0.2,0],
+["Heavy Whipping Cream","Friendly Farms","1 tbsp",15,50,0.3,0.4,5.5,0,0.4,3.5,5,11,10,0,55,0,0.1,0,1,0,20],
+["Sharp Cheddar, shredded","Happy Farms","1/4 cup",28,110,7.0,1.0,9.0,0,0,5.0,180,25,200,0,55,0,0.1,0.5,7,0.9,30],
+["Mozzarella String Cheese","Happy Farms","1 stick",28,80,6.0,1.0,6.0,0,0,3.5,180,25,200,0,45,0,0.1,0.5,7,0.8,20],
+["Sliced Provolone","Happy Farms","1 slice",21,80,5.0,0.5,6.0,0,0,3.5,190,30,160,0,40,0,0.1,0.3,6,0.7,15],
+["Feta Crumbles","Emporium Selection","1 oz",28,75,4.0,1.2,6.0,0,1.0,4.2,320,18,140,0.2,35,0,0.1,0.5,5,0.8,25],
+["Boneless Skinless Chicken Breast","Never Any!","4 oz raw",113,110,25.0,0,1.5,0,0,0.4,55,330,10,0.5,5,0,0,0.3,28,0.8,65],
+["Chicken Breast, frozen","Kirkwood","4 oz raw",113,110,25.0,0,1.5,0,0,0.4,220,330,10,0.5,5,0,0,0.3,28,0.8,65],
+["Breaded Chicken Breast Tenders","Kirkwood","3 tenders",100,220,14.0,17.0,11.0,1.0,1.0,2.0,520,250,15,1.0,0,0,0.1,0.2,20,0.7,35],
+["Chicken Nuggets","Kirkwood","5 nuggets",80,220,12.0,13.0,13.0,1.0,0.5,2.5,480,200,15,0.9,5,0,0.1,0.2,18,0.8,35],
+["Italian Chicken Sausage","Never Any!","1 link",85,140,15.0,2.0,8.0,0,1.0,2.5,540,220,20,0.8,0,0,0.1,0.4,18,1.2,70],
+["Hickory Bacon","Appleton Farms","2 slices",22,90,6.0,0,7.0,0,0,2.5,350,95,2,0.2,0,0,0.1,0.2,6,0.5,20],
+["Oven Roasted Turkey Breast, deli","Appleton Farms","2 oz",56,50,10.0,1.0,0.5,0,1.0,0,440,150,5,0.5,0,0,0,0.2,15,0.5,25],
+["Black Forest Deli Ham","Appleton Farms","2 oz",56,60,10.0,2.0,1.5,0,2.0,0.5,560,180,5,0.4,0,0,0.2,0.3,12,0.8,30],
+["93/7 Lean Ground Beef","Fresh Meat","4 oz raw",113,170,23.0,0,8.0,0,0,3.5,75,330,15,2.4,0,0,0,2.4,22,5.5,70],
+["Organic Chicken Breast","Simply Nature","4 oz raw",113,110,25.0,0,1.5,0,0,0.4,50,330,10,0.5,5,0,0,0.3,28,0.8,65],
+["Cauliflower Rice, frozen","Simply Nature","1 cup",85,25,2.0,5.0,0,2.0,2.0,0,30,300,20,0.4,0,45.0,0,0,15,0.3,0],
+["Organic Creamy Peanut Butter","Simply Nature","2 tbsp",32,190,8.0,7.0,16.0,2.0,2.0,2.5,110,200,20,0.6,0,0,0,0,55,0.9,0],
+["Organic Avocado Oil","Simply Nature","1 tbsp",14,124,0,0,14.0,0,0,1.6,0,0,0,0,0,0,0,0,0,0,0],
+["Organic Popcorn, sea salt","Simply Nature","2 cups",28,120,3.0,17.0,5.0,3.0,0,0.5,180,60,5,0.6,0,0,0,0,35,0.6,0],
+["Zero Net Carb Bread","L'oven Fresh","1 slice",35,40,5.0,9.0,0.5,8.0,0,0,90,60,20,0.6,0,0,0,0,25,0.4,0],
+["100% Whole Wheat Bread","L'oven Fresh","1 slice",43,110,4.0,20.0,1.5,3.0,2.0,0,180,90,30,1.1,0,0,0,0,30,0.6,0],
+["Plain Bagels","L'oven Fresh","1 bagel",95,260,10.0,51.0,1.5,2.0,5.0,0,460,110,80,3.3,0,0,0,0,25,0.9,0],
+["Brioche Hamburger Buns","Specially Selected","1 bun",57,180,5.0,29.0,5.0,1.0,6.0,2.0,230,70,40,1.6,60,0,0.1,0.2,12,0.5,25],
+["Protein Chewy Bars, Chocolate Peanut","Millville","1 bar",40,180,10.0,17.0,8.0,4.0,6.0,2.5,150,180,90,1.0,0,0,0,0.3,35,0.8,3],
+["Old Fashioned Oats","Millville","1/2 cup dry",40,150,5.0,27.0,3.0,4.0,1.0,0.5,0,150,20,1.7,0,0,0,0,60,1.5,0],
+["Crunchy Oat Squares Cereal","Millville","1 cup",55,210,5.0,45.0,2.0,5.0,9.0,0,270,130,20,10.0,150,0,1.5,2.0,45,3.5,0],
+["Protein Bar, Chocolate Chip","Elevation","1 bar",60,220,20.0,23.0,8.0,9.0,1.0,3.5,210,200,100,1.0,0,0,0,0,50,1.0,5],
+["Restaurant Style Tortilla Chips","Clancy's","10 chips",28,140,2.0,19.0,7.0,1.0,0,1.0,110,50,40,0.4,0,0,0,0,25,0.4,0],
+["Wavy Potato Chips","Clancy's","1 oz",28,160,2.0,15.0,10.0,1.0,0,1.5,170,350,10,0.3,0,6.0,0,0,20,0.3,0],
+["Pretzel Sticks","Clancy's","1 oz",28,110,3.0,23.0,1.0,1.0,0.5,0.2,350,45,10,1.2,0,0,0,0,10,0.3,0],
+["Whole Almonds","Southern Grove","1 oz",28,170,6.0,6.0,15.0,3.0,1.0,1.1,0,200,75,1.1,0,0,0,0,75,0.9,0],
+["Trail Mix, Cranberry Nut","Southern Grove","1/4 cup",40,190,5.0,20.0,11.0,2.5,12.0,2.0,60,250,40,1.2,2,0.5,0,0,55,1.0,0],
+["Roasted Cashews","Southern Grove","1 oz",28,160,5.0,9.0,13.0,1.0,2.0,2.5,95,180,10,1.9,0,0,0,0,80,1.6,0],
+["Deli Hummus, Original","Park Street Deli","2 tbsp",30,70,2.0,4.0,5.0,2.0,0,0.5,130,60,15,0.5,0,0,0,0,15,0.3,0],
+["Guacamole","Park Street Deli","2 tbsp",30,50,0.5,3.0,4.5,2.0,0,0.7,110,150,5,0.2,3,3.0,0,0,10,0.2,0],
+["Chunky Salsa, medium","Casa Mamita","2 tbsp",32,10,0,2.0,0,0.5,1.0,0,180,70,5,0.1,10,3.0,0,0,5,0.1,0],
+["Deli Pizza, cheese","Mama Cozzi's","1 slice",128,290,13.0,36.0,10.0,2.0,4.0,5.0,600,200,250,2.2,80,1.0,0.2,0.6,28,1.6,20],
+["Rising Crust Pepperoni Pizza","Mama Cozzi's","1/5 pizza",139,360,15.0,40.0,15.0,2.0,5.0,7.0,810,230,250,2.5,90,1.0,0.2,0.8,30,1.8,30],
+["Marinara Pasta Sauce","Priano","1/2 cup",125,80,2.0,12.0,2.5,2.5,7.0,0.4,480,400,30,1.0,40,8.0,0,0,25,0.3,0],
+["Shredded Parmesan","Priano","1 tbsp",5,20,2.0,0,1.5,0,0,1.0,85,5,60,0,10,0,0,0.1,2,0.2,5],
+["Spaghetti, dry","Reggano","2 oz",56,200,7.0,42.0,1.0,2.0,2.0,0,0,120,10,1.8,0,0,0,0,50,1.0,0],
+["Penne Rigate, dry","Reggano","2 oz",56,200,7.0,42.0,1.0,2.0,2.0,0,0,120,10,1.8,0,0,0,0,50,1.0,0],
+["Ranch Dressing","Tuscan Garden","2 tbsp",30,130,0.5,2.0,13.0,0,1.5,2.0,270,30,20,0.1,10,0,0,0.1,3,0.1,10],
+["Real Mayonnaise","Burman's","1 tbsp",14,90,0,0,10.0,0,0,1.5,75,5,2,0,10,0,0,0,1,0,5],
+["Tomato Ketchup","Burman's","1 tbsp",17,20,0,5.0,0,0,4.0,0,160,60,3,0.1,10,1.0,0,0,3,0,0],
+["Orange Juice, no pulp","Nature's Nectar","1 cup",248,110,2.0,26.0,0.5,0.5,22.0,0,0,450,25,0.5,10,90.0,0,0,25,0.1,0],
+["Fudge Mint Cookies","Benton's","2 cookies",30,150,1.0,20.0,7.0,1.0,12.0,5.0,80,50,10,0.9,0,0,0,0,15,0.2,0],
+["Chicken Tender Sub, whole","Publix Deli","1 whole sub",480,1140,58.0,120.0,46.0,6.0,12.0,10.0,2600,900,300,8.0,60,10.0,0.4,1.2,110,4.5,110],
+["Chicken Tender Sub, half","Publix Deli","1 half sub",240,570,29.0,60.0,23.0,3.0,6.0,5.0,1300,450,150,4.0,30,5.0,0.2,0.6,55,2.2,55],
+["Ultimate Sub, whole","Publix Deli","1 whole sub",500,1080,58.0,100.0,48.0,6.0,12.0,16.0,3400,900,500,7.0,150,15.0,0.5,3.0,100,6.0,150],
+["Turkey Sub, half","Publix Deli","1 half sub",250,440,26.0,52.0,13.0,3.0,7.0,3.5,1400,450,180,3.5,40,8.0,0.2,0.8,50,2.0,45],
+["Italian Sub, half","Publix Deli","1 half sub",250,600,26.0,52.0,32.0,3.0,7.0,10.0,1900,420,220,3.5,60,8.0,0.2,1.2,50,2.8,70],
+["Boar's Head Turkey Sub, half","Publix Deli","1 half sub",250,430,28.0,50.0,12.0,3.0,6.0,3.0,1500,460,180,3.5,40,8.0,0.2,0.9,50,2.0,50],
+["Fried Chicken Breast","Publix Deli","1 breast",160,420,33.0,15.0,25.0,1.0,0,6.0,900,320,25,1.5,20,0,0.2,0.4,35,1.5,110],
+["Chicken Tenders, deli","Publix Deli","3 tenders",120,290,24.0,17.0,14.0,1.0,1.0,3.0,850,300,20,1.3,10,0,0.1,0.3,30,1.0,60],
+["Macaroni Salad","Publix Deli","1/2 cup",120,330,4.0,26.0,23.0,1.0,5.0,3.5,530,90,30,1.0,30,2.0,0.1,0.2,15,0.4,20],
+["Potato Wedges","Publix Deli","1 cup",130,280,3.0,35.0,14.0,3.0,1.0,2.5,560,600,20,0.8,0,10.0,0,0,30,0.4,0],
+["Chicken Noodle Soup","Publix Deli","1 cup",245,130,9.0,16.0,3.0,1.0,2.0,1.0,900,220,25,1.0,300,2.0,0,0.2,15,0.5,25],
+["Chocolate Chip Cookie","Publix Bakery","1 cookie",40,190,2.0,25.0,9.0,1.0,16.0,5.0,140,80,15,1.0,40,0,0.1,0.1,15,0.3,20],
+["Cuban Bread","Publix Bakery","2 oz",57,150,5.0,30.0,1.0,1.0,1.0,0,320,60,20,1.8,0,0,0,0,15,0.5,0],
+["Butter Croissant","Publix Bakery","1 croissant",71,280,6.0,30.0,15.0,1.0,7.0,9.0,300,80,30,1.6,140,0,0.2,0.2,12,0.5,45],
+["Key Lime Pie, slice","Publix Bakery","1 slice",120,390,5.0,48.0,20.0,1.0,38.0,11.0,220,180,130,0.9,110,3.0,0.4,0.4,20,0.6,45],
+["Whole Milk","Publix","1 cup",244,150,8.0,12.0,8.0,0,12.0,4.6,105,380,300,0,110,0,2.9,1.1,27,1.0,25],
+["2% Milk","Publix","1 cup",244,120,8.0,12.0,5.0,0,12.0,3.0,120,390,300,0,150,0,2.9,1.3,27,1.0,20],
+["Greek Yogurt, Plain Nonfat","Publix","3/4 cup",170,100,18.0,6.0,0,0,6.0,0,70,240,190,0,0,0,0,1.0,20,1.0,10],
+["Large Eggs","Publix","1 egg",50,70,6.0,0,5.0,0,0,1.5,65,65,25,0.9,80,0,1.1,0.5,6,0.6,185],
+["Boneless Skinless Chicken Breast","Publix","4 oz raw",113,110,25.0,0,1.5,0,0,0.4,55,330,10,0.5,5,0,0,0.3,28,0.8,65],
+["Ground Beef, 93/7","Publix","4 oz raw",113,170,23.0,0,8.0,0,0,3.5,75,330,15,2.4,0,0,0,2.4,22,5.5,70],
+["Sliced Bacon","Publix","2 slices",22,90,6.0,0,7.0,0,0,2.5,350,95,2,0.2,0,0,0.1,0.2,6,0.5,20],
+["Shredded Sharp Cheddar","Publix","1/4 cup",28,110,7.0,1.0,9.0,0,0,5.0,180,25,200,0,55,0,0.1,0.5,7,0.9,30],
+["Mozzarella String Cheese","Publix","1 stick",28,80,6.0,1.0,6.0,0,0,3.5,180,25,200,0,45,0,0.1,0.5,7,0.8,20],
+["Creamy Peanut Butter","Publix","2 tbsp",32,190,7.0,8.0,16.0,2.0,3.0,3.0,140,190,15,0.6,0,0,0,0,50,0.9,0],
+["100% Whole Wheat Bread","Publix","1 slice",43,110,4.0,20.0,1.5,3.0,2.0,0,180,90,30,1.1,0,0,0,0,30,0.6,0],
+["White Sandwich Bread","Publix","1 slice",36,90,3.0,17.0,1.0,1.0,2.0,0,170,40,60,1.2,0,0,0,0,8,0.3,0],
+["Plain Bagels","Publix","1 bagel",95,260,10.0,51.0,1.5,2.0,5.0,0,460,110,80,3.3,0,0,0,0,25,0.9,0],
+["Spaghetti, dry","Publix","2 oz",56,200,7.0,42.0,1.0,2.0,2.0,0,0,120,10,1.8,0,0,0,0,50,1.0,0],
+["Long Grain White Rice, dry","Publix","1/4 cup",45,160,3.0,36.0,0,0,0,0,0,45,10,1.5,0,0,0,0,15,0.6,0],
+["Tortilla Chips","Publix","10 chips",28,140,2.0,19.0,7.0,1.0,0,1.0,110,50,40,0.4,0,0,0,0,25,0.4,0],
+["Salsa, medium","Publix","2 tbsp",32,10,0,2.0,0,0.5,1.0,0,180,70,5,0.1,10,3.0,0,0,5,0.1,0],
+["Organic Chicken Breast","GreenWise","4 oz raw",113,110,25.0,0,1.5,0,0,0.4,50,330,10,0.5,5,0,0,0.3,28,0.8,65],
+["Organic Whole Milk","GreenWise","1 cup",244,150,8.0,12.0,8.0,0,12.0,4.6,105,380,300,0,110,0,2.9,1.1,27,1.0,25],
+["Organic Peanut Butter","GreenWise","2 tbsp",32,190,8.0,7.0,16.0,2.0,2.0,2.5,110,200,20,0.6,0,0,0,0,55,0.9,0],
+["Organic Baby Spinach","GreenWise","2 cups",60,15,1.8,2.2,0.2,1.3,0.3,0,48,335,60,1.6,340,17.0,0,0,47,0.3,0],
 /* --- restaurant --- */
 ["Chicken Burrito Bowl (rice, black beans, salsa, cheese)","Chipotle","1 bowl",600,665,45.0,63.0,23.0,10.0,4.0,9.0,1600,1100,290,4.5,80,15.0,0.2,1.0,90,4.0,145],
 ["Chicken","Chipotle","4 oz",113,180,32.0,0,7.0,0,0,2.5,310,320,15,1.0,0,0,0.1,0.3,30,1.0,125],
@@ -892,7 +1092,7 @@ const ACTIVITY = [
 ];
 
 /* ---------------- state & storage ---------------- */
-const LSK={days:"ml.days",foods:"ml.foods",recents:"ml.recents",targets:"ml.targets",
+const LSK={days:"ml.days",foods:"ml.foods",recents:"ml.recents",targets:"ml.targets",water:"ml.water",pp:"ml.pp",
            goals:"ml.goals",body:"ml.body",batches:"ml.batches"};
 const lsGet=(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}};
 const lsSet=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
@@ -917,16 +1117,19 @@ function loadGoals(){
 const S={
   view:"day", tab:"log", date:dkey(new Date()),
   days:lsGet(LSK.days,{}),
+  water:lsGet(LSK.water,{}),
+  pp:Object.assign(ppDefault(),lsGet(LSK.pp,{})),
   foods:lsGet(LSK.foods,[]),
   recents:lsGet(LSK.recents,[]),
   batches:lsGet(LSK.batches,[]),
   goals:loadGoals(),
-  body:Object.assign({sex:"male",age:30,cm:178,kg:80,act:1.55,units:"us"},lsGet(LSK.body,{}))
+  body:Object.assign({sex:"male",age:30,cm:178,kg:80,act:1.55,dir:0,units:"us"},lsGet(LSK.body,{}))
 };
 
 const entries=(d=S.date)=>S.days[d]||[];
 const goal=i=>parseFloat(S.goals[i])||0;
 function saveDay(){lsSet(LSK.days,S.days)}
+function saveWater(){lsSet(LSK.water,S.water)}
 function saveMeta(){lsSet(LSK.foods,S.foods);lsSet(LSK.recents,S.recents)}
 function saveGoals(){lsSet(LSK.goals,S.goals);lsSet(LSK.body,S.body)}
 function saveBatches(){lsSet(LSK.batches,S.batches)}
@@ -1025,15 +1228,17 @@ function noteRecent(f){
 
 /* ---------------- render ---------------- */
 function render(){
-  ["day","meals","goals"].forEach(v=>
+  ["day","meals","pasta","goals"].forEach(v=>
     document.getElementById("nav"+v).setAttribute("aria-current",String(S.view===v)));
   const fab=document.getElementById("fab");
-  fab.hidden=S.view==="goals";
+  fab.hidden=S.view==="goals"||S.view==="pasta";
   document.getElementById("fabLabel").textContent=S.view==="meals"?"New meal":"Add food";
   const el=document.getElementById("screen");
-  el.innerHTML=S.view==="day"?dayHTML():S.view==="meals"?mealsHTML():goalsHTML();
+  el.innerHTML=S.view==="day"?dayHTML():S.view==="meals"?mealsHTML():
+               S.view==="pasta"?pastaHTML():goalsHTML();
   if(S.view==="day")bindDay(el);
   if(S.view==="meals")bindMeals(el);
+  if(S.view==="pasta")bindPasta(el);
   if(S.view==="goals")bindGoals(el);
 }
 
@@ -1067,8 +1272,63 @@ function dayHTML(){
     '<div class="seg" role="tablist">'+
       '<button role="tab" id="tabLog" aria-selected="'+(S.tab==="log")+'">Log</button>'+
       '<button role="tab" id="tabMicro" aria-selected="'+(S.tab==="micro")+'">Micronutrients</button>'+
+      '<button role="tab" id="tabWater" aria-selected="'+(S.tab==="water")+'">Water</button>'+
     "</div>"+
-    (S.tab==="log"?logHTML():microHTML());
+    (S.tab==="water"?waterHTML():S.tab==="micro"?microHTML():logHTML());
+}
+
+/* ---- water ---- */
+const POURS=[8,12,16.9,20,32];
+const waterLog=()=>S.water[S.date]||[];
+const waterTotal=()=>waterLog().reduce((a,b)=>a+b,0);
+const waterGoal=()=>+S.body.water||100;
+function addWater(oz){
+  if(!(oz>0))return;
+  (S.water[S.date]=S.water[S.date]||[]).push(Math.round(oz*10)/10);
+  saveWater(); render();
+}
+function waterHTML(){
+  const log=waterLog(), tot=waterTotal(), g=waterGoal();
+  const pct=g>0?Math.min(100,tot/g*100):0;
+  const glasses=Math.round(g/8);
+  const filled=Math.min(glasses,Math.floor(tot/8));
+  let cups="";
+  for(let i=0;i<glasses;i++)cups+='<i class="cup'+(i<filled?" on":"")+'"></i>';
+  return '<div class="card water">'+
+      '<div class="wtop"><div class="wbig">'+fmt(rnd(tot,1))+'<small>fl oz</small></div>'+
+        '<div class="wleft"><b>'+(tot>=g?"goal met":fmt(rnd(g-tot,1))+" to go")+"</b>of "+fmt(g)+" fl oz</div></div>"+
+      '<div class="track"><i style="width:'+pct+'%"></i></div>'+
+      '<div class="cups">'+cups+"</div>"+
+      '<div class="pours">'+POURS.map(o=>'<button data-pour="'+o+'">+'+fmt(o)+" oz</button>").join("")+
+        '<button data-pour="custom" class="cust">Other</button></div>'+
+    "</div>"+
+    (log.length
+      ? '<div class="sectlab">Today\u2019s pours<button class="link" id="undoPour">Undo last</button></div>'+
+        '<div class="card plist">'+log.map((o,i)=>
+          '<div class="prow"><span>'+fmt(rnd(o,1))+' fl oz</span>'+
+          '<button class="link" data-delpour="'+i+'">Remove</button></div>').join("")+"</div>"
+      : '<div class="empty">Nothing yet today. Tap a size above.</div>')+
+    '<div class="sectlab">Daily goal</div>'+
+    '<div class="card gline"><input id="wGoal" type="number" inputmode="decimal" step="any" value="'+g+
+      '"><span>fl oz a day</span></div>'+
+    '<p class="footnote">Roughly 100 fl oz covers most adults; half your bodyweight in ounces is the '+
+      "other common rule. Water is tracked on its own and is not part of the calorie total.</p>";
+}
+function bindWater(el){
+  el.querySelectorAll("[data-pour]").forEach(b=>b.onclick=()=>{
+    if(b.dataset.pour==="custom"){
+      const v=prompt("How many fluid ounces?");
+      const n=parseFloat(v); if(isFinite(n)&&n>0)addWater(n);
+    }else addWater(parseFloat(b.dataset.pour));
+  });
+  const u=el.querySelector("#undoPour");
+  if(u)u.onclick=()=>{const l=S.water[S.date]||[];l.pop();saveWater();render()};
+  el.querySelectorAll("[data-delpour]").forEach(b=>b.onclick=()=>{
+    (S.water[S.date]||[]).splice(+b.dataset.delpour,1);saveWater();render();
+  });
+  const g=el.querySelector("#wGoal");
+  if(g)g.onchange=()=>{const v=parseFloat(g.value);
+    S.body.water=isFinite(v)&&v>0?v:100;saveGoals();render()};
 }
 const macroTile=(cls,lab,v,tg,w)=>
   '<div class="macro '+cls+'"><div class="lab"><i class="dot"></i>'+lab+"</div>"+
@@ -1113,6 +1373,8 @@ function bindDay(el){
   el.querySelector("#nextDay").onclick=()=>shift(1);
   el.querySelector("#tabLog").onclick=()=>{S.tab="log";render()};
   el.querySelector("#tabMicro").onclick=()=>{S.tab="micro";render()};
+  el.querySelector("#tabWater").onclick=()=>{S.tab="water";render()};
+  if(S.tab==="water")bindWater(el);
   el.querySelectorAll("[data-entry]").forEach(b=>b.onclick=()=>openEntry(b.dataset.entry));
   el.querySelectorAll("[data-addmeal]").forEach(b=>b.onclick=()=>openSearch({mode:"log",meal:b.dataset.addmeal}));
 }
@@ -1146,15 +1408,28 @@ function bindMeals(el){
 }
 
 /* ---- goals ---- */
-/* Mifflin-St Jeor for energy, then RDA / AI figures that actually vary with sex and age. */
-function computeGoals(b){
+/* Direction of travel. 500 kcal a day is roughly a pound a week either way. */
+const DIRS = [
+  [-500, "Lose about 1 lb a week"],
+  [-250, "Lose about 0.5 lb a week"],
+  [0,    "Maintain my weight"],
+  [250,  "Gain about 0.5 lb a week"],
+  [500,  "Gain about 1 lb a week"]
+];
+
+/* Mifflin-St Jeor resting burn, times an activity factor, plus the deficit or surplus. */
+function energy(b){
   const kg=+b.kg,cm=+b.cm,age=+b.age,male=b.sex==="male";
   const bmr=10*kg+6.25*cm-5*age+(male?5:-161);
-  const kcal=Math.round(bmr*(+b.act)/10)*10;
-  const protein=Math.round(1.6*kg);                 /* 1.6 g/kg — the usual active-adult figure */
-  const fat=Math.round(kcal*0.25/9);
-  const carbs=Math.max(0,Math.round((kcal-protein*4-fat*9)/4));
-  const g={0:kcal,1:protein,2:carbs,3:fat};
+  const tdee=bmr*(+b.act);
+  return {bmr:Math.round(bmr), tdee:Math.round(tdee),
+          kcal:Math.max(1200,Math.round((tdee+(+b.dir||0))/10)*10)};
+}
+/* Vitamins and minerals: RDA / AI for age and sex. The three that scale with how much
+   you eat key off whatever the calorie goal actually is, so they stay right after a
+   hand-edited calorie target. */
+function computeMicros(kcal,b){
+  const age=+b.age,male=b.sex==="male",g={};
   g[4]=Math.round(kcal/1000*14);                    /* fiber: 14 g per 1000 kcal */
   g[5]=Math.round(kcal*0.10/4);                     /* added sugar ceiling: 10% of energy */
   g[6]=Math.round(kcal*0.10/9);                     /* saturated fat ceiling: 10% of energy */
@@ -1171,11 +1446,26 @@ function computeGoals(b){
   g[14]=2.4;                                        /* vitamin B12 RDA */
   return g;
 }
+function computeGoals(b){
+  const kcal=energy(b).kcal;
+  const protein=Math.round(1.6*(+b.kg));            /* 1.6 g/kg — the usual active-adult figure */
+  const fat=Math.round(kcal*0.25/9);
+  const carbs=Math.max(0,Math.round((kcal-protein*4-fat*9)/4));
+  return Object.assign({0:kcal,1:protein,2:carbs,3:fat},computeMicros(kcal,b));
+}
 const cmToFtIn=cm=>{const t=Math.round(cm/2.54);return[Math.floor(t/12),t%12]};
 const ftInToCm=(ft,inch)=>Math.round(((+ft||0)*12+(+inch||0))*2.54);
 const kgToLb=kg=>Math.round(kg*2.20462);
 const lbToKg=lb=>Math.round((+lb||0)/2.20462*10)/10;
 
+function workingHTML(b){
+  if(!(b.kg>0&&b.cm>0&&b.age>0))return "";
+  const e=energy(b), d=+b.dir||0;
+  const act=(ACTIVITY.find(a=>Math.abs(a[0]-(+b.act))<0.001)||[0,"?"])[1];
+  return "<b>"+fmt(e.bmr)+"</b> kcal at rest &middot; <b>"+fmt(e.tdee)+"</b> kcal "+
+    esc(act.toLowerCase())+(d?" &middot; <b>"+(d>0?"+":"")+fmt(d)+"</b> to "+(d>0?"gain":"lose"):"")+
+    " &rarr; <b>"+fmt(e.kcal)+"</b> kcal a day";
+}
 function goalsHTML(){
   const b=S.body,us=b.units==="us",fi=cmToFtIn(b.cm);
   const gRow=m=>{
@@ -1213,7 +1503,14 @@ function goalsHTML(){
       '<div class="field"><label>Activity</label><select id="bAct">'+
         ACTIVITY.map(a=>'<option value="'+a[0]+'"'+(Math.abs(+b.act-a[0])<0.001?" selected":"")+">"+a[1]+" — "+a[2]+"</option>").join("")+
       "</select></div>"+
+      '<div class="field"><label>Goal</label><select id="bDir">'+
+        DIRS.map(dd=>'<option value="'+dd[0]+'"'+((+b.dir||0)===dd[0]?" selected":"")+">"+dd[1]+"</option>").join("")+
+      "</select></div>"+
+      '<div class="working" id="working">'+workingHTML(b)+"</div>"+
       '<button class="btn" id="doAutofill">Autofill every goal</button>'+
+      '<button class="btn ghost" id="doMicros" style="margin-top:9px">Autofill micronutrients only</button>'+
+      '<p class="sub2">Micronutrients only keeps the calories and macros you typed in, and sizes fiber, '+
+      "sugar and saturated fat to that calorie goal.</p>"+
     "</div>"+
     '<div class="gsec">'+group("Energy and macros")+
       MACROS.map(m=>'<div class="grow"><div class="gn">'+m.n+"</div>"+
@@ -1239,16 +1536,29 @@ function bindGoals(el){
     };
     inp.onblur=()=>{inp.value=rnd(goal(inp.dataset.goal),2)};
   });
-  ["bSex","bAge","bAct","bFt","bIn","bLb","bCm","bKg"].forEach(id=>{
+  const refreshWorking=()=>{const w=el.querySelector("#working");
+    if(w)w.innerHTML=workingHTML(S.body)};
+  ["bSex","bAge","bAct","bDir","bFt","bIn","bLb","bCm","bKg"].forEach(id=>{
     const n=el.querySelector("#"+id);
-    if(n)n.onchange=()=>{readBody(el);saveGoals()};
+    if(n){n.onchange=()=>{readBody(el);saveGoals();refreshWorking()};
+          n.oninput=()=>{readBody(el);refreshWorking()};}
   });
-  el.querySelector("#doAutofill").onclick=()=>{
+  const haveBody=()=>{
     readBody(el);
-    if(!(S.body.kg>0)||!(S.body.cm>0)||!(S.body.age>0)){toast("Fill in age, height and weight first");return}
+    if(S.body.kg>0&&S.body.cm>0&&S.body.age>0)return true;
+    toast("Fill in age, height and weight first"); return false;
+  };
+  el.querySelector("#doAutofill").onclick=()=>{
+    if(!haveBody())return;
     S.goals=computeGoals(S.body);
     saveGoals(); render();
     toast("Goals set from your measurements");
+  };
+  el.querySelector("#doMicros").onclick=()=>{
+    if(!haveBody())return;
+    Object.assign(S.goals,computeMicros(goal(0)||energy(S.body).kcal,S.body));
+    saveGoals(); render();
+    toast("Micronutrients set; your macros kept");
   };
   el.querySelector("#resetGoals").onclick=()=>{
     MICROS.forEach(m=>S.goals[m.i]=m.dv);
@@ -1257,9 +1567,10 @@ function bindGoals(el){
 }
 function readBody(el){
   const g=id=>{const n=el.querySelector("#"+id);return n?parseFloat(n.value):NaN};
-  const sex=el.querySelector("#bSex"), act=el.querySelector("#bAct");
+  const sex=el.querySelector("#bSex"), act=el.querySelector("#bAct"), dir=el.querySelector("#bDir");
   if(sex)S.body.sex=sex.value;
   if(act)S.body.act=parseFloat(act.value)||1.55;
+  if(dir)S.body.dir=parseFloat(dir.value)||0;
   const age=g("bAge"); if(isFinite(age)&&age>0)S.body.age=age;
   if(S.body.units==="us"){
     const cm=ftInToCm(g("bFt"),g("bIn")); if(cm>0)S.body.cm=cm;
@@ -1268,6 +1579,191 @@ function readBody(el){
     const cm=g("bCm"); if(isFinite(cm)&&cm>0)S.body.cm=cm;
     const kg=g("bKg"); if(isFinite(kg)&&kg>0)S.body.kg=kg;
   }
+}
+
+/* ---------------- Olive Garden: Never Ending Pasta Bowl ----------------
+   Figures are Olive Garden's published nutrition for the NEPB line, per one
+   serving as it comes out of the kitchen. Vector order matches FOODS.      */
+const OG = {
+  pasta:[
+    ["spag",  "Spaghetti",              [360,13,72,2,4,3,0.5,10,220,30,3.0,0,0,0,0,60,1.4,0]],
+    ["angel", "Angel Hair",             [360,13,72,2,4,3,0.5,10,220,30,3.0,0,0,0,0,60,1.4,0]],
+    ["rigat", "Rigatoni",               [360,13,72,2,4,3,0.5,10,220,30,3.0,0,0,0,0,60,1.4,0]],
+    ["cavat", "Cavatappi",              [370,13,73,2,4,3,0.5,10,220,30,3.0,0,0,0,0,60,1.4,0]],
+    ["fett",  "Fettuccine",             [440,16,84,4,4,3,1.0,15,250,35,3.4,10,0,0,0.1,65,1.6,45]],
+    ["gfrot", "Gluten Sensitive Rotini",[350,8,76,2,3,2,0.5,10,150,20,1.2,0,0,0,0,40,0.9,0]]
+  ],
+  sauce:[
+    ["none",  "No sauce",               [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]],
+    ["mar",   "Marinara",               [70,2,11,2,2,6,0.5,560,400,30,1.0,40,8,0,0,25,0.3,0]],
+    ["meat",  "Traditional Meat Sauce", [210,12,12,13,2,6,5.0,700,450,40,1.8,40,6,0,1.0,30,2.2,35]],
+    ["alf",   "Alfredo",                [570,13,12,53,0,4,33.0,890,180,350,0.3,320,0,0.4,0.6,20,1.6,155]],
+    ["five",  "Five Cheese Marinara",   [180,8,13,10,2,6,6.0,780,380,220,1.0,110,7,0.2,0.4,25,1.0,30]],
+    ["mush",  "Creamy Mushroom",        [330,7,13,28,1,4,16.0,850,300,160,0.6,180,1,0.2,0.3,20,0.8,80]]
+  ],
+  topping:[
+    ["none",  "No topping",             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]],
+    ["balls", "Meatballs (3)",          [280,17,9,20,1,3,8.0,800,320,60,1.8,10,1,0.2,1.4,25,3.0,75]],
+    ["saus",  "Italian Sausage (3)",    [320,17,5,26,0,2,10.0,900,300,30,1.5,0,1,0.3,1.2,22,2.6,70]],
+    ["fritta","Crispy Chicken Fritta",  [370,24,20,22,1,1,4.0,850,350,40,1.6,10,1,0.1,0.4,35,1.2,75]],
+    ["grill", "Grilled Chicken",        [180,33,1,5,0,0,1.5,480,420,20,1.1,10,0,0.1,0.3,35,1.0,95]],
+    ["shrimp","Shrimp Fritta",          [300,15,22,17,1,1,3.0,900,250,60,1.4,10,1,0.1,1.0,30,1.0,105]]
+  ],
+  soup:[
+    ["none",  "No soup",                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]],
+    ["zuppa", "Zuppa Toscana",          [220,8,12,15,1,2,7.0,960,420,80,0.8,60,10,0.1,0.4,25,0.9,30]],
+    ["fagio", "Pasta e Fagioli",        [130,8,17,3,4,3,1.0,700,450,60,1.8,80,6,0,0.5,35,1.2,10]],
+    ["gnoc",  "Chicken & Gnocchi",      [250,11,25,12,1,4,6.0,1130,380,150,1.0,150,4,0.2,0.5,25,0.9,40]],
+    ["minest","Minestrone",             [110,4,19,1,4,5,0,730,470,60,1.5,180,12,0,0,30,0.6,0]]
+  ],
+  drink:[
+    ["water", "Water",                  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]],
+    ["tea",   "Unsweetened iced tea",   [0,0,0,0,0,0,0,10,60,5,0.1,0,0,0,0,5,0,0]],
+    ["soda",  "Soda (one glass)",       [200,0,54,0,0,54,0,50,0,0,0,0,0,0,0,0,0,0]],
+    ["lemon", "Lemonade (one glass)",   [160,0,42,0,0,40,0,30,40,10,0.2,0,8,0,0,4,0.1,0]],
+    ["wine",  "House wine (6 oz)",      [150,0.1,4.6,0,0,1.7,0,8,220,14,0.5,0,0,0,0,18,0.1,0]]
+  ],
+  stick:  ["Breadstick",                [140,4,26,3,1,2,0.5,460,60,20,1.6,0,0,0,0,10,0.4,0]],
+  saladD: ["House salad, dressed",      [150,3,12,10,2,4,2.0,800,240,60,0.8,120,12,0,0,20,0.4,5]],
+  saladU: ["House salad, no dressing",  [20,1,4,0,1.5,2,0,105,220,40,0.6,120,12,0,0,18,0.3,0]]
+};
+const ogFind=(k,id)=>OG[k].find(x=>x[0]===id)||OG[k][0];
+const zero18=()=>new Array(18).fill(0);
+function ppDefault(){
+  return {bowls:[{pasta:"spag",sauce:"mar",topping:"none"}],sticks:0,
+          plates:0,shares:0,perBowl:5,dressed:true,soup:"none",soups:0,drink:"water",drinks:1};
+}
+/* every line the current build adds up to, as {label, n[]} */
+function ppLines(){
+  const p=S.pp,out=[];
+  p.bowls.forEach((b,i)=>{
+    const pa=ogFind("pasta",b.pasta),sa=ogFind("sauce",b.sauce),to=ogFind("topping",b.topping);
+    const n=zero18();
+    [pa,sa,to].forEach(x=>x[2].forEach((v,j)=>n[j]+=v));
+    out.push({label:"Bowl "+(i+1)+": "+pa[1]+(sa[0]!=="none"?" with "+sa[1]:", plain")+
+      (to[0]!=="none"?" + "+to[1]:""),n:n});
+  });
+  if(p.sticks>0)out.push({label:p.sticks+" breadstick"+(p.sticks===1?"":"s"),
+    n:OG.stick[1].map(v=>v*p.sticks)});
+  const salad=(+p.plates||0)+(+p.shares||0)*(+p.perBowl||5);
+  if(salad>0){const base=p.dressed?OG.saladD:OG.saladU;
+    out.push({label:rnd(salad,2)+" serving"+(salad===1?"":"s")+" house salad, "+
+      (p.dressed?"dressed":"no dressing"),n:base[1].map(v=>v*salad)});}
+  if(p.soup!=="none"&&p.soups>0){const so=ogFind("soup",p.soup);
+    out.push({label:p.soups+" bowl"+(p.soups===1?"":"s")+" "+so[1],n:so[2].map(v=>v*p.soups)});}
+  const dr=ogFind("drink",p.drink);
+  if(p.drinks>0&&dr[2][0]>0)out.push({label:p.drinks+"x "+dr[1],n:dr[2].map(v=>v*p.drinks)});
+  return out;
+}
+const ppTotal=()=>ppLines().reduce((a,l)=>(l.n.forEach((v,i)=>a[i]+=v),a),zero18());
+
+const ppSel=(k,id,cur)=>'<select data-pp="'+id+'">'+
+  OG[k].map(o=>'<option value="'+o[0]+'"'+(o[0]===cur?" selected":"")+">"+esc(o[1])+
+  (o[2][0]?" — "+fmt(o[2][0])+" kcal":"")+"</option>").join("")+"</select>";
+const stepper=(id,val,unit)=>
+  '<div class="step"><button data-ppm="'+id+'" aria-label="Less">&minus;</button>'+
+  '<span>'+fmt(rnd(val,2))+(unit?" "+unit:"")+"</span>"+
+  '<button data-ppp="'+id+'" aria-label="More">+</button></div>';
+
+function pastaHTML(){
+  const p=S.pp,tot=ppTotal(),lines=ppLines();
+  const salad=(+p.plates||0)+(+p.shares||0)*(+p.perBowl||5);
+  return '<div class="pphead"><h2>Never Ending Pasta Bowl</h2>'+
+      "<p>Build what you actually ate, not what they carried to the table.</p></div>"+
+
+    '<div class="sectlab">Pasta bowls<button class="link" id="ppAdd">+ Add a bowl</button></div>'+
+    p.bowls.map((b,i)=>
+      '<div class="card ppbowl"><div class="bwtop"><b>Bowl '+(i+1)+"</b>"+
+        (p.bowls.length>1?'<button class="link" data-ppdel="'+i+'">Remove</button>':"")+"</div>"+
+        '<label>Pasta</label>'+ppSel("pasta","pasta:"+i,b.pasta)+
+        '<label>Sauce</label>'+ppSel("sauce","sauce:"+i,b.sauce)+
+        '<label>Topping</label>'+ppSel("topping","topping:"+i,b.topping)+
+      "</div>").join("")+
+
+    '<div class="sectlab">Breadsticks</div>'+
+    '<div class="card row2"><span>How many did you eat?</span>'+stepper("sticks",p.sticks)+"</div>"+
+
+    '<div class="sectlab">Salad</div>'+
+    '<div class="card">'+
+      '<div class="row2"><span>Plates you took</span>'+stepper("plates",p.plates)+"</div>"+
+      '<div class="row2"><span>Or shares of the family bowl</span>'+stepper("shares",p.shares)+"</div>"+
+      '<div class="row2"><span>Servings in that bowl</span>'+
+        '<input class="mini" id="ppPerBowl" type="number" inputmode="decimal" step="any" value="'+
+        (+p.perBowl||5)+'"></div>'+
+      '<label class="check"><input type="checkbox" id="ppDressed"'+(p.dressed?" checked":"")+
+        "><span>Dressed</span></label>"+
+      '<p class="footnote">A plate is one serving. The family bowl they drop on the table is about five, '+
+        "so half a bowl to yourself is 2.5 &mdash; change the number if yours looked bigger. Undressed "+
+        "salad is 20 kcal a serving; the dressing is the other 130.</p>"+
+    "</div>"+
+
+    '<div class="sectlab">Soup</div>'+
+    '<div class="card"><label>Which one</label>'+ppSel("soup","soup",p.soup)+
+      (p.soup!=="none"?'<div class="row2" style="margin-top:12px"><span>Bowls</span>'+stepper("soups",p.soups)+"</div>":"")+
+    "</div>"+
+
+    '<div class="sectlab">Drink</div>'+
+    '<div class="card"><label>What you had</label>'+ppSel("drink","drink",p.drink)+
+      (ogFind("drink",p.drink)[2][0]>0
+        ? '<div class="row2" style="margin-top:12px"><span>Glasses</span>'+stepper("drinks",p.drinks)+"</div>"
+        : '<p class="footnote">Water and unsweetened tea add nothing &mdash; log water on the Day tab.</p>')+
+    "</div>"+
+
+    '<div class="pptot">'+
+      '<div class="wtop"><div class="wbig">'+fmt(tot[0])+"<small>kcal</small></div>"+
+        '<div class="wleft"><b>'+fmt(tot[1])+"P &middot; "+fmt(tot[2])+"C &middot; "+fmt(tot[3])+
+        "F</b>"+fmt(tot[7])+" mg sodium</div></div>"+
+      (lines.length?'<div class="pplist">'+lines.map(l=>
+        '<div class="prow"><span>'+esc(l.label)+"</span><span>"+fmt(l.n[0])+"</span></div>").join("")+"</div>":
+        '<p class="footnote">Nothing selected yet.</p>')+
+      '<button class="btn" id="ppLog"'+(tot[0]>0?"":" disabled")+">Log this to "+esc(mealOfNow().toLowerCase())+"</button>"+
+      '<button class="btn ghost" id="ppReset" style="margin-top:9px">Start over</button>'+
+    "</div>"+
+    '<p class="footnote">Olive Garden&rsquo;s published figures for the pasta bowl line. Salad '+
+      "and breadstick counts are the ones people guess at, which is why they are separate here.</p>";
+}
+
+function bindPasta(el){
+  const save=()=>{lsSet(LSK.pp,S.pp);render()};
+  el.querySelectorAll("[data-pp]").forEach(sel=>sel.onchange=()=>{
+    const [k,i]=sel.dataset.pp.split(":");
+    if(i!==undefined)S.pp.bowls[+i][k]=sel.value; else S.pp[k]=sel.value;
+    if(k==="soup"&&sel.value!=="none"&&!S.pp.soups)S.pp.soups=1;
+    if(k==="drink"&&!S.pp.drinks)S.pp.drinks=1;
+    save();
+  });
+  const stepOf=id=>id==="plates"?0.5:id==="shares"?0.25:1;
+  el.querySelectorAll("[data-ppp]").forEach(b=>b.onclick=()=>{
+    const id=b.dataset.ppp;S.pp[id]=rnd((+S.pp[id]||0)+stepOf(id),2);save();
+  });
+  el.querySelectorAll("[data-ppm]").forEach(b=>b.onclick=()=>{
+    const id=b.dataset.ppm;S.pp[id]=Math.max(0,rnd((+S.pp[id]||0)-stepOf(id),2));save();
+  });
+  el.querySelectorAll("[data-ppdel]").forEach(b=>b.onclick=()=>{
+    S.pp.bowls.splice(+b.dataset.ppdel,1);
+    if(!S.pp.bowls.length)S.pp.bowls=[{pasta:"spag",sauce:"mar",topping:"none"}];
+    save();
+  });
+  el.querySelector("#ppAdd").onclick=()=>{
+    const last=S.pp.bowls[S.pp.bowls.length-1]||{pasta:"spag",sauce:"mar",topping:"none"};
+    S.pp.bowls.push({pasta:last.pasta,sauce:last.sauce,topping:"none"});save();
+  };
+  const pb=el.querySelector("#ppPerBowl");
+  if(pb)pb.onchange=()=>{const v=parseFloat(pb.value);S.pp.perBowl=isFinite(v)&&v>0?v:5;save()};
+  const dr=el.querySelector("#ppDressed");
+  if(dr)dr.onchange=()=>{S.pp.dressed=dr.checked;save()};
+  el.querySelector("#ppReset").onclick=()=>{S.pp=ppDefault();save();toast("Cleared")};
+  el.querySelector("#ppLog").onclick=()=>{
+    const lines=ppLines(); if(!lines.length)return;
+    const meal=mealOfNow(), list=S.days[S.date]||(S.days[S.date]=[]);
+    lines.forEach(l=>list.push({id:uid(),name:l.label,brand:"Olive Garden",
+      serving:"as eaten",grams:0,qty:1,meal:meal,n:l.n.slice()}));
+    saveDay();
+    const kcal=ppTotal()[0];
+    S.pp=ppDefault();lsSet(LSK.pp,S.pp);
+    S.view="day";render();
+    toast(fmt(kcal)+" kcal added to "+meal.toLowerCase());
+  };
 }
 
 /* ---------------- sheet plumbing ---------------- */
@@ -1686,7 +2182,7 @@ document.getElementById("fab").onclick=()=>{
   else openSearch({mode:"log"});
 };
 document.getElementById("btnSettings").onclick=openSettings;
-["day","meals","goals"].forEach(v=>
+["day","meals","pasta","goals"].forEach(v=>
   document.getElementById("nav"+v).onclick=()=>{S.view=v;window.scrollTo(0,0);render()});
 
 render();

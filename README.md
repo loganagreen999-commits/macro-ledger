@@ -14,11 +14,22 @@ full-screen with its own icon and behaves like any other app.
 
 ## What's in it
 
-- **514 foods built in**, including 88 brands (Chobani, Fage, Fairlife, Quest,
+- **646 foods built in**, including 117 brands (Chobani, Fage, Fairlife, Quest,
   Premier Protein, Clif, RXBAR, KIND, Larabar, Kodiak, Optimum Nutrition,
   Nabisco, Kellogg's, General Mills, Halo Top, Talenti …) and restaurant items
   (Chipotle, McDonald's, Chick-fil-A, Wendy's, Burger King, Popeyes, Starbucks,
-  Dunkin', Taco Bell, In-N-Out, Panda Express, Panera, Cava, Sweetgreen …).
+  Dunkin', Taco Bell, In-N-Out, Panda Express, Panera, Cava, Sweetgreen …), plus a
+  store-brand section for the three shops that matter here: **Sam's Club**
+  (Member's Mark, the café), **Aldi** (Friendly Farms, Happy Farms, Kirkwood,
+  Never Any!, Simply Nature, Millville, Clancy's, L'oven Fresh, Southern Grove,
+  Appleton Farms, Mama Cozzi's, Priano, Reggano, Park Street Deli …) and
+  **Publix** (Publix, GreenWise, Publix Deli including the Pub Subs, Publix Bakery).
+- **Pasta Pass tab**: an Olive Garden Never Ending Pasta Bowl builder. Add a bowl at a
+  time (pasta, sauce, topping), count breadsticks, split the salad by plates *or* by
+  shares of the family bowl with a dressed/undressed toggle, pick a soup and a drink.
+  It totals as you go and logs each line to the day.
+- **Water** on the Day tab: pour sizes, a glass-by-glass strip, an editable daily
+  target, and per-pour undo. Tracked separately from calories.
 - **Add your own foods and brands** — name, serving, macros, and optionally all
   14 micronutrients. Saved foods are searchable forever.
 - **Goals tab**: a target for calories, each macro and all 14 micronutrients, with an
