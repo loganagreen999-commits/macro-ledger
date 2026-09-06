@@ -31,7 +31,14 @@ full-screen with its own icon and behaves like any other app.
 - **Water** on the Day tab: pour sizes, a glass-by-glass strip, an editable daily
   target, and per-pour undo. Tracked separately from calories.
 - **Add your own foods and brands** — name, serving, macros, and optionally all
-  14 micronutrients. Saved foods are searchable forever.
+  14 micronutrients. Saved foods are searchable forever. Both ways in sit at the
+  top of the search sheet: **Scan a barcode** and **Add by hand**.
+- **Barcode scanner**: point the camera at a UPC/EAN and the panel is filled in
+  from Open Food Facts — a free, public, no-account database. Chrome and Android
+  use the browser's own decoder; Safari falls back to a locally bundled ZXing, so
+  no third-party script is ever fetched. Whatever you save keeps its barcode, so
+  the second scan of the same product is instant and works offline. Open Food
+  Facts is crowd-sourced, so the form shows you the numbers before you save.
 - **Goals tab**: a target for calories, each macro and all 14 micronutrients, with an
   autofill that works them out from your height, weight, age, sex and activity.
 - **Meals tab**: cook a batch, list what went in, say how much it made (six cups,
