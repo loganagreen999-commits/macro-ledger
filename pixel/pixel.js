@@ -126,14 +126,30 @@ function lunge(id){
   if(other){ setTimeout(function(){ other.classList.add("pxhurt");
     setTimeout(function(){ other.classList.remove("pxhurt") },420) },200); }
 }
+/* throw, wobble, then either open with a burst of stars or just vanish */
 function throwBall(){
   var f=document.querySelector(".pxfield"); if(!f) return;
   var b=document.createElement("img");
   b.className="pxball"; b.src="pixel/pokeball.png";
-  b.onerror=function(){ b.remove() };          /* art not supplied yet; see MISSING_ART */
+  b.onerror=function(){ b.remove() };
   f.appendChild(b);
+  var foe=document.getElementById("pxFoe");
+  setTimeout(function(){ if(foe) foe.style.visibility="hidden" },700);
   setTimeout(function(){ b.classList.add("wobbling") },760);
-  setTimeout(function(){ b.remove() },2400);
+  setTimeout(function(){
+    var caught=!G().state().enc;                 /* the game has already decided */
+    if(caught){
+      b.src="pixel/pokeball-open.png";
+      var st=document.createElement("img");
+      st.className="pxburst"; st.src="pixel/star-burst.png";
+      st.onerror=function(){ st.remove() };
+      f.appendChild(st);
+      setTimeout(function(){ st.remove(); b.remove() },900);
+    }else{
+      if(foe) foe.style.visibility="";
+      b.remove();
+    }
+  },2300);
 }
 
 /* ---------- wire in without replacing anything permanently ---------- */

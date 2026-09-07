@@ -121,9 +121,9 @@
   box-shadow:inset 0 0 0 2px var(--px-mint,#EDF3EF),0 3px 0 rgba(10,16,17,.55);
   padding:12px 26px 12px 13px;font-size:13px;line-height:1.6;color:var(--px-ink,#0A1011);
   min-height:56px}
-.pxbox .cursor{position:absolute;right:9px;bottom:7px;width:0;height:0;
-  border-left:6px solid transparent;border-right:6px solid transparent;
-  border-top:8px solid #C0392B;animation:pxblink 1s steps(1) infinite}
+.pxbox .cursor{position:absolute;right:9px;bottom:7px;width:13px;height:11px;
+  background:url("pixel/arrow-down.png") center/contain no-repeat;
+  image-rendering:pixelated;animation:pxblink 1s steps(1) infinite}
 @keyframes pxblink{0%,50%{opacity:1}51%,100%{opacity:0}}
 .pxbox .cursor.done{animation:pxbob .7s steps(2) infinite}
 @keyframes pxbob{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
@@ -135,11 +135,10 @@
 .pxmenu button{display:flex;align-items:center;gap:7px;padding:7px 9px;
   font-size:13.5px;font-weight:700;color:var(--px-ink,#0A1011);text-align:left;background:none;
   border-radius:4px}
-.pxmenu button::before{content:"";width:0;height:0;flex:0 0 auto;
-  border-top:5px solid transparent;border-bottom:5px solid transparent;
-  border-left:8px solid transparent}
+.pxmenu button::before{content:"";width:9px;height:11px;flex:0 0 auto;opacity:0;
+  background:url("pixel/arrow-right.png") center/contain no-repeat;image-rendering:pixelated}
 .pxmenu button:hover::before,.pxmenu button:focus-visible::before,
-.pxmenu button.on::before{border-left-color:var(--px-ink,#0A1011)}
+.pxmenu button.on::before{opacity:1}
 .pxmenu button:active{background:var(--px-green,#9EDAA0)}
 @media (prefers-reduced-motion:reduce){
   .pxbox .cursor{animation:none}
@@ -158,11 +157,11 @@
   display:flex;flex-direction:column;background:var(--px-deep,#0B3940);
   overflow:hidden}
 .pxfield{position:relative;flex:1 1 auto;min-height:0;
-  background:url("pixel/battle-bg.png") center/cover no-repeat;
+  background:url("pixel/battle-bg-wide.png") center bottom/cover no-repeat;
   image-rendering:pixelated}
-/* the two combatants, placed as the sheet places them */
-.pxfoe{position:absolute;right:5%;top:8%;width:34%}
-.pxme{position:absolute;left:6%;bottom:6%;width:38%}
+/* stood on the platforms drawn into the supplied background, feet on the ellipse */
+.pxfoe{position:absolute;left:72%;bottom:42%;width:32%;transform:translateX(-50%)}
+.pxme{position:absolute;left:35%;bottom:6%;width:40%;transform:translateX(-50%)}
 .pxfoe img,.pxme img{width:100%;height:auto;display:block;image-rendering:pixelated;
   filter:drop-shadow(0 3px 0 rgba(10,16,17,.35))}
 .pxme img{transform:scaleX(-1)}
@@ -177,8 +176,9 @@
 .pxinfo .nm{display:flex;justify-content:space-between;gap:10px;
   font-size:11px;font-weight:700;text-transform:uppercase;color:var(--px-ink,#0A1011)}
 .pxinfo .hpline{display:flex;align-items:center;gap:5px;margin-top:4px}
-.pxinfo .hplab{font-size:8px;font-weight:700;color:#C0392B;
-  background:var(--px-deep,#0B3940);padding:1px 3px;border-radius:2px}
+.pxinfo .hplab{width:26px;height:13px;flex:0 0 auto;
+  background:url("pixel/hp-label.png") left center/contain no-repeat;
+  image-rendering:pixelated;text-indent:-999px;overflow:hidden}
 .pxinfo .hpb{flex:1}
 .pxinfo .num{text-align:right;font-size:10.5px;font-weight:700;margin-top:3px}
 /* text and menu sit under the field, as in the sheet */
@@ -186,11 +186,9 @@
 .pxacts{flex:0 0 auto;margin:6px;display:grid;grid-template-columns:1fr 1fr;gap:2px}
 .pxacts button{display:flex;align-items:center;gap:7px;padding:9px 8px;
   font-size:13px;font-weight:700;color:var(--px-ink,#0A1011);text-align:left;border-radius:4px}
-.pxacts button::before{content:"";width:0;height:0;flex:0 0 auto;
-  border-top:5px solid transparent;border-bottom:5px solid transparent;
-  border-left:8px solid transparent}
-.pxacts button:not([disabled]):hover::before,.pxacts button.on::before{
-  border-left-color:var(--px-ink,#0A1011)}
+.pxacts button::before{content:"";width:9px;height:11px;flex:0 0 auto;opacity:0;
+  background:url("pixel/arrow-right.png") center/contain no-repeat;image-rendering:pixelated}
+.pxacts button:not([disabled]):hover::before,.pxacts button.on::before{opacity:1}
 .pxacts button:active{background:var(--px-green,#9EDAA0)}
 .pxacts button[disabled]{opacity:.42}
 .pxmenuwrap{background:var(--px-cream,#F6F2E5);border:3px solid var(--px-ink,#0A1011);
@@ -207,5 +205,14 @@
   70%{left:62%;bottom:52%;transform:rotate(720deg) scale(1)}
   100%{left:62%;bottom:44%;transform:rotate(720deg) scale(1)}}
 @keyframes pxwobble{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(12deg)}}
-.pxball{position:absolute;width:13%;z-index:5;animation:pxthrow .75s steps(8) forwards}
+.pxball{position:absolute;width:13%;z-index:5;image-rendering:pixelated;
+  animation:pxthrow .75s steps(8) forwards}
 .pxball.wobbling{animation:pxwobble .5s steps(2) 3}
+.pxburst{position:absolute;left:72%;bottom:42%;width:26%;z-index:6;transform:translateX(-50%);
+  image-rendering:pixelated;animation:pxburst .8s steps(4) forwards}
+@keyframes pxburst{0%{opacity:0;transform:translateX(-50%) scale(.4)}
+  30%{opacity:1;transform:translateX(-50%) scale(1.15)}
+  100%{opacity:0;transform:translateX(-50%) scale(1.3)}}
+/* the overworld strip behind the intro, mirrored so the repeat has no seam */
+.pxworld{background:url("pixel/bg_overworld_tile.png") repeat-x center/auto 100%;
+  image-rendering:pixelated}
