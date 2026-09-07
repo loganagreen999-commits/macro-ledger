@@ -152,6 +152,92 @@ function throwBall(){
   },2300);
 }
 
+/* =================== the four bespoke screens =================== */
+function phone(cls, headHTML, bodyHTML){
+  var host=document.getElementById("gameFx")||document.body;
+  var wrap=document.createElement("div");
+  wrap.className="pxscreen";
+  wrap.innerHTML='<div class="pxphone">'+
+    '<div class="pxhead"><span>Macro<em>Ledger</em></span></div>'+
+    '<div class="pxscene '+cls+'">'+bodyHTML+"</div></div>";
+  host.appendChild(wrap);
+  return wrap;
+}
+function box(text,id){
+  return '<div class="pxbox"><span class="t"'+(id?' id="'+id+'"':"")+'></span>'+
+         '<span class="cursor"></span></div>';
+}
+
+/* 01 — the first thing anyone sees */
+var WELCOME="Welcome to MacroLedger!\n\nTrack your nutrition.\nTrain your body.\nBuild a stronger you!";
+function welcome(done){
+  var w=phone("welcome","",box("","pxWelT"));
+  var t=w.querySelector("#pxWelT");
+  t.style.whiteSpace="pre-line";
+  var typed=false;
+  typeOut(t, WELCOME, function(){ typed=true });
+  /* first tap finishes the text, second moves on */
+  w.addEventListener("click",function(){
+    if(!typed){ if(t.__skip) t.__skip(); return }
+    w.remove(); if(done) done();
+  });
+  return w;
+}
+
+/* 02 — the starter picker, three framed cards over the overworld */
+function starter(list, onPick){
+  var g=G();
+  var w=phone("starter","",
+    box("Pick your first pokemon!","pxStA")+
+    '<div class="pxcards">'+list.map(function(s){
+      return '<button class="pxcard" data-s="'+s+'"><img src="'+g.sprite(s)+'" alt="">'+
+             "<b>"+g.pretty(s)+"</b></button>";
+    }).join("")+"</div>"+
+    box("It joins your bench.\nLook after yourself\nand it grows.","pxStB"));
+  w.querySelector("#pxStB").style.whiteSpace="pre-line";
+  typeOut(w.querySelector("#pxStA"),"Pick your first pokemon!",function(){
+    typeOut(w.querySelector("#pxStB"),"It joins your bench.\nLook after yourself\nand it grows.");
+  });
+  w.querySelectorAll("[data-s]").forEach(function(b){
+    b.onclick=function(){
+      w.querySelectorAll(".pxcard").forEach(function(c){c.classList.remove("on")});
+      b.classList.add("on");
+      setTimeout(function(){ w.remove(); onPick(b.dataset.s) },260);
+    };
+  });
+  return w;
+}
+
+/* 08 — a real keypad instead of a prompt box */
+function keypad(onDone){
+  var val="";
+  var w=phone("","",
+    box("Enter barcode manually","pxKpT")+
+    '<div class="pxread" id="pxKpV"><span class="caret">|</span></div>'+
+    '<div class="pxpad" id="pxKp">'+
+      [1,2,3,4,5,6,7,8,9].map(function(n){return "<button data-k='"+n+"'>"+n+"</button>"}).join("")+
+      "<button data-k='back'>&#8592;</button><button data-k='0'>0</button>"+
+      "<button class='ok' data-k='ok'>OK</button>"+
+    "</div>"+
+    '<button class="btn" id="pxKpX">Cancel</button>');
+  w.querySelector(".pxscene").style.justifyContent="flex-end";
+  typeOut(w.querySelector("#pxKpT"),"Enter barcode manually");
+  var read=w.querySelector("#pxKpV");
+  function paint(){ read.innerHTML=esc(val)+'<span class="caret">|</span>' }
+  w.querySelectorAll("[data-k]").forEach(function(b){
+    b.onclick=function(){
+      var k=b.dataset.k;
+      if(k==="back") val=val.slice(0,-1);
+      else if(k==="ok"){ w.remove(); onDone(val); return }
+      else if(val.length<14) val+=k;
+      paint();
+    };
+  });
+  w.querySelector("#pxKpX").onclick=function(){ w.remove(); onDone(null) };
+  return w;
+}
+window.MLPixelScreens={welcome:welcome, starter:starter, keypad:keypad, phone:phone, box:box};
+
 /* ---------- wire in without replacing anything permanently ---------- */
 function hook(){
   if(!window.MLGame||!window.MLGame.state){ return setTimeout(hook,80) }

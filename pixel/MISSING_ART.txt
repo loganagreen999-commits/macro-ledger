@@ -17,15 +17,22 @@ ALL PREVIOUSLY REQUESTED ART HAS BEEN SUPPLIED AND IS NOW IN USE.
                           not butt against itself, which is why
 
 --------------------------------------------------------------------
-STILL OPEN — none of it is art, it is layout work on my side
+THE FOUR REMAINING SCREENS ARE BUILT (2026-09-07)
 --------------------------------------------------------------------
-Four screens from AppLayout.png still use the generic themed treatment
-rather than their own layout:
+From the second sheet (ChatGPT Image Sep 7, 12_42_37 PM.png):
 
-  07_scan_barcode   the framed viewfinder with red corner brackets
-  08_manual_barcode the numeric keypad
-  01_welcome        the overworld scene behind the intro text
-  02_pick_pokemon   the three framed starter cards
+  01_welcome        built — the overworld scene with the trainer and the
+                    MacroLedger sign, intro text typed out, tap to go on
+  02_pick_pokemon   built — three framed cards over the overworld, the
+                    chosen one highlights red before it closes
+  07_scan_barcode   built — red corner brackets over the camera
+  08_manual_barcode built — a real twelve-key pad, which replaces the
+                    browser prompt box the app used before
+
+  bg_welcome.webp   extracted from that sheet
+  bg_starter.webp   extracted from that sheet
+
+Nothing from AppLayout.png is outstanding.
 
 --------------------------------------------------------------------
 IF YOU WANT TO CHANGE SOMETHING

@@ -523,6 +523,20 @@ var STARTERS=["bulbasaur","charmander","squirtle","chikorita","cyndaquil","totod
 function openStarter(){
   var pick=[], pool=STARTERS.slice();
   while(pick.length<3 && pool.length) pick.push(pool.splice(Math.floor(Math.random()*pool.length),1)[0]);
+  /* the themed version has its own welcome screen and framed cards */
+  if(window.MLPixel && window.MLPixel.on() && window.MLPixelScreens){
+    var take=function(sp){
+      var m=makeMon(sp,5);
+      G.box.push(m); G.party.push(m.u); G.caught[m.s]=1; G.seen[m.s]=1;
+      G.started=true; rollDay(); save();
+      toast("Take care of "+pretty(m.s));
+      openNickname(m); render();
+    };
+    window.MLPixelScreens.welcome(function(){
+      window.MLPixelScreens.starter(pick, take);
+    });
+    return;
+  }
   fxHost().innerHTML='<div class="gover"><div class="gcard">'+
     "<h2>Pick your first pokemon</h2>"+
     "<p>It joins your bench. Look after yourself and it grows.</p>"+

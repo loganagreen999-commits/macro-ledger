@@ -2058,7 +2058,8 @@ function openScanner(ctx){
   ctx=ctx||{mode:"log",meal:mealOfNow()};
   openSheet("Scan a barcode",
     '<div class="sbody scanbody">'+
-      '<div class="camwrap"><video id="scanVid" playsinline muted autoplay></video>'+
+      '<div class="camwrap pxview"><video id="scanVid" playsinline muted autoplay></video>'+
+        '<i></i><i></i><i></i><i></i>'+
         '<div class="aim"></div></div>'+
       '<p class="scanmsg" id="scanMsg">Starting the camera…</p>'+
       '<p class="footnote">Point it at the barcode, not the nutrition panel. Numbers come from '+
@@ -2071,6 +2072,14 @@ function openScanner(ctx){
     ()=>{
       const vid=document.getElementById("scanVid");
       document.getElementById("scanManual").onclick=()=>{
+        if(window.MLPixel&&window.MLPixel.on()&&window.MLPixelScreens){
+          stopScanner();
+          window.MLPixelScreens.keypad(code=>{
+            const c=(code||"").replace(/\D/g,"");
+            if(c)lookupBarcode(c,ctx); else openScanner(ctx);
+          });
+          return;
+        }
         const c=(prompt("Barcode number under the bars")||"").replace(/\D/g,"");
         if(c)lookupBarcode(c,ctx);
       };
