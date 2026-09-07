@@ -95,6 +95,22 @@ and `shamu/shamu.js` from its own folder, so its art and code are downloaded
 only by the person holding that link. None of them touch the data or the
 numbers.
 
+## Lift
+
+A small workout log that feeds the game. Pick a split — Push/Pull/Legs,
+Upper/Lower, Arnold, full body, or name your own days — and optionally pin a
+fixed week so the tab knows what today is. Or ignore all that and log a one-off
+session whenever.
+
+Each set is an exercise, reps, weight and a note. Copy repeats the last set, and
+every row shows what you did last time and what your best is, so you know what
+you are chasing. Estimated one-rep max uses Epley, which lets a heavy triple
+beat a light ten.
+
+**Every session shares experience across your bench.** A personal record pays
+the trainer and hands over a Rare Candy. Training also rolls for one wild
+encounter a day, however many sessions you log.
+
 ## Running it locally
 
     ~/nutrition/serve.py            # then open the printed phone URL

@@ -1,5 +1,5 @@
 /* Macro Ledger service worker — makes the app work with the network off, for good. */
-const V = "macro-ledger-v12";
+const V = "macro-ledger-v13";
 const SHELL = [
   "./", "./index.html", "./manifest.webmanifest",
   "./manifest-gator.webmanifest", "./manifest-comic.webmanifest", "./manifest-bee.webmanifest",
@@ -7,7 +7,7 @@ const SHELL = [
   "./icon-180.png", "./icon-192.png", "./icon-512.png", "./icon-512-maskable.png",
   "./fonts/Fraunces-400.woff2", "./fonts/IBMPlexSans-400.woff2",
   "./fonts/IBMPlexMono-400.woff2", "./fonts/IBMPlexMono-500.woff2",
-  "./vendor/zxing.js", "./game/game.css", "./game/game.js", "./game/dex.json"
+  "./vendor/zxing.js", "./game/game.css", "./game/game.js", "./game/dex.json", "./lift/lift.js", "./lift/lift.css"
 ];
 
 self.addEventListener("install", e => {

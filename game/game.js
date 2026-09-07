@@ -220,7 +220,8 @@ function inWindow(meal){ return meal===mealOfNow(); }
 function startEncounter(species, lvl){
   if(!DEX || G.enc) return;
   var m=makeMon(species, lvl||wildLevel());
-  G.enc={mon:m, turn:"you", log:[], fled:false, ball:null};
+  var me=firstHealthy();
+  G.enc={mon:m, turn:"you", log:[], fled:false, ball:null, active:me?me.u:null};
   G.seen[species]=1;
   save(); openBattle();
 }
@@ -241,7 +242,9 @@ function battleXp(foe, won){
   return Math.round(base*foe.lvl/220 * (won?1:0.4));
 }
 function afterBattle(gained, msg){
-  var me=firstHealthy(), ups=0;
+  /* whoever took the field earns it, fainted or not -- otherwise losing
+     teaches nobody anything and the xp silently vanishes */
+  var me=(G.enc && G.enc.active && byUid(G.enc.active)) || firstHealthy(), ups=0;
   if(me) ups=giveMonXp(me, gained);
   G.enc=null; save();
   closeBattle();
@@ -252,6 +255,7 @@ function afterBattle(gained, msg){
 function playerMove(idx){
   var e=G.enc; if(!e||e.turn!=="you") return;
   var me=firstHealthy();
+  if(me) e.active=me.u;
   if(!me){ afterBattle(0,"No pokemon able to fight"); return; }
   var mv=me.moves[idx]; if(!mv) return;
   var r=damage(me,e.mon,mv);
@@ -290,7 +294,7 @@ function tryCatch(ball){
     G.box.push(caught); G.caught[caught.s]=1;
     if(G.party.length<6) G.party.push(caught.u);
     var xp=battleXp(caught,true);
-    var me=firstHealthy(); if(me) giveMonXp(me,xp);
+    var me=(e.active&&byUid(e.active))||firstHealthy(); if(me) giveMonXp(me,xp);
     G.enc=null; save(); closeBattle();
     toast("Caught "+pretty(caught.s)+(caught.shiny?" ✦ SHINY":"")+"!");
     openNickname(caught);

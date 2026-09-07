@@ -8,6 +8,7 @@
 <link rel="manifest" href="manifest-comic.webmanifest" id="mf">
 <script>window.__FORCE_SKIN__="comic"</script>
 <link rel="stylesheet" href="game/game.css">
+<link rel="stylesheet" href="lift/lift.css">
 <meta name="theme-color" media="(prefers-color-scheme:light)" content="#F1F4F1">
 <meta name="theme-color" media="(prefers-color-scheme:dark)" content="#0D1211">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2828,9 +2829,11 @@ render();
 /* offline: cache the whole app on first load, then never need the network */
 /* the collecting game: its own module, loaded after the tracker is up */
 (function(){
-  var sc=document.createElement("script");
-  sc.src="game/game.js"; sc.defer=true;
-  document.head.appendChild(sc);
+  ["game/game.js","lift/lift.js"].forEach(function(src){
+    var sc=document.createElement("script");
+    sc.src=src; sc.defer=true;
+    document.head.appendChild(sc);
+  });
 })();
 if("serviceWorker" in navigator)
   window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
