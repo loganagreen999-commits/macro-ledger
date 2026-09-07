@@ -1,0 +1,72 @@
+MISSING ART — Macro Ledger, Shamu (pixel) theme
+================================================
+Everything below is drawn in CSS at the moment, which works but is not the
+real thing. Each entry says exactly what to draw so it can be dropped straight
+in. All sprites should be PNG with a transparent background, no drop shadow
+baked in, and no white matte — the theme applies its own shadow.
+
+Put finished files in  ~/nutrition/pixel/  using the filename given.
+
+--------------------------------------------------------------------
+1. pokeball.png                                          NEEDED FIRST
+   32 x 32, transparent.
+   A standard red-and-white Poke Ball in the same pixel style as the design
+   sheet: black outline 2px, red top, cream bottom, dark band across the
+   middle, white highlight dot upper-left.
+   Used for: the throw animation in a battle. The code already looks for it
+   and simply skips the animation while it is absent, so nothing breaks.
+
+2. pokeball-open.png
+   32 x 32, transparent.
+   The same ball split open with a burst of light between the halves.
+   Used for: the frame shown at the moment of capture.
+
+3. star-burst.png
+   48 x 48, transparent.
+   Four yellow four-pointed sparkles arranged in a rough diamond, as in the
+   third frame of 09c_pokeball_anim on the sheet.
+   Used for: a successful catch.
+
+--------------------------------------------------------------------
+4. hp-label.png            (optional, cosmetic)
+   20 x 10, transparent.
+   The little red "HP" tag exactly as it appears in the info boxes on the
+   sheet. Currently rebuilt in CSS and close but not identical.
+
+5. arrow-down.png / arrow-right.png     (optional, cosmetic)
+   8 x 8 each, transparent.
+   The red continue arrow and the black menu cursor from the sheet.
+   Currently drawn as CSS triangles, which are a hair too sharp.
+
+--------------------------------------------------------------------
+6. bg_overworld_tile.png
+   Any width x 160, tileable horizontally.
+   The grass-and-trees overworld strip from 01_welcome, but seamless left to
+   right so it can repeat behind the welcome screen on a wide phone. The crop
+   taken from the sheet (overworld.png) does not tile.
+
+7. battle-bg-wide.png
+   512 x 320, no transparency.
+   The battle field from 09_battle at a wider aspect, for landscape and for
+   tablets. The current one is upscaled from a 253px crop and goes soft.
+
+--------------------------------------------------------------------
+8. A pixel font, if the current one is not right
+   Currently using Pixelify Sans (Google Fonts, OFL) self-hosted at
+   pixel/pixelify-400.woff2 and -700.woff2. It is close to the sheet but not
+   the same face. If you have the actual font used in the design, drop in a
+   woff2 and the @font-face at the top of pixel/pixel.css will pick it up.
+
+--------------------------------------------------------------------
+Screens from the sheet not yet rebuilt pixel-for-pixel
+------------------------------------------------------
+The theme restyles every screen through shared components, so all of them
+already look right in colour, frame and type. These four have bespoke layouts
+on the sheet that are still using the generic treatment:
+
+  07_scan_barcode   the framed viewfinder with the red corner brackets
+  08_manual_barcode the numeric keypad
+  01_welcome        the overworld scene behind the intro text
+  02_pick_pokemon   the three framed starter cards
+
+None of these need new art — they need layout work, which is on me, not you.

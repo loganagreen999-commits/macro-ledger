@@ -1,0 +1,211 @@
+/* =====================================================================
+   Pixel theme — the app rendered in the style of the supplied design
+   sheet. Colours are sampled from that sheet; the frames are rebuilt in
+   CSS rather than nine-sliced from the bitmap, so they stay crisp at any
+   width and the textbox's baked-in arrow does not repeat in the corners.
+   Everything is scoped to [data-game-theme="pixel"], so switching the
+   theme back in the PC leaves the app exactly as it was.
+   ===================================================================== */
+@font-face{font-family:"Pixelify";src:url("pixel/pixelify-400.woff2")format("woff2");
+  font-weight:400;font-display:swap}
+@font-face{font-family:"Pixelify";src:url("pixel/pixelify-700.woff2")format("woff2");
+  font-weight:700;font-display:swap}
+
+[data-game-theme="pixel"]{
+  --px-ink:#0A1011; --px-cream:#F6F2E5; --px-cream2:#E4E2D2;
+  --px-mint:#EDF3EF; --px-green:#9EDAA0; --px-grass:#4AC089;
+  --px-green2:#3EA87B; --px-teal:#0C6760; --px-deep:#0B3940; --px-slate:#3B4950;
+
+  --bg:#0B3940; --surface:var(--px-cream); --surface-2:var(--px-green);
+  --sunk:var(--px-cream2);
+  --ink:var(--px-ink); --ink-2:#2A3A3C; --ink-3:#57827B;
+  --line:var(--px-ink); --line-soft:#96B7AA;
+  --accent:var(--px-grass); --accent-ink:#0A5A44; --accent-soft:#CFEEDD;
+  --on-accent:var(--px-ink);
+  --ok:var(--px-grass); --ok-soft:#CFEEDD; --warn:#C0392B; --warn-soft:#F3D6D2;
+  --r:6px; --shadow:0 3px 0 rgba(10,16,17,.9);
+}
+[data-game-theme="pixel"] *{
+  font-family:"Pixelify","IBM Plex Mono",ui-monospace,monospace!important;
+  letter-spacing:0!important;text-rendering:geometricPrecision}
+[data-game-theme="pixel"] body{background:var(--px-deep)}
+[data-game-theme="pixel"] img{image-rendering:pixelated}
+
+/* ---- the frame every box in the sheet uses: dark outline, light inner line ---- */
+[data-game-theme="pixel"] .card,[data-game-theme="pixel"] .hero,
+[data-game-theme="pixel"] .stat,[data-game-theme="pixel"] .gstrip,
+[data-game-theme="pixel"] .gcard,[data-game-theme="pixel"] .sheet,
+[data-game-theme="pixel"] .blog,[data-game-theme="pixel"] .bfield,
+[data-game-theme="pixel"] .micros,[data-game-theme="pixel"] .preview{
+  background:var(--px-cream);
+  border:3px solid var(--px-ink)!important;
+  border-radius:7px!important;
+  box-shadow:inset 0 0 0 2px var(--px-mint), 0 3px 0 rgba(10,16,17,.55)!important;
+}
+[data-game-theme="pixel"] .sheet{border-bottom:0!important;border-radius:9px 9px 0 0!important}
+
+/* ---- header ---- */
+[data-game-theme="pixel"] .top{
+  background:var(--px-teal);border-bottom:3px solid var(--px-ink)}
+[data-game-theme="pixel"] .mark{color:var(--px-cream);font-weight:700;font-size:17px}
+[data-game-theme="pixel"] .mark span{color:var(--px-grass)}
+[data-game-theme="pixel"] .iconbtn svg{stroke:var(--px-cream)}
+
+/* ---- buttons: cream by default, the sheet's teal when pressed ---- */
+[data-game-theme="pixel"] .btn,[data-game-theme="pixel"] .gbtn,
+[data-game-theme="pixel"] .bmove,[data-game-theme="pixel"] .bball,
+[data-game-theme="pixel"] .pours button,[data-game-theme="pixel"] .chips button{
+  background:var(--px-cream);color:var(--px-ink);
+  border:3px solid var(--px-ink);border-radius:7px;
+  box-shadow:inset 0 0 0 2px var(--px-mint),0 3px 0 rgba(10,16,17,.75);
+  font-weight:700;transition:transform .06s steps(2),box-shadow .06s steps(2)}
+[data-game-theme="pixel"] .btn:active,[data-game-theme="pixel"] .gbtn:active,
+[data-game-theme="pixel"] .bmove:active,[data-game-theme="pixel"] .bball:active,
+[data-game-theme="pixel"] .pours button:active,
+[data-game-theme="pixel"] .chips button:active{
+  transform:translateY(3px);box-shadow:inset 0 0 0 2px #BFEBD6,0 0 0 rgba(0,0,0,0);
+  background:var(--px-grass)}
+[data-game-theme="pixel"] .chips button[aria-pressed="true"],
+[data-game-theme="pixel"] .seg button[aria-selected="true"],
+[data-game-theme="pixel"] .tsw button[aria-pressed="true"]{
+  background:var(--px-grass);color:var(--px-ink);
+  box-shadow:inset 0 0 0 2px #BFEBD6,0 3px 0 rgba(10,16,17,.75)}
+[data-game-theme="pixel"] .btn.ghost{background:var(--px-cream2)}
+[data-game-theme="pixel"] .btn.warn,[data-game-theme="pixel"] .btn.danger{
+  background:#D9695C;color:var(--px-cream)}
+
+/* ---- fields and dropdowns ---- */
+[data-game-theme="pixel"] input[type=text],[data-game-theme="pixel"] input[type=number],
+[data-game-theme="pixel"] input[type=time],[data-game-theme="pixel"] input[type=date],
+[data-game-theme="pixel"] .sx,[data-game-theme="pixel"] .sn,[data-game-theme="pixel"] .mini,
+[data-game-theme="pixel"] .search{
+  background:#FFFFFF;border:3px solid var(--px-ink);border-radius:6px;color:var(--px-ink)}
+[data-game-theme="pixel"] select,[data-game-theme="pixel"] .card select{
+  background:var(--px-deep);color:var(--px-cream);
+  border:3px solid var(--px-ink);border-radius:6px;
+  background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8' fill='%234AC089'%3E%3Cpath d='M0 0h12L6 8z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 9px center;background-size:11px}
+
+/* ---- bars, drawn as the sheet draws them ---- */
+[data-game-theme="pixel"] .track,[data-game-theme="pixel"] .hpb,
+[data-game-theme="pixel"] .gxp,[data-game-theme="pixel"] .mbar,
+[data-game-theme="pixel"] .xbar,[data-game-theme="pixel"] .cbar,[data-game-theme="pixel"] .tr{
+  background:var(--px-slate);border:2px solid var(--px-ink)!important;
+  border-radius:4px!important;height:11px;overflow:hidden}
+[data-game-theme="pixel"] .track i,[data-game-theme="pixel"] .hpb i,
+[data-game-theme="pixel"] .gxp i,[data-game-theme="pixel"] .mbar i,
+[data-game-theme="pixel"] .xbar i,[data-game-theme="pixel"] .cbar i,[data-game-theme="pixel"] .tr i{
+  border-radius:0!important;background:var(--px-grass);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.45)}
+[data-game-theme="pixel"] .hpb i.mid{background:#E8C33C}
+[data-game-theme="pixel"] .hpb i.low{background:#D9695C}
+
+/* ---- tab bar ---- */
+[data-game-theme="pixel"] .tabbar{
+  background:var(--px-cream);border-top:3px solid var(--px-ink)}
+[data-game-theme="pixel"] .tabbar button{color:var(--px-slate);font-weight:700}
+[data-game-theme="pixel"] .tabbar button[aria-current="true"]{
+  color:var(--px-ink);background:var(--px-green);border-radius:5px}
+
+/* ---- headings ---- */
+[data-game-theme="pixel"] h1,[data-game-theme="pixel"] h2,[data-game-theme="pixel"] h3,
+[data-game-theme="pixel"] .kcal,[data-game-theme="pixel"] .v,[data-game-theme="pixel"] .wbig,
+[data-game-theme="pixel"] .cv,[data-game-theme="pixel"] .mult{
+  font-weight:700!important}
+[data-game-theme="pixel"] .sectlab,[data-game-theme="pixel"] .lab{
+  color:var(--px-teal);font-weight:700}
+
+/* ---- a dialog box in the sheet's own shape, with the blinking arrow ---- */
+.pxbox{position:relative;background:var(--px-cream,#F6F2E5);
+  border:3px solid var(--px-ink,#0A1011);border-radius:7px;
+  box-shadow:inset 0 0 0 2px var(--px-mint,#EDF3EF),0 3px 0 rgba(10,16,17,.55);
+  padding:12px 26px 12px 13px;font-size:13px;line-height:1.6;color:var(--px-ink,#0A1011);
+  min-height:56px}
+.pxbox .cursor{position:absolute;right:9px;bottom:7px;width:0;height:0;
+  border-left:6px solid transparent;border-right:6px solid transparent;
+  border-top:8px solid #C0392B;animation:pxblink 1s steps(1) infinite}
+@keyframes pxblink{0%,50%{opacity:1}51%,100%{opacity:0}}
+.pxbox .cursor.done{animation:pxbob .7s steps(2) infinite}
+@keyframes pxbob{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
+
+/* ---- a menu list with the ▶ cursor ---- */
+.pxmenu{background:var(--px-cream,#F6F2E5);border:3px solid var(--px-ink,#0A1011);
+  border-radius:7px;box-shadow:inset 0 0 0 2px var(--px-mint,#EDF3EF),0 3px 0 rgba(10,16,17,.55);
+  padding:8px 6px;display:grid;gap:2px}
+.pxmenu button{display:flex;align-items:center;gap:7px;padding:7px 9px;
+  font-size:13.5px;font-weight:700;color:var(--px-ink,#0A1011);text-align:left;background:none;
+  border-radius:4px}
+.pxmenu button::before{content:"";width:0;height:0;flex:0 0 auto;
+  border-top:5px solid transparent;border-bottom:5px solid transparent;
+  border-left:8px solid transparent}
+.pxmenu button:hover::before,.pxmenu button:focus-visible::before,
+.pxmenu button.on::before{border-left-color:var(--px-ink,#0A1011)}
+.pxmenu button:active{background:var(--px-green,#9EDAA0)}
+@media (prefers-reduced-motion:reduce){
+  .pxbox .cursor{animation:none}
+}
+
+/* =====================================================================
+   Battle screen, laid out from the design sheet.
+   The old one was a full-height flex column, so on a laptop it stretched
+   the whole window. It is now a fixed 3:4 stage, centred and capped, so
+   it keeps a phone's shape on any display.
+   ===================================================================== */
+.gbattle.px{position:fixed;inset:0;z-index:130;background:#06181C;
+  display:flex;align-items:center;justify-content:center;padding:0}
+.pxstage{position:relative;width:min(100vw,calc((100dvh - 0px) * 0.77));
+  max-width:520px;aspect-ratio:257/335;max-height:100dvh;
+  display:flex;flex-direction:column;background:var(--px-deep,#0B3940);
+  overflow:hidden}
+.pxfield{position:relative;flex:1 1 auto;min-height:0;
+  background:url("pixel/battle-bg.png") center/cover no-repeat;
+  image-rendering:pixelated}
+/* the two combatants, placed as the sheet places them */
+.pxfoe{position:absolute;right:5%;top:8%;width:34%}
+.pxme{position:absolute;left:6%;bottom:6%;width:38%}
+.pxfoe img,.pxme img{width:100%;height:auto;display:block;image-rendering:pixelated;
+  filter:drop-shadow(0 3px 0 rgba(10,16,17,.35))}
+.pxme img{transform:scaleX(-1)}
+.pxplat{position:absolute;width:130%;left:-15%;bottom:-14%;z-index:-1;opacity:.95}
+/* the info boxes */
+.pxinfo{position:absolute;background:var(--px-cream,#F6F2E5);
+  border:3px solid var(--px-ink,#0A1011);border-radius:7px;
+  box-shadow:inset 0 0 0 2px var(--px-mint,#EDF3EF),0 3px 0 rgba(10,16,17,.5);
+  padding:5px 8px 6px;min-width:46%}
+.pxinfo.foe{left:4%;top:5%}
+.pxinfo.me{right:4%;bottom:26%}
+.pxinfo .nm{display:flex;justify-content:space-between;gap:10px;
+  font-size:11px;font-weight:700;text-transform:uppercase;color:var(--px-ink,#0A1011)}
+.pxinfo .hpline{display:flex;align-items:center;gap:5px;margin-top:4px}
+.pxinfo .hplab{font-size:8px;font-weight:700;color:#C0392B;
+  background:var(--px-deep,#0B3940);padding:1px 3px;border-radius:2px}
+.pxinfo .hpb{flex:1}
+.pxinfo .num{text-align:right;font-size:10.5px;font-weight:700;margin-top:3px}
+/* text and menu sit under the field, as in the sheet */
+.pxtext{flex:0 0 auto;margin:6px 6px 0}
+.pxacts{flex:0 0 auto;margin:6px;display:grid;grid-template-columns:1fr 1fr;gap:2px}
+.pxacts button{display:flex;align-items:center;gap:7px;padding:9px 8px;
+  font-size:13px;font-weight:700;color:var(--px-ink,#0A1011);text-align:left;border-radius:4px}
+.pxacts button::before{content:"";width:0;height:0;flex:0 0 auto;
+  border-top:5px solid transparent;border-bottom:5px solid transparent;
+  border-left:8px solid transparent}
+.pxacts button:not([disabled]):hover::before,.pxacts button.on::before{
+  border-left-color:var(--px-ink,#0A1011)}
+.pxacts button:active{background:var(--px-green,#9EDAA0)}
+.pxacts button[disabled]{opacity:.42}
+.pxmenuwrap{background:var(--px-cream,#F6F2E5);border:3px solid var(--px-ink,#0A1011);
+  border-radius:7px;box-shadow:inset 0 0 0 2px var(--px-mint,#EDF3EF),0 3px 0 rgba(10,16,17,.55);
+  margin:6px;padding:5px}
+/* the attack lunge and the ball wobble, done with transforms rather than art */
+@keyframes pxlunge{0%{transform:translate(0,0)}35%{transform:translate(18%,-10%)}
+  60%{transform:translate(18%,-10%)}100%{transform:translate(0,0)}}
+@keyframes pxhurt{0%,100%{opacity:1}20%,60%{opacity:.25}}
+.pxme.attacking img{animation:pxlunge .45s steps(3)}
+.pxfoe.attacking img{animation:pxlunge .45s steps(3) reverse}
+.pxhurt img{animation:pxhurt .4s steps(2)}
+@keyframes pxthrow{0%{left:8%;bottom:10%;transform:rotate(0) scale(.7)}
+  70%{left:62%;bottom:52%;transform:rotate(720deg) scale(1)}
+  100%{left:62%;bottom:44%;transform:rotate(720deg) scale(1)}}
+@keyframes pxwobble{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(12deg)}}
+.pxball{position:absolute;width:13%;z-index:5;animation:pxthrow .75s steps(8) forwards}
+.pxball.wobbling{animation:pxwobble .5s steps(2) 3}

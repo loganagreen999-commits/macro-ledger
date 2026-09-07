@@ -556,10 +556,14 @@ function openNickname(m){
 }
 
 /* ---- battle screen ---- */
-function openBattle(){ renderBattle(); }
+function openBattle(){
+  if(window.MLPixel && window.MLPixel.on() && window.MLPixel.renderBattle()) return;
+  renderBattle();
+}
 function closeBattle(){ fxHost().innerHTML=""; }
 function renderBattle(){
   var e=G.enc; if(!e) return;
+  if(window.MLPixel && window.MLPixel.on() && window.MLPixel.renderBattle()) return;
   var me=firstHealthy(), foe=e.mon;
   var balls=Object.keys(ITEMS).filter(function(k){return ITEMS[k].kind==="ball"&&has(k)});
   fxHost().innerHTML='<div class="gbattle">'+
@@ -692,11 +696,12 @@ function pcHTML(){
       "</p></div>"+
     '<div class="sectlab">Look</div>'+
     '<div class="card"><div class="chips" id="gtheme">'+
-      [["modern","Modern"],["gba","Handheld"]].map(function(t){
+      [["modern","Modern"],["gba","Handheld"],["pixel","Shamu"]].map(function(t){
         return '<button data-theme="'+t[0]+'" aria-pressed="'+(G.theme===t[0])+'">'+t[1]+"</button>";
       }).join("")+"</div>"+
-      '<p class="note">Handheld renders the whole app like a GBA-era game — pixel type, hard '+
-      "edges, the lot.</p></div>";
+      '<p class="note">Handheld is a plain retro pass. <b>Shamu</b> is the full design: the boxes, '+
+      "buttons and battle screen drawn from the art sheet, with text that types itself out. "+
+      "Switch back any time \u2014 nothing about your data changes.</p></div>";
 }
 function bindPC(el){
   el.querySelectorAll("[data-mon]").forEach(function(b){
@@ -706,8 +711,9 @@ function bindPC(el){
     b.onclick=function(){ G.theme=b.dataset.theme; save(); applyTheme(); render(); };
   });
 }
+var THEMES={gba:1,pixel:1,modern:1};
 function applyTheme(){
-  document.documentElement.setAttribute("data-game-theme", G.theme==="gba"?"gba":"modern");
+  document.documentElement.setAttribute("data-game-theme", THEMES[G.theme]?G.theme:"modern");
 }
 
 /* ---- boot ---- */
