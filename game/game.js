@@ -453,13 +453,15 @@ window.MLGame={
   newMission:newMission, checkMissions:checkMissions, weekTick:weekTick, weekKey:weekKey,
   rollDay:rollDay, give:give, take:take, has:has, items:ITEMS, roll:roll,
   playerMove:playerMove, tryCatch:tryCatch, flee:flee, party:party, byUid:byUid,
-  nameOf:nameOf, pretty:pretty, sprite:sprite, levelPrize:levelPrize,
+  nameOf:nameOf, pretty:pretty, sprite:sprite, levelPrize:levelPrize, barPct:barPct,
   scanEntries:function(){return scanEntries()}, hookWater:hookWater,
   hookRecipe:hookRecipe, hookScan:hookScan, save:save,
   reset:function(){ G=blank(); save(); paint(); },
   /* the tracker keeps its state in a const, so hand out a reference for
      debugging and for the tests that drive the game from outside */
   tracker:function(){ return S; },
+  openMon:function(m){ return openMon(m) },
+  openStarter:function(){ return openStarter() },
   _setDex:function(d){ DEX=d; NAMES=null; }
 };
 
@@ -475,8 +477,14 @@ function monImg(m,cls){
   return '<img class="mon '+(cls||"")+(m.shiny?" shiny":"")+'" src="'+sprite(m.s)+
          '" alt="'+esc2(pretty(m.s))+'" loading="lazy">';
 }
+/* One source of truth for how full a bar looks. A living pokemon always keeps a
+   visible sliver, and zero is genuinely zero, so the two themes cannot disagree. */
+function barPct(cur,max){
+  if(!(max>0)||cur<=0) return 0;
+  return Math.max(4, Math.min(100, Math.round(cur/max*100)));
+}
 function hpBar(m){
-  var p=Math.max(0,Math.round(m.hp/m.max*100));
+  var p=barPct(m.hp,m.max);
   return '<div class="hpb"><i class="'+(p<25?"low":p<55?"mid":"")+'" style="width:'+p+'%"></i></div>';
 }
 
@@ -496,7 +504,7 @@ function paint(){
   strip.innerHTML=
     '<div class="gtop"><div class="gplv">Trainer <b>Lv '+G.player.lvl+"</b></div>"+
       '<div class="gmult">'+(G.streak>0?"day "+(G.streak+1)+" · x"+G.mult.toFixed(2)+" xp":"open daily for a multiplier")+"</div></div>"+
-    '<div class="gxp"><i style="width:'+Math.min(100,G.player.xp/need*100)+'%"></i></div>'+
+    '<div class="gxp"><i style="width:'+barPct(G.player.xp,need)+'%"></i></div>'+
     '<div class="gline">'+(p.length?p.map(function(m){
       return '<button class="gslot'+(m.hp<=0?" ko":"")+'" data-mon="'+m.u+'">'+
         monImg(m)+'<span class="glv">'+m.lvl+"</span>"+hpBar(m)+"</button>";
@@ -613,7 +621,7 @@ function openMon(m){
     '<p class="gt">'+d.t.map(function(t){return '<span class="ty t-'+t+'">'+t+"</span>"}).join("")+
       " · Lv "+m.lvl+"</p>"+
     hpBar(m)+'<p class="gsub">'+m.hp+" / "+m.max+" hp</p>"+
-    '<div class="gxp small"><i style="width:'+Math.min(100,m.xp/xpNeed(m.lvl)*100)+'%"></i></div>'+
+    '<div class="gxp small"><i style="width:'+barPct(m.xp,xpNeed(m.lvl))+'%"></i></div>'+
     '<p class="gsub">'+m.xp+" / "+xpNeed(m.lvl)+" xp to level "+(m.lvl+1)+"</p>"+
     '<div class="gstats">'+
       [["Atk",st.atk],["Def",st.def],["SpA",st.spa],["SpD",st.spd],["Spe",st.spe]].map(function(x){

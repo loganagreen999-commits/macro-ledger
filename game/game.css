@@ -3,7 +3,8 @@
 .mon{image-rendering:auto;width:100%;height:auto;display:block}
 .mon.shiny{filter:hue-rotate(150deg) saturate(1.5) drop-shadow(0 0 7px rgba(255,215,0,.85))}
 .mon.big{max-width:170px;margin:0 auto}
-.hpb{height:5px;border-radius:99px;background:var(--sunk);overflow:hidden;border:1px solid var(--line-soft)}
+.hpb{height:5px;border-radius:99px;background:var(--sunk);overflow:hidden;
+  border:1px solid var(--line-soft);box-sizing:border-box}
 .hpb i{display:block;height:100%;background:var(--ok);border-radius:99px;transition:width .4s}
 .hpb i.mid{background:#E0A62B} .hpb i.low{background:var(--warn)}
 
@@ -137,9 +138,15 @@
   box-shadow:2px 2px 0 #181818!important;text-transform:uppercase;font-size:12px!important}
 [data-game-theme="gba"] .mon{image-rendering:pixelated}
 [data-game-theme="gba"] .tabbar{border-top:3px solid #181818}
-[data-game-theme="gba"] .hpb,[data-game-theme="gba"] .gxp,[data-game-theme="gba"] .track{
-  border:2px solid #181818!important;border-radius:0!important;height:10px}
-[data-game-theme="gba"] .hpb i,[data-game-theme="gba"] .gxp i{border-radius:0!important}
+/* Retro bars are taller and square, but the border stays 1px: with
+   box-sizing:border-box a thicker border shrinks the content box, and the
+   fill's width is a percentage of that, so the same value would read as a
+   different amount full in each theme. */
+[data-game-theme="gba"] .hpb,[data-game-theme="gba"] .gxp,[data-game-theme="gba"] .track,
+[data-game-theme="gba"] .xbar{
+  border:1px solid #181818!important;border-radius:0!important;height:10px}
+[data-game-theme="gba"] .hpb i,[data-game-theme="gba"] .gxp i,
+[data-game-theme="gba"] .track i,[data-game-theme="gba"] .xbar i{border-radius:0!important}
 [data-game-theme="gba"] h1,[data-game-theme="gba"] h2,[data-game-theme="gba"] h3,
 [data-game-theme="gba"] .kcal,[data-game-theme="gba"] .v{
   font-family:"IBM Plex Mono",monospace!important;text-transform:uppercase;letter-spacing:.02em!important}

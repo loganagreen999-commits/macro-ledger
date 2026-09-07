@@ -316,7 +316,9 @@ button,[role="tab"]{-webkit-tap-highlight-color:transparent}
 .grab{width:36px;height:4px;border-radius:99px;background:var(--line);margin:9px auto 0;flex-shrink:0}
 .shead{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px 8px;flex-shrink:0}
 .shead h3{margin:0;font-family:"Fraunces",Georgia,serif;font-size:19px;font-weight:600;letter-spacing:-.01em}
-.sbody{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:0 16px calc(20px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch}
+.sbody{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;
+  padding:0 16px calc(20px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch;
+  -webkit-transform:translateZ(0)}   /* iOS momentum needs its own layer */
 .link{color:var(--accent-ink);font-size:13.5px;font-weight:600}
 
 .search{display:flex;align-items:center;gap:9px;background:var(--surface);border:1px solid var(--line);
@@ -2405,12 +2407,17 @@ window.addEventListener("resize",fitSheet);
 
 function openSheet(title,body,mount,rightHTML,cls){
   const host=document.getElementById("sheetHost");
+  /* .sbody is the only thing that scrolls, so guarantee one rather than
+     trusting every caller to remember. A sheet that already has one anywhere
+     is left alone -- the search sheet pins its field above a scrolling list,
+     and wrapping that would nest two scrollers and break it. */
+  const scroller=/class="sbody"/.test(body)?body:'<div class="sbody">'+body+"</div>";
   host.innerHTML=
     '<div class="scrim" id="scrim"></div>'+
     '<div class="sheet'+(cls?" "+cls:"")+'" role="dialog" aria-modal="true"><div class="inner">'+
       '<div class="grab"></div>'+
       '<div class="shead"><h3>'+esc(title)+"</h3><div>"+(rightHTML||'<button class="link" id="sheetClose">Close</button>')+"</div></div>"+
-      body+"</div></div>";
+      scroller+"</div></div>";
   document.getElementById("scrim").onclick=closeSheet;
   const c=document.getElementById("sheetClose"); if(c)c.onclick=closeSheet;
   document.body.style.overflow="hidden";
