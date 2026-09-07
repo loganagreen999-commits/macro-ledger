@@ -7,6 +7,7 @@
 <meta name="description" content="A private, offline nutrition tracker: calories, protein, carbs, fat and 14 micronutrients, day by day.">
 <link rel="manifest" href="manifest-shamu.webmanifest" id="mf">
 <script>window.__FORCE_SKIN__="shamu"</script>
+<link rel="stylesheet" href="game/game.css">
 <meta name="theme-color" media="(prefers-color-scheme:light)" content="#F1F4F1">
 <meta name="theme-color" media="(prefers-color-scheme:dark)" content="#0D1211">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2825,6 +2826,12 @@ document.getElementById("btnSettings").onclick=openSettings;
 render();
 
 /* offline: cache the whole app on first load, then never need the network */
+/* the collecting game: its own module, loaded after the tracker is up */
+(function(){
+  var sc=document.createElement("script");
+  sc.src="game/game.js"; sc.defer=true;
+  document.head.appendChild(sc);
+})();
 if("serviceWorker" in navigator)
   window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
 </script>
