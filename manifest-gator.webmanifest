@@ -1,0 +1,34 @@
+{
+  "name": "Macro Ledger \ud83d\udc0a",
+  "short_name": "Macro Ledger \ud83d\udc0a",
+  "description": "A private, offline nutrition tracker: calories, protein, carbs, fat and 14 micronutrients, day by day.",
+  "start_url": "./?skin=gator",
+  "scope": "./",
+  "id": "/macro-ledger/gator/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0A1A3C",
+  "theme_color": "#0A1A3C",
+  "categories": [
+    "health",
+    "lifestyle"
+  ],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

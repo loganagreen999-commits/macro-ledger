@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Macro Ledger</title>
 <meta name="description" content="A private, offline nutrition tracker: calories, protein, carbs, fat and 14 micronutrients, day by day.">
-<link rel="manifest" href="manifest.webmanifest">
+<link rel="manifest" href="manifest.webmanifest" id="mf">
 <meta name="theme-color" media="(prefers-color-scheme:light)" content="#F1F4F1">
 <meta name="theme-color" media="(prefers-color-scheme:dark)" content="#0D1211">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -241,6 +241,63 @@ button,[role="tab"]{-webkit-tap-highlight-color:transparent}
   box-shadow:0 6px 20px -6px rgba(14,107,87,.55),0 2px 5px rgba(0,0,0,.15)}
 .fab svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round}
 .fab:active{transform:translateX(-50%) scale(.96)}
+
+
+/* ---- skins. Handed out one person at a time with ?skin=<name>. ---- */
+[data-skin="gator"]{
+  --bg:#0A1A3C; --surface:#12275A; --surface-2:#1A3370; --sunk:#081537;
+  --ink:#FFF4E6; --ink-2:#FFB380; --ink-3:#8FA8D8;
+  --line:#24418A; --line-soft:#1B3271;
+  --accent:#FA4616; --accent-ink:#FF7A4D; --accent-soft:#3A1408; --accent-on:#FFFFFF;
+  --ok:#5FD3A0; --ok-soft:#0C3327; --warn:#FFD166; --warn-soft:#3A2E08;
+}
+[data-skin="gator"] .disp,[data-skin="gator"] h1,[data-skin="gator"] h2,[data-skin="gator"] h3,
+[data-skin="gator"] .kcal,[data-skin="gator"] .wbig,[data-skin="gator"] .mult,[data-skin="gator"] .v{
+  font-family:"Impact","Haettenschweiler","Arial Narrow Bold",sans-serif!important;
+  letter-spacing:.02em!important;text-transform:uppercase}
+[data-skin="gator"] body::before{content:"\1F40A";position:fixed;bottom:96px;right:12px;
+  font-size:30px;z-index:5;opacity:.9;pointer-events:none}
+
+[data-skin="comic"] *{font-family:"Comic Sans MS","Chalkboard SE","Comic Neue",cursive!important}
+[data-skin="comic"]{
+  --bg:#FFF8E7; --surface:#FFFFFF; --surface-2:#FFEFC7; --sunk:#FFE3A3;
+  --ink:#3B2A00; --ink-2:#7A5A10; --ink-3:#A98B45;
+  --line:#F0C860; --line-soft:#F7E0A8;
+  --accent:#FF4FD8; --accent-ink:#D400A8; --accent-soft:#FFE0F7; --accent-on:#FFFFFF;
+}
+[data-skin="comic"] .btn{transform:rotate(-1deg)}
+[data-skin="comic"] .card{transform:rotate(.35deg)}
+[data-skin="comic"] .card:nth-child(even){transform:rotate(-.4deg)}
+
+[data-skin="bee"]{
+  --bg:#FFE873; --surface:#FFF6C9; --surface-2:#FFDE45; --sunk:#F5CE1E;
+  --ink:#1A1600; --ink-2:#4A3F00; --ink-3:#7A6A10;
+  --line:#1A1600; --line-soft:#C9A800;
+  --accent:#141200; --accent-ink:#141200; --accent-soft:#FFD400; --accent-on:#FFE873;
+  --ok:#1A5B2E; --ok-soft:#CFF0D8; --warn:#8A1A00; --warn-soft:#FFD2C4;
+}
+[data-skin="bee"] .card,[data-skin="bee"] .hero,[data-skin="bee"] .stat{border-width:2px!important}
+[data-skin="bee"] body::after{content:"";position:fixed;inset:0 0 auto 0;height:9px;z-index:60;
+  background:repeating-linear-gradient(45deg,#141200 0 14px,#FFD400 14px 28px);pointer-events:none}
+
+[data-skin="barbie"]{
+  --bg:#FFE3F1; --surface:#FFFFFF; --surface-2:#FFD0E8; --sunk:#FFC0E0;
+  --ink:#3D0025; --ink-2:#8A0A55; --ink-3:#C25E96;
+  --line:#FFA8D5; --line-soft:#FFCCE6;
+  --accent:#E0218A; --accent-ink:#C0176F; --accent-soft:#FFD6EC; --accent-on:#FFFFFF;
+  --ok:#00A878; --ok-soft:#D2F5EA; --warn:#D62828; --warn-soft:#FFE0E0;
+}
+[data-skin="barbie"] .btn,[data-skin="barbie"] .card{box-shadow:0 4px 0 #FFA8D5!important}
+
+[data-skin="matrix"]{
+  --bg:#000600; --surface:#020D02; --surface-2:#041604; --sunk:#000300;
+  --ink:#33FF66; --ink-2:#1FBF48; --ink-3:#128030;
+  --line:#0B3D18; --line-soft:#072711;
+  --accent:#33FF66; --accent-ink:#7DFFA0; --accent-soft:#052A10; --accent-on:#000600;
+  --ok:#33FF66; --ok-soft:#052A10; --warn:#FF3355; --warn-soft:#2A0510;
+}
+[data-skin="matrix"] *{font-family:"IBM Plex Mono","Courier New",monospace!important;
+  text-shadow:0 0 5px rgba(51,255,102,.35)}
 
 /* ---- sheet ---- */
 .scrim{position:fixed;inset:0;background:rgba(10,16,14,.42);z-index:40;backdrop-filter:blur(2px);
@@ -1109,6 +1166,31 @@ const ACTIVITY = [
 ];
 
 /* ---------------- state & storage ---------------- */
+/* ---- skins ----
+   A static site cannot tell who is loading it, so a skin is not detected, it is
+   handed out: one person gets a link with ?skin=<name> on the end. iOS gives a
+   home-screen app its own storage separate from Safari, so the flag is kept two
+   ways -- in localStorage for this browser, and by pointing the install at a
+   manifest whose start_url carries the skin, so it survives being installed. */
+const SKINS=["gator","comic","bee","barbie","matrix"];
+(function(){
+  let want=null;
+  try{
+    const q=new URLSearchParams(location.search).get("skin");
+    if(q!==null)want=q.toLowerCase().trim();
+  }catch(e){}
+  if(want==="off"||want===""){ try{localStorage.removeItem("ml.skin")}catch(e){} want=null }
+  else if(want&&SKINS.indexOf(want)<0) want=null;
+  if(!want){ try{ const st=localStorage.getItem("ml.skin");
+                  if(st&&SKINS.indexOf(st)>=0)want=st }catch(e){} }
+  if(!want)return;
+  try{localStorage.setItem("ml.skin",want)}catch(e){}
+  document.documentElement.setAttribute("data-skin",want);
+  /* so Add to Home Screen keeps it */
+  const mf=document.getElementById("mf");
+  if(mf)mf.href="manifest-"+want+".webmanifest";
+})();
+
 const LSK={days:"ml.days",foods:"ml.foods",recents:"ml.recents",targets:"ml.targets",water:"ml.water",pp:"ml.pp",
            goals:"ml.goals",body:"ml.body",batches:"ml.batches"};
 const lsGet=(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}};

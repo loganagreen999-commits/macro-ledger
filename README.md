@@ -50,6 +50,25 @@ full-screen with its own icon and behaves like any other app.
 - Day-by-day navigation, meals split into breakfast / lunch / dinner / snacks,
   and a JSON backup you can download and restore.
 
+## Skins
+
+A static site cannot tell who is loading it, so a skin is not detected, it is
+handed out. Give one person a link with `?skin=<name>` and their copy looks
+different from everyone else's:
+
+    ?skin=gator     Florida orange on navy, Impact headings, a crocodile
+    ?skin=comic     Comic Sans, pink, cards slightly askew
+    ?skin=bee       black and yellow, striped top bar
+    ?skin=barbie    hot pink
+    ?skin=matrix    black and green monospace
+    ?skin=off       back to normal
+
+The flag is kept in that browser's `localStorage`, and the page also points the
+install at `manifest-<name>.webmanifest`, whose `start_url` carries the skin —
+so it survives Add to Home Screen, which on iOS gets its own storage separate
+from Safari. Skins are pure CSS variable overrides; nothing else in the app
+knows they exist, and none of them touch the data or the numbers.
+
 ## Running it locally
 
     ~/nutrition/serve.py            # then open the printed phone URL
