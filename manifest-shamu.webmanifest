@@ -2,7 +2,7 @@
   "name": "Shamu Stopper",
   "short_name": "Shamu Stopper",
   "description": "A private, offline nutrition tracker: calories, protein, carbs, fat and 14 micronutrients, day by day.",
-  "start_url": "./?skin=shamu",
+  "start_url": "./shamu.html",
   "scope": "./",
   "id": "/macro-ledger/shamu/",
   "display": "standalone",

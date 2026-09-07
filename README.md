@@ -72,11 +72,28 @@ different from everyone else's:
     ?skin=matrix    black and green monospace
     ?skin=off       back to normal
 
-The flag is kept in that browser's `localStorage`, and the page also points the
-install at `manifest-<name>.webmanifest`, whose `start_url` carries the skin —
-so it survives Add to Home Screen, which on iOS gets its own storage separate
-from Safari. Skins are pure CSS variable overrides; nothing else in the app
-knows they exist, and none of them touch the data or the numbers.
+For a permanent install, hand over `shamu.html` (or `gator.html`, …) rather than
+the query-string form.
+
+`?skin=` is only the preview. **The install link is the skin's own page** —
+`gator.html`, `shamu.html` and so on — because Safari fetches the manifest the
+moment it parses `<link rel="manifest">` in the head, so swapping that href from
+script is far too late: Add to Home Screen has already taken `start_url` from
+the default manifest. A home-screen app on iOS also gets its own storage,
+separate from Safari, so the flag cannot ride in `localStorage` either.
+
+Each generated page sits beside `index.html` — same directory, so every relative
+path still resolves — with the right manifest link in the head from the start
+and the skin forced before any script runs. Its manifest's `start_url` points
+back at that page, so every launch is skinned.
+
+**Run `./build-skins.py` after any edit to `index.html`**, or the skin pages
+drift from the app.
+
+Most skins are pure CSS variable overrides. `shamu` also loads `shamu/shamu.css`
+and `shamu/shamu.js` from its own folder, so its art and code are downloaded
+only by the person holding that link. None of them touch the data or the
+numbers.
 
 ## Running it locally
 

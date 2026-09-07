@@ -1,5 +1,5 @@
 /* Macro Ledger service worker — makes the app work with the network off, for good. */
-const V = "macro-ledger-v10";
+const V = "macro-ledger-v11";
 const SHELL = [
   "./", "./index.html", "./manifest.webmanifest",
   "./manifest-gator.webmanifest", "./manifest-comic.webmanifest", "./manifest-bee.webmanifest",
@@ -26,16 +26,23 @@ self.addEventListener("fetch", e => {
   const req = e.request;
   if (req.method !== "GET" || new URL(req.url).origin !== self.location.origin) return;
 
-  // The page itself: prefer a fresh copy so updates land, fall back to cache offline.
+  // The page itself: prefer a fresh copy so updates land, fall back to cache
+  // offline. Each skin has its own entry page, so cache by the page actually
+  // asked for -- keying everything to index.html would hand a skinned install
+  // the plain app the moment it went offline.
   if (req.mode === "navigate") {
+    const url = new URL(req.url);
+    const key = url.pathname.endsWith("/") ? url.pathname + "index.html" : url.pathname;
     e.respondWith(
       fetch(req)
         .then(res => {
           const copy = res.clone();
-          caches.open(V).then(c => c.put("./index.html", copy));
+          caches.open(V).then(c => c.put(key, copy));
           return res;
         })
-        .catch(() => caches.match("./index.html").then(r => r || caches.match("./")))
+        .catch(() => caches.match(key)
+          .then(r => r || caches.match("./index.html"))
+          .then(r => r || caches.match("./")))
     );
     return;
   }

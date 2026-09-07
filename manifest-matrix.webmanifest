@@ -2,7 +2,7 @@
   "name": "MACRO_LEDGER",
   "short_name": "MACRO_LEDGER",
   "description": "A private, offline nutrition tracker: calories, protein, carbs, fat and 14 micronutrients, day by day.",
-  "start_url": "./?skin=matrix",
+  "start_url": "./matrix.html",
   "scope": "./",
   "id": "/macro-ledger/matrix/",
   "display": "standalone",

@@ -2,7 +2,7 @@
   "name": "Macro Ledger :)",
   "short_name": "Macro Ledger :)",
   "description": "A private, offline nutrition tracker: calories, protein, carbs, fat and 14 micronutrients, day by day.",
-  "start_url": "./?skin=comic",
+  "start_url": "./comic.html",
   "scope": "./",
   "id": "/macro-ledger/comic/",
   "display": "standalone",

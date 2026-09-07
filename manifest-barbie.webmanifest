@@ -1,8 +1,8 @@
 {
-  "name": "Macro Ledger \ud83c\udf80",
-  "short_name": "Macro Ledger \ud83c\udf80",
+  "name": "Macro Ledger 🎀",
+  "short_name": "Macro Ledger 🎀",
   "description": "A private, offline nutrition tracker: calories, protein, carbs, fat and 14 micronutrients, day by day.",
-  "start_url": "./?skin=barbie",
+  "start_url": "./barbie.html",
   "scope": "./",
   "id": "/macro-ledger/barbie/",
   "display": "standalone",
