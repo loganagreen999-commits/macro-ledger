@@ -306,18 +306,20 @@ button,[role="tab"]{-webkit-tap-highlight-color:transparent}
   animation:fade .18s ease}
 @keyframes fade{from{opacity:0}}
 .sheet{position:fixed;left:0;right:0;bottom:var(--kb,0px);z-index:41;background:var(--bg);
-  border-radius:20px 20px 0 0;max-height:var(--sheetmax,94vh);display:flex;flex-direction:column;
+  border-radius:20px 20px 0 0;max-height:94vh;max-height:var(--sheetmax,94dvh);
+  display:flex;flex-direction:column;
   box-shadow:0 -8px 40px -10px rgba(0,0,0,.4);animation:up .26s cubic-bezier(.2,.8,.3,1)}
 @keyframes up{from{transform:translateY(100%)}}
 @media (prefers-reduced-motion:reduce){.sheet,.scrim{animation:none}.track i,.macro .mt i{transition:none}}
-.sheet.tall{height:var(--sheetmax,94vh)}
+.sheet.tall{height:94vh;height:var(--sheetmax,94dvh)}
 .sheet>.inner{max-width:500px;margin:0 auto;width:100%;display:flex;flex-direction:column;min-height:0;flex:1}
 .grab{width:36px;height:4px;border-radius:99px;background:var(--line);margin:9px auto 0;flex-shrink:0}
 .shead{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px 8px;flex-shrink:0}
 .shead h3{margin:0;font-family:"Fraunces",Georgia,serif;font-size:19px;font-weight:600;letter-spacing:-.01em}
 .sbody{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;
-  padding:0 16px calc(20px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch;
-  -webkit-transform:translateZ(0)}   /* iOS momentum needs its own layer */
+  padding:0 16px calc(24px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch;
+  touch-action:pan-y}     /* a drag that starts on an input must still scroll */
+.sbody input,.sbody select,.sbody textarea{touch-action:pan-y}
 .link{color:var(--accent-ink);font-size:13.5px;font-weight:600}
 
 .search{display:flex;align-items:center;gap:9px;background:var(--surface);border:1px solid var(--line);
@@ -2410,7 +2412,14 @@ function openSheet(title,body,mount,rightHTML,cls){
      trusting every caller to remember. A sheet that already has one anywhere
      is left alone -- the search sheet pins its field above a scrolling list,
      and wrapping that would nest two scrollers and break it. */
-  const scroller=/class="sbody"/.test(body)?body:'<div class="sbody">'+body+"</div>";
+  const owns=/class="sbody"/.test(body);
+  const scroller=owns?body:'<div class="sbody">'+body+"</div>";
+  /* A content-height sheet leaves the scroller without a definite height to
+     scroll against, which iOS resolves inconsistently; the sheets that have
+     always scrolled properly are the ones with an explicit height. Give that
+     shape to anything long enough to need scrolling, and leave short confirm
+     dialogs alone so they do not balloon to full screen. */
+  if(!owns && body.length>600) cls=(cls?cls+" ":"")+"tall";
   host.innerHTML=
     '<div class="scrim" id="scrim"></div>'+
     '<div class="sheet'+(cls?" "+cls:"")+'" role="dialog" aria-modal="true"><div class="inner">'+
