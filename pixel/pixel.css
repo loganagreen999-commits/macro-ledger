@@ -6,9 +6,14 @@
    Everything is scoped to [data-game-theme="pixel"], so switching the
    theme back in the PC leaves the app exactly as it was.
    ===================================================================== */
-@font-face{font-family:"Pixelify";src:url("pixel/pixelify-400.woff2")format("woff2");
+/* The actual face from the games, supplied by the pilot. It ships one weight,
+   so synthetic bold is switched off -- a faked bold on a pixel face smears the
+   stems and stops it lining up to the grid. Pixelify stays as the fallback. */
+@font-face{font-family:"PokemonEmerald";src:url("pokemon-emerald.woff2")format("woff2");
+  font-weight:400 900;font-display:swap}
+@font-face{font-family:"Pixelify";src:url("pixelify-400.woff2")format("woff2");
   font-weight:400;font-display:swap}
-@font-face{font-family:"Pixelify";src:url("pixel/pixelify-700.woff2")format("woff2");
+@font-face{font-family:"Pixelify";src:url("pixelify-700.woff2")format("woff2");
   font-weight:700;font-display:swap}
 
 [data-game-theme="pixel"]{
@@ -26,8 +31,17 @@
   --r:6px; --shadow:0 3px 0 rgba(10,16,17,.9);
 }
 [data-game-theme="pixel"] *{
-  font-family:"Pixelify","IBM Plex Mono",ui-monospace,monospace!important;
-  letter-spacing:0!important;text-rendering:geometricPrecision}
+  font-family:"PokemonEmerald","Pixelify","IBM Plex Mono",ui-monospace,monospace!important;
+  letter-spacing:0!important;text-rendering:geometricPrecision;
+  font-synthesis:none;-webkit-font-synthesis:none;font-weight:400!important}
+/* The face carries a tall ascent and a small x-height for its em, so at the
+   app's normal sizes it reads a good deal smaller than everything else.
+   Scale the whole theme up rather than chasing each rule. */
+[data-game-theme="pixel"]{font-size:118%}
+[data-game-theme="pixel"] body{line-height:1.45;font-size:15px}
+[data-game-theme="pixel"] .pxbox{font-size:15px;line-height:1.55}
+[data-game-theme="pixel"] .btn,[data-game-theme="pixel"] .gbtn{font-size:16px}
+[data-game-theme="pixel"] .tabbar button{font-size:11.5px}
 [data-game-theme="pixel"] body{background:var(--px-deep)}
 [data-game-theme="pixel"] img{image-rendering:pixelated}
 
@@ -122,7 +136,7 @@
   padding:12px 26px 12px 13px;font-size:13px;line-height:1.6;color:var(--px-ink,#0A1011);
   min-height:56px}
 .pxbox .cursor{position:absolute;right:9px;bottom:7px;width:13px;height:11px;
-  background:url("pixel/arrow-down.png") center/contain no-repeat;
+  background:url("arrow-down.png") center/contain no-repeat;
   image-rendering:pixelated;animation:pxblink 1s steps(1) infinite}
 @keyframes pxblink{0%,50%{opacity:1}51%,100%{opacity:0}}
 .pxbox .cursor.done{animation:pxbob .7s steps(2) infinite}
@@ -136,7 +150,7 @@
   font-size:13.5px;font-weight:700;color:var(--px-ink,#0A1011);text-align:left;background:none;
   border-radius:4px}
 .pxmenu button::before{content:"";width:9px;height:11px;flex:0 0 auto;opacity:0;
-  background:url("pixel/arrow-right.png") center/contain no-repeat;image-rendering:pixelated}
+  background:url("arrow-right.png") center/contain no-repeat;image-rendering:pixelated}
 .pxmenu button:hover::before,.pxmenu button:focus-visible::before,
 .pxmenu button.on::before{opacity:1}
 .pxmenu button:active{background:var(--px-green,#9EDAA0)}
@@ -157,7 +171,7 @@
   display:flex;flex-direction:column;background:var(--px-deep,#0B3940);
   overflow:hidden}
 .pxfield{position:relative;flex:1 1 auto;min-height:0;
-  background:url("pixel/battle-bg-wide.webp") center bottom/cover no-repeat;
+  background:url("battle-bg-wide.webp") center bottom/cover no-repeat;
   image-rendering:pixelated}
 /* stood on the platforms drawn into the supplied background, feet on the ellipse */
 .pxfoe{position:absolute;left:72%;bottom:42%;width:32%;transform:translateX(-50%)}
@@ -177,7 +191,7 @@
   font-size:11px;font-weight:700;text-transform:uppercase;color:var(--px-ink,#0A1011)}
 .pxinfo .hpline{display:flex;align-items:center;gap:5px;margin-top:4px}
 .pxinfo .hplab{width:26px;height:13px;flex:0 0 auto;
-  background:url("pixel/hp-label.png") left center/contain no-repeat;
+  background:url("hp-label.png") left center/contain no-repeat;
   image-rendering:pixelated;text-indent:-999px;overflow:hidden}
 .pxinfo .hpb{flex:1}
 .pxinfo .num{text-align:right;font-size:10.5px;font-weight:700;margin-top:3px}
@@ -187,7 +201,7 @@
 .pxacts button{display:flex;align-items:center;gap:7px;padding:9px 8px;
   font-size:13px;font-weight:700;color:var(--px-ink,#0A1011);text-align:left;border-radius:4px}
 .pxacts button::before{content:"";width:9px;height:11px;flex:0 0 auto;opacity:0;
-  background:url("pixel/arrow-right.png") center/contain no-repeat;image-rendering:pixelated}
+  background:url("arrow-right.png") center/contain no-repeat;image-rendering:pixelated}
 .pxacts button:not([disabled]):hover::before,.pxacts button.on::before{opacity:1}
 .pxacts button:active{background:var(--px-green,#9EDAA0)}
 .pxacts button[disabled]{opacity:.42}
@@ -214,7 +228,7 @@
   30%{opacity:1;transform:translateX(-50%) scale(1.15)}
   100%{opacity:0;transform:translateX(-50%) scale(1.3)}}
 /* the overworld strip behind the intro, mirrored so the repeat has no seam */
-.pxworld{background:url("pixel/bg_overworld_tile.webp") repeat-x center/auto 100%;
+.pxworld{background:url("bg_overworld_tile.webp") repeat-x center/auto 100%;
   image-rendering:pixelated}
 
 /* =====================================================================
@@ -233,8 +247,8 @@
 .pxscene{position:relative;flex:1 1 auto;min-height:0;display:flex;flex-direction:column;
   justify-content:flex-end;gap:9px;padding:11px;
   background:center/cover no-repeat;image-rendering:pixelated}
-.pxscene.welcome{background-image:url("pixel/bg_welcome.webp")}
-.pxscene.starter{background-image:url("pixel/bg_starter.webp");justify-content:space-between}
+.pxscene.welcome{background-image:url("bg_welcome.webp")}
+.pxscene.starter{background-image:url("bg_starter.webp");justify-content:space-between}
 
 /* the three starter cards, framed as on the sheet */
 .pxcards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}

@@ -41,8 +41,15 @@ Drop a replacement into Desktop/ShamuStopper with the same filename and
 say so; it will be processed and wired the same way. Sprites want a
 transparent background and no baked-in shadow.
 
-One thing that is still an approximation: the typeface. Currently
-Pixelify Sans (Google Fonts, OFL) self-hosted at pixel/pixelify-400.woff2
-and -700.woff2. It is close to the sheet but not the same face. If you
-have the original, drop in a woff2 and the @font-face at the top of
-pixel/pixel.css will pick it up.
+THE TYPEFACE IS NOW THE REAL ONE (2026-09-07)
+pixel/pokemon-emerald.woff2 — Pokemon Emerald, 415 glyphs, covering
+every character the app uses. Pixelify Sans stays behind it as a
+fallback and will normally never load.
+
+It ships a single weight, so synthetic bold is switched off: a faked
+bold on a pixel face thickens the stems unevenly and pulls it off the
+grid. The theme is scaled up ~18% to compensate for the face's small
+x-height, otherwise it reads much smaller than the rest of the app.
+
+NOTHING IS OUTSTANDING. Every asset requested has been supplied, wired
+and checked rendering in a real browser.
