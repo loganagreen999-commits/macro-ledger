@@ -905,6 +905,12 @@ const FOODS = [
 ["Peanut M&M's","Mars","1 pack",49,250,4.5,30.0,13.0,2.0,25.0,5.0,25,180,50,0.4,0,0,0,0.1,40,0.7,5],
 ["Unsweetened Almondmilk","Silk","1 cup",240,30,1.0,1.0,2.5,1.0,0,0,170,50,450,0.7,150,0,2.5,1.5,15,0.2,0],
 ["Chocolate Milk","Nesquik","1 bottle",414,270,14.0,44.0,4.5,2.0,40.0,3.0,250,700,500,1.1,250,3.0,5.0,2.0,60,1.8,20],
+["Honey Bun","Little Debbie","1 bun",85,330,4.0,43.0,16.0,1.0,20.0,8.0,240,60,20,1.4,0,0,0,0,10,0.3,0],
+["Grand Honey Bun","Mrs. Freshley's","1 bun",127,550,6.0,70.0,27.0,2.0,33.0,13.0,400,100,30,2.2,0,0,0,0,18,0.5,0],
+["Honey bun, glazed","","1 bun",76,300,4.0,38.0,15.0,1.0,17.0,7.0,220,55,18,1.2,0,0,0,0,9,0.3,0],
+["Homestyle Waffles","Eggo","2 waffles",70,180,4.0,29.0,6.0,1.0,3.0,1.5,370,60,20,4.0,150,0,1.0,0.6,12,0.5,15],
+["Buttermilk Waffles","Eggo","2 waffles",70,180,4.0,29.0,6.0,1.0,3.0,1.5,380,60,20,4.0,150,0,1.0,0.6,12,0.5,15],
+["Thick and Fluffy Waffles","Eggo","1 waffle",66,190,4.0,28.0,7.0,1.0,4.0,2.0,340,60,20,4.0,150,0,1.0,0.6,12,0.5,15],
 /* --- store brands: Sam's Club, Aldi, Publix --- */
 ["Rotisserie Chicken, white meat","Member's Mark","3 oz",85,140,24.0,0,4.5,0,0,1.3,390,240,13,0.8,10,0,0.1,0.3,25,0.9,80],
 ["Rotisserie Chicken, dark meat","Member's Mark","3 oz",85,180,21.0,0,10.0,0,0,2.8,420,230,12,1.0,15,0,0.1,0.5,22,1.8,90],
@@ -1228,7 +1234,8 @@ const ACTIVITY = [
    home-screen app its own storage separate from Safari, so the flag is kept two
    ways -- in localStorage for this browser, and by pointing the install at a
    manifest whose start_url carries the skin, so it survives being installed. */
-const SKINS=["gator","comic","bee","barbie","matrix"];
+const SKINS=["gator","comic","bee","barbie","matrix","shamu"];
+const RICH={shamu:1};        /* skins that bring their own stylesheet and script */
 (function(){
   let want=null;
   try{
@@ -1245,6 +1252,15 @@ const SKINS=["gator","comic","bee","barbie","matrix"];
   /* so Add to Home Screen keeps it */
   const mf=document.getElementById("mf");
   if(mf)mf.href="manifest-"+want+".webmanifest";
+  /* a rich skin's assets are fetched only by the person holding that link */
+  if(RICH[want]){
+    const l=document.createElement("link");
+    l.rel="stylesheet"; l.href=want+"/"+want+".css";
+    document.head.appendChild(l);
+    const sc=document.createElement("script");
+    sc.src=want+"/"+want+".js"; sc.defer=true;
+    document.head.appendChild(sc);
+  }
 })();
 
 const LSK={days:"ml.days",foods:"ml.foods",recents:"ml.recents",targets:"ml.targets",water:"ml.water",pp:"ml.pp",recipes:"ml.recipes",

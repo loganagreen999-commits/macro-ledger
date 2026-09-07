@@ -1,0 +1,119 @@
+/* Shamu Stopper — orange and blue, one link only. Nothing here loads unless
+   the page was opened with ?skin=shamu. */
+
+[data-skin="shamu"]{
+  --bg:#08152B; --surface:#0F2445; --surface-2:#16305A; --sunk:#061020;
+  --ink:#EAF2FF; --ink-2:#9DB6DC; --ink-3:#6B87B4;
+  --line:#1E3A69; --line-soft:#152C52;
+  --accent:#FF7A18; --accent-ink:#FF9A45; --accent-soft:#3A1B04; --on-accent:#0A1526;
+  --ok:#3DA9FC; --ok-soft:#0A2440; --warn:#FF4D4D; --warn-soft:#3A0F0F;
+  --shadow:0 1px 2px rgba(0,0,0,.5),0 8px 24px -14px rgba(0,0,0,.9);
+}
+/* the pasta pass tab gets its own muted pink, on request */
+[data-skin="shamu"][data-pp="1"]{
+  --bg:#F6EAEE; --surface:#FFFFFF; --surface-2:#F2DDE4; --sunk:#EBD3DB;
+  --ink:#3A2A31; --ink-2:#7A5D68; --ink-3:#A98D97;
+  --line:#E3C7D1; --line-soft:#EFDCE3;
+  --accent:#C4788F; --accent-ink:#A85B74; --accent-soft:#F7E6EC; --on-accent:#FFFFFF;
+  --ok:#7FA98B; --ok-soft:#E6F0E9; --warn:#C4655A; --warn-soft:#F7E4E1;
+  --shadow:0 1px 2px rgba(58,42,49,.06),0 8px 22px -14px rgba(58,42,49,.3);
+}
+[data-skin="shamu"] .tabbar button[aria-current="true"]{color:var(--accent)}
+
+/* ---- the mark becomes the logo ---- */
+[data-skin="shamu"] .mark{font-size:0;line-height:0}
+[data-skin="shamu"] .mark img{height:30px;width:auto;display:block;
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,.55))}
+
+/* ---- level + experience, under the top bar on every screen ---- */
+.shud{display:flex;align-items:center;gap:11px;padding:9px 16px 11px;
+  background:linear-gradient(180deg,var(--surface) 0%,transparent 100%);
+  border-bottom:1px solid var(--line-soft)}
+.shud .lvl{flex-shrink:0;display:flex;flex-direction:column;align-items:center;
+  min-width:46px;padding:5px 8px;border-radius:11px;background:var(--sunk);
+  border:1px solid var(--line)}
+.shud .lvl b{font-family:"Fraunces",Georgia,serif;font-size:20px;line-height:1;
+  color:var(--accent);font-variant-numeric:tabular-nums}
+.shud .lvl u{text-decoration:none;font-size:8.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-3);margin-top:2px}
+.shud .xw{flex:1;min-width:0}
+.shud .xtop{display:flex;justify-content:space-between;font-size:10.5px;
+  color:var(--ink-3);margin-bottom:5px;font-variant-numeric:tabular-nums}
+.shud .xbar{height:9px;border-radius:99px;background:var(--sunk);overflow:hidden;
+  border:1px solid var(--line)}
+.shud .xbar i{display:block;height:100%;border-radius:99px;
+  background:linear-gradient(90deg,#3DA9FC,#FF7A18);
+  transition:width .9s cubic-bezier(.2,.8,.25,1)}
+.shud .pals{height:38px;width:auto;flex-shrink:0}
+
+/* ---- the mirror, on the goals tab ---- */
+.smirror{display:block;margin:0 auto 14px;max-width:190px;width:55%;height:auto;
+  filter:drop-shadow(0 6px 14px rgba(0,0,0,.4))}
+
+/* ---- the level change takeover ---- */
+.slv{position:fixed;inset:0;z-index:200;display:flex;align-items:center;
+  justify-content:center;pointer-events:none;overflow:hidden}
+.slv .panel{position:absolute;inset:-2% -6%;display:flex;align-items:center;
+  justify-content:center;gap:min(6vw,38px);
+  clip-path:polygon(0 4%,100% 0,100% 96%,0 100%);}
+.slv.up .panel{
+  background:
+    repeating-linear-gradient(115deg,rgba(255,122,24,.95) 0 42px,rgba(10,25,55,.97) 42px 84px,
+      rgba(61,169,252,.95) 84px 126px,rgba(10,25,55,.97) 126px 168px);
+  animation:slvUp 2.9s cubic-bezier(.16,.9,.2,1) forwards;}
+.slv.down .panel{
+  background:
+    repeating-linear-gradient(115deg,rgba(190,20,20,.97) 0 42px,rgba(40,4,4,.97) 42px 84px,
+      rgba(255,70,70,.9) 84px 126px,rgba(40,4,4,.97) 126px 168px);
+  animation:slvDown 2.9s cubic-bezier(.16,.9,.2,1) forwards;}
+/* in fast, hold, then keep going the way it came */
+@keyframes slvUp{
+  0%{transform:translateY(102%)} 14%{transform:translateY(0)}
+  76%{transform:translateY(0)}  100%{transform:translateY(-102%)}}
+@keyframes slvDown{
+  0%{transform:translateY(-102%)} 14%{transform:translateY(0)}
+  76%{transform:translateY(0)}  100%{transform:translateY(102%)}}
+.slv .bolt{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;
+  background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.85) 50%,transparent 60%);
+  opacity:0;animation:slvBolt 2.9s linear forwards}
+@keyframes slvBolt{
+  0%,12%{opacity:0;transform:translateX(-40%)}
+  15%{opacity:.9} 17%{opacity:.2} 19%{opacity:.85} 22%{opacity:0}
+  40%{opacity:0} 43%{opacity:.6} 45%{opacity:0}
+  100%{opacity:0;transform:translateX(40%)}}
+.slv figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:8px;
+  animation:slvPop .5s .16s both cubic-bezier(.2,1.5,.4,1)}
+@keyframes slvPop{from{transform:scale(.55);opacity:0}to{transform:scale(1);opacity:1}}
+.slv img{height:min(34vh,230px);width:auto;display:block;
+  filter:drop-shadow(0 10px 22px rgba(0,0,0,.6))}
+.slv figcaption{font-family:"Fraunces",Georgia,serif;font-size:13px;color:#fff;
+  text-shadow:0 2px 6px rgba(0,0,0,.85);letter-spacing:.02em}
+.slv .arrow{width:min(16vw,86px);height:auto;flex-shrink:0;
+  filter:drop-shadow(0 0 10px rgba(255,255,255,.9))}
+.slv.up .arrow{animation:slvArrowR 1s .35s infinite}
+.slv.down .arrow{transform:scaleX(-1);animation:slvArrowL 1s .35s infinite}
+@keyframes slvArrowR{0%,100%{transform:translateX(-9px)}50%{transform:translateX(9px)}}
+@keyframes slvArrowL{0%,100%{transform:scaleX(-1) translateX(-9px)}
+                     50%{transform:scaleX(-1) translateX(9px)}}
+.slv .banner{position:absolute;left:0;right:0;top:14%;text-align:center;
+  font-family:"Fraunces",Georgia,serif;font-size:clamp(30px,9vw,56px);font-weight:600;
+  letter-spacing:-.02em;color:#fff;text-shadow:0 4px 0 rgba(0,0,0,.55),0 0 26px rgba(255,255,255,.5);
+  animation:slvPop .5s .1s both cubic-bezier(.2,1.6,.4,1)}
+.slv .sub{position:absolute;left:0;right:0;bottom:15%;text-align:center;font-size:14px;
+  color:#fff;opacity:.95;text-shadow:0 2px 6px rgba(0,0,0,.8)}
+
+/* ---- one silly goose ---- */
+.sgoose{position:fixed;inset:0;z-index:210;pointer-events:none;overflow:hidden}
+.sgoose img{position:absolute;height:clamp(90px,20vh,170px);width:auto;
+  animation:gooseIn .55s cubic-bezier(.2,1.6,.35,1) both, gooseOut .7s 3.1s forwards;
+  filter:drop-shadow(0 6px 14px rgba(0,0,0,.45))}
+@keyframes gooseIn{from{transform:scale(.2) rotate(var(--r,0deg));opacity:0}
+                   to{transform:scale(1) rotate(var(--r,0deg));opacity:1}}
+@keyframes gooseOut{to{opacity:0;transform:scale(1.25) rotate(var(--r,0deg))}}
+.sgoose .honkword{position:absolute;font-family:"Fraunces",Georgia,serif;font-weight:600;
+  color:#FF7A18;text-shadow:0 2px 0 #08152B,0 0 18px rgba(255,122,24,.8);
+  animation:gooseIn .4s both, gooseOut .6s 3.2s forwards}
+@media (prefers-reduced-motion:reduce){
+  .slv .panel,.slv .bolt,.slv figure,.slv .banner{animation-duration:.01ms!important}
+  .sgoose img{animation:none}
+}
