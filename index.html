@@ -332,6 +332,62 @@ button,[role="tab"]{-webkit-tap-highlight-color:transparent}
 .chip.mine{background:var(--c-soft);color:var(--c)}
 .empty{text-align:center;color:var(--ink-3);font-size:13.5px;padding:34px 20px;line-height:1.6}
 
+/* ---- trends ---- */
+.dlabel{width:100%;text-align:center}
+.dlabel:active{opacity:.7}
+.tsw{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;background:var(--surface-2);
+  border-radius:11px;padding:3px;margin:2px 0 14px}
+.tsw button{padding:8px 0;border-radius:8px;font-size:13px;font-weight:600;color:var(--ink-2)}
+.tsw button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.tnav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 3px 12px}
+.tnav b{font-size:14.5px;font-weight:600}
+.tnav button{width:38px;height:34px;border-radius:9px;background:var(--surface-2);
+  border:1px solid var(--line);font-size:17px;color:var(--ink-2);line-height:1}
+.tchart{position:relative;display:flex;align-items:flex-end;gap:2px;height:132px;
+  padding-bottom:2px;border-bottom:1px solid var(--line)}
+.tb{flex:1;min-width:2px;background:var(--accent-soft);border-radius:3px 3px 0 0;
+  align-self:flex-end;transition:height .2s}
+.tb.on{background:var(--accent)}
+.tb:active{opacity:.6}
+.goalline{position:absolute;left:0;right:0;height:0;border-top:1px dashed var(--ink-3);opacity:.6;z-index:1}
+.tx{display:flex;gap:2px;margin-top:5px}
+.tx span{flex:1;min-width:2px;text-align:center;font-size:9px;color:var(--ink-3)}
+
+/* ---- contributors ---- */
+.macro{display:block;width:100%;text-align:left}
+.kcal{display:block;text-align:left;padding:0}
+.mrow{width:100%;text-align:left}
+.mrow:active,.macro:active,.kcal:active{opacity:.72}
+.cbig{padding:2px 3px 4px}
+.cv{font-family:"Fraunces",Georgia,serif;font-size:38px;font-weight:600;letter-spacing:-.02em;
+  line-height:1;font-variant-numeric:tabular-nums}
+.cv small{font-family:inherit;font-size:15px;font-weight:500;color:var(--ink-3);margin-left:7px}
+.ck{font-size:12.5px;color:var(--ink-3);margin-top:6px}
+.clist{padding:4px 16px}
+.rlist{padding:4px 16px}
+.slot{padding:13px 0;border-bottom:1px solid var(--line-soft)}
+.slot:last-child{border-bottom:0}
+.sltop{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.slname{font-size:14px;font-weight:500;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.slname u{text-decoration:none;color:var(--ink-3);font-size:12px}
+.slamt{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--ink-2);
+  flex-shrink:0;font-variant-numeric:tabular-nums}
+.sl{width:100%;margin:10px 0 4px;accent-color:var(--accent);height:26px}
+.slrow{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink-3);
+  font-variant-numeric:tabular-nums}
+.crow{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:11px 0;
+  border-bottom:1px solid var(--line-soft)}
+.crow:last-child{border-bottom:0}
+.crow:active{opacity:.7}
+.cmain{flex:1;min-width:0}
+.cn{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cn u{text-decoration:none;color:var(--ink-3);font-size:12.5px}
+.csub{font-size:11.5px;color:var(--ink-3);margin-top:2px}
+.cbar{height:4px;border-radius:99px;background:var(--sunk);overflow:hidden;margin-top:7px}
+.cbar i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.crt{text-align:right;flex-shrink:0}
+.cvv{font-family:"IBM Plex Mono",monospace;font-size:14.5px;font-variant-numeric:tabular-nums}
+
 /* ---- forms ---- */
 .field{margin-bottom:12px}
 .field label{display:block;font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);margin-bottom:5px}
@@ -1191,7 +1247,7 @@ const SKINS=["gator","comic","bee","barbie","matrix"];
   if(mf)mf.href="manifest-"+want+".webmanifest";
 })();
 
-const LSK={days:"ml.days",foods:"ml.foods",recents:"ml.recents",targets:"ml.targets",water:"ml.water",pp:"ml.pp",
+const LSK={days:"ml.days",foods:"ml.foods",recents:"ml.recents",targets:"ml.targets",water:"ml.water",pp:"ml.pp",recipes:"ml.recipes",
            goals:"ml.goals",body:"ml.body",batches:"ml.batches"};
 const lsGet=(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}};
 const lsSet=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
@@ -1221,6 +1277,7 @@ const S={
   foods:lsGet(LSK.foods,[]),
   recents:lsGet(LSK.recents,[]),
   batches:lsGet(LSK.batches,[]),
+  recipes:lsGet(LSK.recipes,[]),
   goals:loadGoals(),
   body:Object.assign({sex:"male",age:30,cm:178,kg:80,act:1.55,dir:0,units:"us"},lsGet(LSK.body,{}))
 };
@@ -1232,6 +1289,7 @@ function saveWater(){lsSet(LSK.water,S.water)}
 function saveMeta(){lsSet(LSK.foods,S.foods);lsSet(LSK.recents,S.recents)}
 function saveGoals(){lsSet(LSK.goals,S.goals);lsSet(LSK.body,S.body)}
 function saveBatches(){lsSet(LSK.batches,S.batches)}
+function saveRecipes(){lsSet(LSK.recipes,S.recipes)}
 
 /* ---------------- helpers ---------------- */
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -1352,21 +1410,21 @@ function dayHTML(){
   const bar=(v,tg)=>tg>0?Math.min(100,(v/tg)*100):0;
   return '<div class="datebar">'+
       '<button class="nav" id="prevDay" aria-label="Previous day"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>'+
-      '<div class="dlabel">'+esc(d.toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"}))+
-        '<em class="'+(diff===0?"":"past")+'">'+esc(sub)+"</em></div>"+
+      '<button class="dlabel" id="openTrends">'+esc(d.toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"}))+
+        '<em class="'+(diff===0?"":"past")+'">'+esc(sub)+"</em></button>"+
       '<button class="nav" id="nextDay" aria-label="Next day"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>'+
     "</div>"+
     '<div class="hero">'+
       '<div class="kcalrow">'+
-        '<div class="kcal">'+fmt(tot[0])+'<small>kcal</small></div>'+
+        '<button class="kcal" data-nut="0">'+fmt(tot[0])+"<small>kcal</small></button>"+
         '<div class="left"><b class="'+(over?"over":"")+'">'+(over?"+"+fmt(-left):fmt(left))+"</b>"+
           (over?"over goal":"remaining")+"<br>of "+fmt(goal(0))+"</div>"+
       "</div>"+
       '<div class="track"><i class="'+(over?"over":"")+'" style="width:'+pct+'%"></i></div>'+
       '<div class="macros">'+
-        macroTile("m-p","Protein",tot[1],goal(1),bar(tot[1],goal(1)))+
-        macroTile("m-c","Carbs",tot[2],goal(2),bar(tot[2],goal(2)))+
-        macroTile("m-f","Fat",tot[3],goal(3),bar(tot[3],goal(3)))+
+        macroTile("m-p","Protein",tot[1],goal(1),bar(tot[1],goal(1)),1)+
+        macroTile("m-c","Carbs",tot[2],goal(2),bar(tot[2],goal(2)),2)+
+        macroTile("m-f","Fat",tot[3],goal(3),bar(tot[3],goal(3)),3)+
       "</div></div>"+
     '<div class="seg" role="tablist">'+
       '<button role="tab" id="tabLog" aria-selected="'+(S.tab==="log")+'">Log</button>'+
@@ -1429,10 +1487,10 @@ function bindWater(el){
   if(g)g.onchange=()=>{const v=parseFloat(g.value);
     S.body.water=isFinite(v)&&v>0?v:100;saveGoals();render()};
 }
-const macroTile=(cls,lab,v,tg,w)=>
-  '<div class="macro '+cls+'"><div class="lab"><i class="dot"></i>'+lab+"</div>"+
+const macroTile=(cls,lab,v,tg,w,idx)=>
+  '<button class="macro '+cls+'" data-nut="'+idx+'"><div class="lab"><i class="dot"></i>'+lab+"</div>"+
   '<div class="val">'+fmt(v)+'<u>/'+fmt(tg)+"g</u></div>"+
-  '<div class="mt"><i style="width:'+w+'%"></i></div></div>';
+  '<div class="mt"><i style="width:'+w+'%"></i></div></button>';
 
 function logHTML(){
   const all=entries();
@@ -1459,10 +1517,10 @@ function microHTML(){
   for(const m of MICROS){
     if(m.g!==group){group=m.g;html+='<div class="mgroup">'+group+"</div>"}
     const tg=goal(m.i),v=t[m.i],pct=tg?(v/tg)*100:0,capped=m.cap&&pct>100;
-    html+='<div class="mrow"><div class="mn">'+m.n+"</div>"+
+    html+='<button class="mrow" data-nut="'+m.i+'"><div class="mn">'+m.n+"</div>"+
       '<div class="mv">'+fmt(v,m.d)+" <u>/ "+fmt(tg,m.d)+" "+m.u+"</u></div>"+
       '<div class="mbar"><i class="'+(capped?"cap":"")+'" style="width:'+Math.min(100,pct)+'%"></i></div>'+
-      '<div class="mpct '+(capped?"cap":"")+'">'+Math.round(pct)+"%</div></div>";
+      '<div class="mpct '+(capped?"cap":"")+'">'+Math.round(pct)+"%</div></button>";
   }
   return html+'<div class="note">Percentages are of your own goals, set on the Goals tab. Sugars, saturated fat, cholesterol and sodium are ceilings — those bars turn red past 100%.</div></div>';
 }
@@ -1475,19 +1533,24 @@ function bindDay(el){
   el.querySelector("#tabWater").onclick=()=>{S.tab="water";render()};
   if(S.tab==="water")bindWater(el);
   el.querySelectorAll("[data-entry]").forEach(b=>b.onclick=()=>openEntry(b.dataset.entry));
+  el.querySelectorAll("[data-nut]").forEach(b=>b.onclick=()=>openContributors(+b.dataset.nut));
+  const ot=el.querySelector("#openTrends"); if(ot)ot.onclick=()=>{trendAnchor=S.date;openTrends()};
   el.querySelectorAll("[data-addmeal]").forEach(b=>b.onclick=()=>openSearch({mode:"log",meal:b.dataset.addmeal}));
 }
 function shift(n){const d=parseKey(S.date);d.setDate(d.getDate()+n);S.date=dkey(d);render()}
 
 /* ---- meals ---- */
+const recipeBar=()=>S.recipes.length
+  ? '<button class="btn ghost" id="openRec" style="margin-bottom:14px">Cook one again ('+
+    S.recipes.length+" saved)</button>" : "";
 function mealsHTML(){
   if(!S.batches.length)
-    return '<div class="empty"><b>Cook once, log it all week.</b><br><br>'+
+    return recipeBar()+'<div class="empty"><b>Cook once, log it all week.</b><br><br>'+
       "Add everything that went into the pot, say how much it made — six cups, say — and how many cups "+
       "you eat gets worked out from there.<br><br>Each meal carries a freshness countdown from the day you cooked it."+
       "<br><br>Tap <b>New meal</b> to build one.</div>";
   const sorted=S.batches.slice().sort((a,b)=>b.cookedAt-a.cookedAt);
-  return sorted.map(b=>{
+  return recipeBar()+sorted.map(b=>{
     const fr=freshness(b),pu=batchPerUnit(b);
     const y=parseFloat(b.yieldQty)||0,used=batchUsed(b.id),leftQ=Math.max(0,y-used);
     const unit=leftQ===1?singular(b.yieldUnit):b.yieldUnit;
@@ -1504,6 +1567,7 @@ function mealsHTML(){
 }
 function bindMeals(el){
   el.querySelectorAll("[data-batch]").forEach(b=>b.onclick=()=>openBatch(b.dataset.batch));
+  const r=el.querySelector("#openRec"); if(r)r.onclick=openRecipes;
 }
 
 /* ---- goals ---- */
@@ -1989,33 +2053,33 @@ function openScanner(ctx){
     '<button class="link" id="sheetClose">Close</button>');
 }
 
-async function runScan(vid,ctx){
-  let stream;
-  try{
-    stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"},
-      width:{ideal:1280},height:{ideal:720}},audio:false});
-  }catch(e){
-    scanStatus(e&&e.name==="NotAllowedError"
-      ? "Camera blocked. Allow it in Settings, or type the number."
-      : "No camera here. Type the number instead.");
-    return;
-  }
-  let done=false;
-  const stopTracks=()=>{stream.getTracks().forEach(t=>t.stop())};
-  scanStop=stopTracks;                 /* upgraded below; never left unset */
-  vid.srcObject=stream;
-  try{ await vid.play() }catch(e){}
-  const finish=code=>{ if(done)return; done=true; stopScanner(); lookupBarcode(code,ctx) };
+const CAM={video:{facingMode:{ideal:"environment"},width:{ideal:1280},height:{ideal:720}},audio:false};
 
-  /* Chrome and Android have a native decoder; Safari does not, so fall back. */
+async function runScan(vid,ctx){
+  let done=false;
+  const finish=code=>{ if(done)return; done=true; stopScanner(); lookupBarcode(code,ctx) };
+  const camError=e=>scanStatus(e&&e.name==="NotAllowedError"
+    ? "Camera blocked. Allow it in Settings, or type the number."
+    : "No camera here. Type the number instead.");
+
+  /* Chrome and Android have a native decoder. Safari has none, and there the
+     library must own the video element: it resolves on the video's "playing"
+     event, and its tryPlayVideo() returns early if the element is already
+     playing -- so attaching the stream ourselves first means that event never
+     fires again and decoding silently never starts. */
   const Native=window.BarcodeDetector;
-  let usedNative=false;
   if(Native){
     try{
       const fmts=await Native.getSupportedFormats();
       const want=["ean_13","ean_8","upc_a","upc_e"].filter(f=>fmts.includes(f));
       if(want.length){
-        usedNative=true;
+        let stream;
+        try{ stream=await navigator.mediaDevices.getUserMedia(CAM) }
+        catch(e){ return camError(e) }
+        const stopTracks=()=>stream.getTracks().forEach(t=>t.stop());
+        scanStop=stopTracks;
+        vid.srcObject=stream;
+        try{ await vid.play() }catch(e){}
         const det=new Native({formats:want});
         let raf=0;
         const tick=async()=>{
@@ -2027,25 +2091,275 @@ async function runScan(vid,ctx){
         scanStatus("Hold the barcode in the box");
         raf=requestAnimationFrame(tick);
         if(!done)scanStop=()=>{done=true;cancelAnimationFrame(raf);stopTracks()};
+        return;
       }
-    }catch(e){ usedNative=false }
+    }catch(e){ /* fall through to the library */ }
   }
-  if(!usedNative){
-    scanStatus("Loading the scanner…");
-    let ZX;
-    try{ ZX=await loadZXing() }
-    catch(e){ scanStatus("Scanner failed to load. Type the number instead."); return }
-    const hints=new Map();
-    hints.set(ZX.DecodeHintType.POSSIBLE_FORMATS,[
-      ZX.BarcodeFormat.EAN_13,ZX.BarcodeFormat.EAN_8,
-      ZX.BarcodeFormat.UPC_A,ZX.BarcodeFormat.UPC_E]);
-    hints.set(ZX.DecodeHintType.TRY_HARDER,true);
-    const reader=new ZX.BrowserMultiFormatReader(hints,{delayBetweenScanAttempts:120});
-    scanStatus("Hold the barcode in the box");
-    reader.decodeFromStream(stream,vid,(res,err)=>{ if(res)finish(res.getText()) })
-      .catch(()=>scanStatus("Could not read it. Type the number instead."));
-    if(!done)scanStop=()=>{done=true;try{reader.reset()}catch(e){};stopTracks()};
+
+  scanStatus("Loading the scanner…");
+  let ZX;
+  try{ ZX=await loadZXing() }
+  catch(e){ return scanStatus("Scanner failed to load. Type the number instead.") }
+  const hints=new Map();
+  hints.set(ZX.DecodeHintType.POSSIBLE_FORMATS,[
+    ZX.BarcodeFormat.EAN_13,ZX.BarcodeFormat.EAN_8,
+    ZX.BarcodeFormat.UPC_A,ZX.BarcodeFormat.UPC_E]);
+  hints.set(ZX.DecodeHintType.TRY_HARDER,true);
+  const reader=new ZX.BrowserMultiFormatReader(hints,200);
+  scanStop=()=>{done=true;try{reader.reset()}catch(e){}};   /* set before any await */
+  scanStatus("Hold the barcode in the box");
+  /* the library opens the camera itself and attaches the video, deliberately */
+  reader.decodeFromConstraints(CAM,vid,(res,err)=>{ if(res)finish(res.getText()) })
+    .catch(camError);
+  setTimeout(()=>{ if(!done)scanStatus("Still looking. Fill the box with the bars, or type the number.") },14000);
+}
+
+/* ---------------- saved recipes ----------------
+   A recipe is the ingredient list you cooked once, kept so you can cook it
+   again. Nobody makes it identically twice, so cooking it again opens every
+   ingredient on a slider around the amount you used last time. */
+function recipeFromDraft(d){
+  return {id:uid(),name:d.name.trim()||"Untitled recipe",
+    yieldQty:parseFloat(d.yieldQty)||1,yieldUnit:d.yieldUnit||"servings",
+    shelfDays:parseFloat(d.shelfDays)||5,
+    ing:d.ing.map(g=>({name:g.name,brand:g.brand||"",serving:g.serving,
+                       grams:g.grams||0,qty:g.qty,n:g.n.slice()})),
+    saved:Date.now(),used:0};
+}
+function saveDraftAsRecipe(){
+  if(!draft||!draft.ing.length){toast("Add the ingredients first");return}
+  const r=recipeFromDraft(draft);
+  const ix=S.recipes.findIndex(x=>x.name.toLowerCase()===r.name.toLowerCase());
+  if(ix>=0){r.used=S.recipes[ix].used;S.recipes[ix]=r} else S.recipes.unshift(r);
+  saveRecipes();
+  toast(ix>=0?"Recipe updated":"Recipe saved");
+}
+const recipeTotals=(r,scale)=>{
+  const t=new Array(18).fill(0);
+  r.ing.forEach((g,i)=>{const q=g.qty*(scale?scale[i]:1);
+    for(let j=0;j<18;j++)t[j]+=(g.n[j]||0)*q});
+  return t;
+};
+
+function openRecipes(){
+  if(!S.recipes.length){
+    openSheet("Recipes","<p class=\"s\">Nothing saved yet. Build a meal, then tap "+
+      "<b>Save as recipe</b> at the bottom of it. Next time you cook it you can load "+
+      "the whole ingredient list and just nudge the amounts.</p>");
+    return;
   }
+  openSheet("Cook it again",
+    '<div class="card rlist">'+S.recipes.map(r=>
+      '<button class="crow" data-rec="'+esc(r.id)+'"><div class="cmain">'+
+        '<div class="cn">'+esc(r.name)+"</div>"+
+        '<div class="csub">'+r.ing.length+" ingredient"+(r.ing.length===1?"":"s")+
+        " &middot; makes "+fmt(r.yieldQty)+" "+esc(r.yieldUnit)+
+        (r.used?" &middot; cooked "+r.used+"x":"")+"</div></div>"+
+        '<div class="crt"><div class="cvv">'+fmt(recipeTotals(r)[0])+"</div>"+
+        '<div class="csub">kcal</div></div></button>').join("")+"</div>"+
+    '<p class="footnote">Long lists are fine &mdash; you adjust the amounts on the next screen.</p>',
+    el=>el.querySelectorAll("[data-rec]").forEach(b=>b.onclick=()=>{
+      const r=S.recipes.find(x=>x.id===b.dataset.rec);
+      if(r)openRecipeCook(r);
+    }));
+}
+
+/* the sliders */
+function openRecipeCook(r){
+  const scale=r.ing.map(()=>1);
+  let yieldQty=r.yieldQty;
+  const body=
+    '<p class="s">Everything starts at the amount you used last time. Slide anything you '+
+    "changed.</p>"+
+    '<div class="card" id="rcCard">'+
+      r.ing.map((g,i)=>
+        '<div class="slot"><div class="sltop"><div class="slname">'+esc(g.name)+
+          (g.brand?' <u>'+esc(g.brand)+"</u>":"")+"</div>"+
+          '<div class="slamt" id="amt'+i+'">'+nQty(g.qty)+" &times; "+esc(g.serving)+"</div></div>"+
+        '<input class="sl" type="range" min="0" max="250" step="5" value="100" data-sl="'+i+'">'+
+        '<div class="slrow"><span id="pc'+i+'">100%</span><span id="kc'+i+'">'+
+          fmt(g.n[0]*g.qty)+" kcal</span></div></div>").join("")+
+    "</div>"+
+    '<div class="field"><span class="lab">How much did it make</span>'+
+      '<div class="grid2"><input id="rcYield" type="number" inputmode="decimal" step="any" value="'+
+      yieldQty+'"><input id="rcUnit" type="text" value="'+esc(r.yieldUnit)+'"></div></div>'+
+    '<div class="preview" id="rcPrev"></div>'+
+    '<button class="btn" id="rcGo">Add this to my meals</button>'+
+    '<button class="btn ghost" id="rcDel" style="margin-top:9px">Delete this recipe</button>';
+  openSheet(r.name,body,()=>{
+    const paint=()=>{
+      const t=recipeTotals(r,scale);
+      const y=parseFloat(document.getElementById("rcYield").value)||1;
+      const unit=document.getElementById("rcUnit").value.trim()||"servings";
+      r.ing.forEach((g,i)=>{
+        document.getElementById("amt"+i).innerHTML=nQty(g.qty*scale[i])+" &times; "+esc(g.serving);
+        document.getElementById("pc"+i).textContent=Math.round(scale[i]*100)+"%";
+        document.getElementById("kc"+i).textContent=fmt(g.n[0]*g.qty*scale[i])+" kcal";
+      });
+      document.getElementById("rcPrev").innerHTML=
+        '<div class="pk">'+fmt(t[0]/y)+'<small>kcal per '+esc(singular(unit))+"</small></div>"+
+        '<div class="pmac"><span><u>Protein</u>'+fmt(t[1]/y,1)+" g</span>"+
+          '<span><u>Carbs</u>'+fmt(t[2]/y,1)+" g</span>"+
+          '<span><u>Fat</u>'+fmt(t[3]/y,1)+" g</span></div>"+
+        '<div class="pmg"><div><span>Whole batch</span><b>'+fmt(t[0])+" kcal</b></div>"+
+          "<div><span>Makes</span><b>"+fmt(y)+" "+esc(unit)+"</b></div></div>";
+    };
+    document.querySelectorAll("[data-sl]").forEach(sl=>{
+      sl.oninput=()=>{scale[+sl.dataset.sl]=(+sl.value)/100;paint()};
+    });
+    ["rcYield","rcUnit"].forEach(id=>document.getElementById(id).oninput=paint);
+    paint();
+    document.getElementById("rcGo").onclick=()=>{
+      draft={id:uid(),name:r.name,cookedAt:Date.now(),shelfDays:r.shelfDays,
+        yieldQty:parseFloat(document.getElementById("rcYield").value)||1,
+        yieldUnit:document.getElementById("rcUnit").value.trim()||"servings",
+        ing:r.ing.map((g,i)=>Object.assign({},g,{qty:g.qty*scale[i]})).filter(g=>g.qty>0)};
+      r.used=(r.used||0)+1; saveRecipes();
+      closeSheet(); openBatchForm();
+    };
+    document.getElementById("rcDel").onclick=()=>{
+      S.recipes=S.recipes.filter(x=>x.id!==r.id); saveRecipes();
+      closeSheet(); render(); toast("Recipe deleted");
+    };
+  });
+}
+
+/* ---------------- trends: week, month, year, and a way back to any day ---------------- */
+const dayTotals=k=>totals(S.days[k]||[]);
+const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const startOfWeek=d=>addDays(d,-((d.getDay()+6)%7));      /* weeks start Monday */
+
+/* every day in a span, with its calories and macros */
+function span(kind,anchorDate){
+  const a=parseKey(anchorDate); a.setHours(12,0,0,0);
+  let from,to,label;
+  if(kind==="week"){
+    from=startOfWeek(a); to=addDays(from,6);
+    label=from.toLocaleDateString(undefined,{month:"short",day:"numeric"})+" \u2013 "+
+          to.toLocaleDateString(undefined,{month:"short",day:"numeric"});
+  }else if(kind==="month"){
+    from=new Date(a.getFullYear(),a.getMonth(),1,12);
+    to=new Date(a.getFullYear(),a.getMonth()+1,0,12);
+    label=a.toLocaleDateString(undefined,{month:"long",year:"numeric"});
+  }else{
+    from=new Date(a.getFullYear(),0,1,12); to=new Date(a.getFullYear(),11,31,12);
+    label=String(a.getFullYear());
+  }
+  const days=[];
+  for(let d=new Date(from); d<=to; d=addDays(d,1)){
+    const k=dkey(d), t=dayTotals(k);
+    days.push({k:k,d:new Date(d),t:t,logged:(S.days[k]||[]).length>0});
+  }
+  return {kind:kind,from:from,to:to,label:label,days:days};
+}
+function spanStats(sp){
+  const on=sp.days.filter(x=>x.logged);
+  const sum=i=>on.reduce((a,x)=>a+x.t[i],0);
+  const n=on.length||1;
+  return {logged:on.length,total:sp.days.length,
+          kcal:sum(0)/n, p:sum(1)/n, c:sum(2)/n, f:sum(3)/n,
+          best:on.reduce((a,x)=>Math.max(a,x.t[0]),0),
+          hit:on.filter(x=>goal(0)>0&&x.t[0]<=goal(0)).length};
+}
+let trendKind="week", trendAnchor=null;
+
+function openTrends(){
+  trendAnchor=trendAnchor||S.date;
+  const draw=()=>{
+    const sp=span(trendKind,trendAnchor), st=spanStats(sp);
+    const g=goal(0), peak=Math.max(g||0,...sp.days.map(x=>x.t[0]),1);
+    const bars=sp.days.map(x=>{
+      const h=Math.max(x.logged?3:1,x.t[0]/peak*100);
+      return '<button class="tb'+(x.k===S.date?" on":"")+'" data-day="'+x.k+'" '+
+        'style="height:'+h+'%" title="'+x.k+'"></button>';
+    }).join("");
+    const labs=sp.kind==="year"
+      ? ["J","F","M","A","M","J","J","A","S","O","N","D"].map(m=>"<span>"+m+"</span>").join("")
+      : sp.kind==="week"
+        ? sp.days.map(x=>"<span>"+["M","T","W","T","F","S","S"][(x.d.getDay()+6)%7]+"</span>").join("")
+        : sp.days.map((x,i)=>"<span>"+((i%7===0)?x.d.getDate():"")+"</span>").join("");
+    return '<div class="tsw" id="tsw">'+
+        [["week","Week"],["month","Month"],["year","Year"]].map(k=>
+          '<button data-kind="'+k[0]+'" aria-pressed="'+(trendKind===k[0])+'">'+k[1]+"</button>").join("")+
+      "</div>"+
+      '<div class="tnav"><button id="tPrev" aria-label="Earlier">&lsaquo;</button>'+
+        "<b>"+esc(sp.label)+"</b>"+
+        '<button id="tNext" aria-label="Later">&rsaquo;</button></div>'+
+      '<div class="card"><div class="tchart">'+
+        (g>0?'<i class="goalline" style="bottom:'+(g/peak*100)+'%"></i>':"")+bars+"</div>"+
+        '<div class="tx">'+labs+"</div>"+
+        '<p class="footnote" style="margin-top:10px">Tap a bar to open that day.'+
+        (g>0?" The line is your "+fmt(g)+" kcal goal.":"")+"</p></div>"+
+      '<div class="big">'+
+        '<div class="stat"><div class="v">'+fmt(st.kcal)+'</div><div class="k">avg kcal on days you logged</div></div>'+
+        '<div class="stat"><div class="v">'+st.logged+"/"+st.total+'</div><div class="k">days logged</div></div>'+
+      "</div>"+
+      '<div class="card"><span class="lab">Average day</span>'+
+        '<div class="bar"><div class="t">Protein</div><div class="n">'+fmt(st.p,1)+" g</div></div>"+
+        '<div class="bar"><div class="t">Carbs</div><div class="n">'+fmt(st.c,1)+" g</div></div>"+
+        '<div class="bar"><div class="t">Fat</div><div class="n">'+fmt(st.f,1)+" g</div></div>"+
+        (g>0?'<p class="footnote" style="margin-top:8px">Under goal on '+st.hit+" of "+
+          st.logged+" logged days.</p>":"")+
+      "</div>";
+  };
+  const mount=()=>{
+    const host=document.querySelector(".tbody");
+    if(!host)return;
+    host.innerHTML=draw();
+    host.querySelectorAll("[data-kind]").forEach(b=>b.onclick=()=>{trendKind=b.dataset.kind;mount()});
+    host.querySelector("#tPrev").onclick=()=>{trendAnchor=shiftAnchor(-1);mount()};
+    host.querySelector("#tNext").onclick=()=>{trendAnchor=shiftAnchor(1);mount()};
+    host.querySelectorAll("[data-day]").forEach(b=>b.onclick=()=>{
+      S.date=b.dataset.day; closeSheet(); render();
+      toast(new Date(b.dataset.day+"T12:00:00").toLocaleDateString(undefined,{month:"long",day:"numeric"}));
+    });
+  };
+  function shiftAnchor(n){
+    const a=parseKey(trendAnchor);
+    if(trendKind==="week")a.setDate(a.getDate()+7*n);
+    else if(trendKind==="month")a.setMonth(a.getMonth()+n);
+    else a.setFullYear(a.getFullYear()+n);
+    return dkey(a);
+  }
+  openSheet("Progress",'<div class="tbody"></div>',mount);
+}
+
+/* ---------------- who contributed a nutrient ---------------- */
+const NUT=[{i:0,n:"Calories",u:"kcal",d:0},{i:1,n:"Protein",u:"g",d:1},
+  {i:2,n:"Carbs",u:"g",d:1},{i:3,n:"Fat",u:"g",d:1}]
+  .concat(MICROS.map(m=>({i:m.i,n:m.n,u:m.u,d:m.d,cap:m.cap})));
+const nutOf=i=>NUT.find(x=>x.i===i)||{i:i,n:"Nutrient",u:"",d:1};
+
+function openContributors(idx){
+  const nu=nutOf(idx), list=entries(), tg=goal(idx);
+  const rows=list.map(e=>({e:e,v:(e.n[idx]||0)*e.qty}))
+                 .filter(r=>r.v>0).sort((a,b)=>b.v-a.v);
+  const tot=rows.reduce((a,r)=>a+r.v,0);
+  const top=rows.length?rows[0].v:0;
+  const pct=tg>0?tot/tg*100:0;
+  const body=
+    '<div class="cbig"><div class="cv">'+fmt(tot,nu.d)+'<small>'+esc(nu.u)+"</small></div>"+
+      '<div class="ck">'+(tg>0?"of "+fmt(tg,nu.d)+" "+esc(nu.u)+" "+
+        (nu.cap?"ceiling":"goal")+" &middot; "+Math.round(pct)+"%":"no goal set")+"</div></div>"+
+    (tg>0?'<div class="track"><i class="'+(nu.cap&&pct>100?"over":"")+'" style="width:'+
+      Math.min(100,pct)+'%"></i></div>':"")+
+    (rows.length
+      ? '<div class="sectlab" style="padding-left:3px">What put it there</div><div class="card clist">'+
+        rows.map(r=>'<button class="crow" data-entry="'+esc(r.e.id)+'">'+
+          '<div class="cmain"><div class="cn">'+esc(r.e.name)+
+            (r.e.qty!==1?' <u>&times;'+fmt(r.e.qty,2)+"</u>":"")+"</div>"+
+          '<div class="csub">'+esc(r.e.meal)+(r.e.brand?" &middot; "+esc(r.e.brand):"")+"</div>"+
+          '<div class="cbar"><i style="width:'+(top>0?r.v/top*100:0)+'%"></i></div></div>'+
+          '<div class="crt"><div class="cvv">'+fmt(r.v,nu.d)+"</div>"+
+          '<div class="csub">'+(tot>0?Math.round(r.v/tot*100):0)+"%</div></div></button>").join("")+
+        "</div>"+
+        '<p class="footnote">Tap any line to change how much of it you logged.</p>'
+      : '<div class="empty">Nothing today has any '+esc(nu.n.toLowerCase())+" in it.</div>");
+  openSheet(nu.n,body,()=>{
+    document.querySelectorAll("[data-entry]").forEach(b=>b.onclick=()=>{
+      closeSheet(); openEntry(b.dataset.entry);
+    });
+  });
 }
 
 /* ---------------- sheet plumbing ---------------- */
@@ -2339,6 +2653,9 @@ function openBatchForm(existing){
         '<div class="field"><label>Keeps for (days)</label><input id="mShelf" type="number" inputmode="numeric" step="1" value="'+draft.shelfDays+'"></div>'+
       "</div>"+
       '<button class="btn" id="mSave">'+(editing?"Save meal":"Save meal")+"</button>"+
+      '<button class="btn ghost" id="mRecipe" style="margin-top:9px">Save as recipe</button>'+
+      '<p class="note" style="margin:9px 3px 0">A recipe keeps the ingredient list so you can cook '+
+      "it again without typing it out. You adjust the amounts when you do.</p>"+
       (editing?'<button class="btn danger" id="mDel" style="margin-top:9px">Delete this meal</button>':"")+
     "</div>",
     ()=>{
@@ -2355,6 +2672,8 @@ function openBatchForm(existing){
           draft.cookedAt=dkey(today)===dv?Date.now():picked.getTime()+12*36e5;
         }
       };
+      const mr=document.getElementById("mRecipe");
+      if(mr)mr.onclick=()=>{read();saveDraftAsRecipe()};
       ["mName","mYield","mUnit","mShelf","mDate"].forEach(id=>{
         document.getElementById(id).onchange=()=>{read();openBatchForm()};
       });

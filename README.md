@@ -47,6 +47,15 @@ full-screen with its own icon and behaves like any other app.
 - **Micronutrients**: fiber, sugars, saturated fat, cholesterol, sodium,
   potassium, calcium, iron, magnesium, zinc, vitamins A, C, D and B12 — each as
   a percentage of the FDA Daily Value. Limit-type nutrients turn red past 100%.
+- **Tap any nutrient** — the calorie figure, a macro tile, or any micronutrient
+  row — to see every food that contributed to it, ranked, with each one's share.
+  Tap a line to change how much of it you logged.
+- **Progress**: tap the date to open week, month or year. Bars per day against
+  your calorie goal, averages over days you actually logged, and tapping any bar
+  jumps straight to that day.
+- **Recipes**: save a meal's ingredient list, then cook it again later — every
+  ingredient comes back on a slider so you can nudge what you used more or less
+  of, with per-serving numbers updating as you slide.
 - Day-by-day navigation, meals split into breakfast / lunch / dinner / snacks,
   and a JSON backup you can download and restore.
 
