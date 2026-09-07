@@ -236,7 +236,70 @@ function keypad(onDone){
   w.querySelector("#pxKpX").onclick=function(){ w.remove(); onDone(null) };
   return w;
 }
+window.MLPixelDay={html:pxDay,bind:bindPxDay};
 window.MLPixelScreens={welcome:welcome, starter:starter, keypad:keypad, phone:phone, box:box};
+
+/* =================== the day screen, rebuilt to the sheet ===================
+   Not a restyle of the existing markup -- the sheet's layout is genuinely
+   different: a party slot, a dark KCAL panel, dark macro rows with coloured
+   dots, and a menu box where the app had segment tabs. */
+var MEALS=["Breakfast","Lunch","Dinner","Snacks"];
+function pxDay(){
+  var t=totals(), g=goal(0), left=g-t[0], over=left<0;
+  var d=parseKey(S.date), today=new Date(); today.setHours(0,0,0,0);
+  var lead=G()&&G().state().started?G().party()[0]:null;
+  var counts={}; MEALS.forEach(function(m){ counts[m]=0 });
+  (entries()||[]).forEach(function(e){ if(counts[e.meal]!==undefined) counts[e.meal]++ });
+  var macro=[[1,"PROTEIN","p"],[2,"CARBS","c"],[3,"FAT","f"]];
+
+  return '<div class="pxday">'+
+    '<div class="pxdate">'+esc(d.toLocaleDateString(undefined,{weekday:"short"}))+", "+
+      esc(d.toLocaleDateString(undefined,{month:"short"}))+" "+d.getDate()+"</div>"+
+    (lead?'<div class="pxslot"><img src="'+G().sprite(lead.s)+'" alt="">'+
+      '<div class="pxslotmain"><div class="pxslotname"><span>'+esc(G().nameOf(lead))+
+        "</span><span>Lv "+lead.lvl+"</span></div>"+
+      '<div class="hpline"><span class="hplab">HP</span>'+
+        '<div class="hpb"><i style="width:'+G().barPct(lead.hp,lead.max)+'%"></i></div></div>'+
+      "</div></div>":"")+
+    '<div class="pxkcal"><div class="pxbig">'+fmt(t[0])+"<small>KCAL</small></div>"+
+      '<div class="pxrem"><b class="'+(over?"over":"")+'">'+fmt(Math.abs(left))+"</b>"+
+      "<span>"+(over?"over":"remaining")+"</span></div></div>"+
+    '<div class="pxmac">'+macro.map(function(m){
+      return '<button class="pxmacrow" data-nut="'+m[0]+'">'+
+        '<i class="dot '+m[2]+'"></i><b class="'+m[2]+'">'+m[1]+"</b>"+
+        "<span>"+fmt(t[m[0]],1)+" / "+fmt(goal(m[0]))+"g</span></button>";
+    }).join("")+"</div>"+
+    '<div class="pxmenu" id="pxDayMenu">'+
+      [["log","Log"],["micro","Micronutrients"],["water","Water"]].map(function(x){
+        return '<button data-tab="'+x[0]+'" class="'+(S.tab===x[0]?"on":"")+'">'+x[1]+"</button>";
+      }).join("")+"</div>"+
+    (S.tab==="log"
+      ? '<div class="pxlist">'+MEALS.map(function(m){
+          return '<button class="pxmeal" data-meal="'+m+'"><i class="mi '+m.toLowerCase()+'"></i>'+
+            "<b>"+m+"</b><span>"+counts[m]+"</span></button>";
+        }).join("")+"</div>"+
+        '<button class="pxadd" id="pxAdd"><span>+</span> Add food<i class="tri"></i></button>'
+      : '<div class="pxpanel">'+(S.tab==="micro"?microHTML():waterHTML())+"</div>")+
+  "</div>";
+}
+function bindPxDay(el){
+  el.querySelectorAll("[data-tab]").forEach(function(b){
+    b.onclick=function(){ S.tab=b.dataset.tab; render() };
+  });
+  el.querySelectorAll("[data-nut]").forEach(function(b){
+    b.onclick=function(){ openContributors(+b.dataset.nut) };
+  });
+  el.querySelectorAll("[data-meal]").forEach(function(b){
+    b.onclick=function(){ openSearch({mode:"log",meal:b.dataset.meal}) };
+  });
+  var a=el.querySelector("#pxAdd");
+  if(a) a.onclick=function(){ openSearch({mode:"log",meal:mealOfNow()}) };
+  /* the sub-panels keep their own wiring */
+  if(S.tab==="water"&&typeof bindWater==="function") bindWater(el);
+  el.querySelectorAll("[data-entry]").forEach(function(b){
+    b.onclick=function(){ openEntry(b.dataset.entry) };
+  });
+}
 
 /* ---------- wire in without replacing anything permanently ---------- */
 function hook(){
@@ -259,8 +322,20 @@ function hook(){
     if(st && st.enc) updatePixelBattle();
   }, 160);
   window.addEventListener("pagehide",function(){ clearInterval(poll) });
+  /* the day screen is rebuilt rather than restyled */
+  var _r=window.render;
+  window.render=function(){
+    _r.apply(this,arguments);
+    if(!ON()) return;
+    var day=document.getElementById("navday");
+    if(day && day.getAttribute("aria-current")==="true"){
+      var el=document.getElementById("screen");
+      if(el && !el.querySelector(".pxday")){ el.innerHTML=pxDay(); bindPxDay(el) }
+    }
+  };
   /* first paint, if a battle is already up when the theme is switched on */
   if(ON() && g.state() && g.state().enc) renderPixelBattle();
+  if(ON()) window.render();
 }
 window.MLPixel={typeOut:typeOut, dialog:dialog, renderBattle:renderPixelBattle,
                 update:updatePixelBattle,

@@ -1,5 +1,5 @@
 /* Macro Ledger service worker — makes the app work with the network off, for good. */
-const V = "macro-ledger-v19";
+const V = "macro-ledger-v20";
 const SHELL = [
   "./", "./index.html", "./manifest.webmanifest",
   "./manifest-gator.webmanifest", "./manifest-comic.webmanifest", "./manifest-bee.webmanifest",

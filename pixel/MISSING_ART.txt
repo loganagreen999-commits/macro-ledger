@@ -51,5 +51,18 @@ bold on a pixel face thickens the stems unevenly and pulls it off the
 grid. The theme is scaled up ~18% to compensate for the face's small
 x-height, otherwise it reads much smaller than the rest of the app.
 
-NOTHING IS OUTSTANDING. Every asset requested has been supplied, wired
-and checked rendering in a real browser.
+ONE THING IS OUTSTANDING
+------------------------
+meal icons — four sprites, 24 x 24 each, transparent:
+
+    icon-breakfast.png   the stack of pancakes from 05_home_bottom
+    icon-lunch.png       the green bento / veg
+    icon-dinner.png      the red bowl
+    icon-snacks.png      the pink berries
+
+They sit at the left of each row in the meal list on the day screen.
+Right now they are plain coloured squares in roughly the right hues,
+which is the one place the day screen still departs from the sheet.
+
+Everything else requested has been supplied, wired, and checked
+rendering in a real browser.

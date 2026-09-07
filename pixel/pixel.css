@@ -288,3 +288,95 @@
 [data-game-theme="pixel"] .camwrap .aim{display:none}
 [data-game-theme="pixel"] .camwrap{border:3px solid var(--px-ink);border-radius:7px;
   box-shadow:inset 0 0 0 2px var(--px-mint)}
+
+/* =====================================================================
+   The day screen as the sheet draws it: light green ground, a party
+   slot, dark panels for the numbers, a menu box, then the meal list.
+   ===================================================================== */
+[data-game-theme="pixel"] #screen{background:var(--px-green);padding:10px 11px 8px}
+[data-game-theme="pixel"] body{background:var(--px-green)}
+.pxday{display:flex;flex-direction:column;gap:9px}
+.pxdate{text-align:right;font-size:16px;color:var(--px-ink);padding:1px 3px 0}
+
+/* party slot */
+.pxslot{display:flex;align-items:center;gap:9px;background:var(--px-cream);
+  border:3px solid var(--px-ink);border-radius:7px;
+  box-shadow:inset 0 0 0 2px var(--px-mint),0 3px 0 rgba(10,16,17,.5);padding:7px 10px}
+.pxslot>img{width:46px;height:46px;flex:0 0 auto;image-rendering:pixelated;object-fit:contain}
+.pxslotmain{flex:1;min-width:0}
+.pxslotname{display:flex;justify-content:space-between;gap:10px;font-size:16px;color:var(--px-ink)}
+.pxslot .hpline{display:flex;align-items:center;gap:6px;margin-top:5px}
+.pxslot .hplab{width:26px;height:13px;flex:0 0 auto;text-indent:-999px;overflow:hidden;
+  background:url("hp-label.png") left center/contain no-repeat;image-rendering:pixelated}
+.pxslot .hpb{flex:1;height:11px}
+
+/* the two dark panels */
+.pxkcal,.pxmac{background:var(--px-deep);border:3px solid var(--px-ink);border-radius:7px;
+  box-shadow:inset 0 0 0 2px #17565E,0 3px 0 rgba(10,16,17,.5);color:var(--px-cream)}
+.pxkcal{display:flex;align-items:center;justify-content:space-between;padding:11px 14px}
+.pxbig{font-size:38px;line-height:1;color:#fff;display:flex;align-items:baseline;gap:7px}
+.pxbig small{font-size:15px;color:var(--px-cream)}
+.pxrem{text-align:right;line-height:1.15}
+.pxrem b{display:block;font-size:26px;color:#fff}
+.pxrem b.over{color:#FF8C7A}
+.pxrem span{font-size:13px;color:#BFE3DC}
+
+.pxmac{padding:4px 0}
+.pxmacrow{display:flex;align-items:center;gap:9px;width:100%;text-align:left;
+  padding:9px 14px;background:none;color:var(--px-cream);font-size:15px}
+.pxmacrow+.pxmacrow{border-top:2px solid #17565E}
+.pxmacrow:active{background:#17565E}
+.pxmacrow .dot{width:13px;height:13px;flex:0 0 auto;border-radius:3px;
+  border:2px solid var(--px-ink)}
+.pxmacrow .dot.p{background:#E8524A} .pxmacrow .dot.c{background:#E8C33C}
+.pxmacrow .dot.f{background:#4AA3E8}
+.pxmacrow b{flex:1;font-weight:400}
+.pxmacrow b.p{color:#FF6E63} .pxmacrow b.c{color:#F5D34E} .pxmacrow b.f{color:#68B8F5}
+.pxmacrow span{color:#fff;font-size:15px}
+
+/* the menu box, where the app had segment tabs */
+.pxday .pxmenu{display:block;padding:8px 8px}
+.pxday .pxmenu button{display:flex;align-items:center;gap:8px;width:100%;
+  padding:3px 8px;font-size:16px;color:var(--px-ink);background:none;text-align:left}
+.pxday .pxmenu button::before{content:"";width:9px;height:11px;flex:0 0 auto;opacity:0;
+  background:url("arrow-right.png") center/contain no-repeat;image-rendering:pixelated}
+.pxday .pxmenu button.on::before{opacity:1}
+.pxday .pxmenu button:active{background:var(--px-green)}
+
+/* meal list: one box, thin rules between */
+.pxlist{background:var(--px-cream);border:3px solid var(--px-ink);border-radius:7px;
+  box-shadow:inset 0 0 0 2px var(--px-mint),0 3px 0 rgba(10,16,17,.5);padding:3px 0}
+.pxmeal{display:flex;align-items:center;gap:11px;width:100%;text-align:left;
+  padding:11px 13px;background:none;font-size:16px;color:var(--px-ink)}
+.pxmeal+.pxmeal{border-top:2px solid #CFCBBB}
+.pxmeal:active{background:var(--px-green)}
+.pxmeal b{flex:1;font-weight:400}
+.pxmeal .mi{width:24px;height:24px;flex:0 0 auto;border:2px solid var(--px-ink);border-radius:4px}
+.pxmeal .mi.breakfast{background:#F2B84B} .pxmeal .mi.lunch{background:#7FC24B}
+.pxmeal .mi.dinner{background:#E8635A}    .pxmeal .mi.snacks{background:#D46FA8}
+
+.pxadd{display:flex;align-items:center;gap:9px;width:100%;background:var(--px-cream);
+  border:3px solid var(--px-ink);border-radius:7px;
+  box-shadow:inset 0 0 0 2px var(--px-mint),0 3px 0 rgba(10,16,17,.5);
+  padding:13px 14px;font-size:17px;color:var(--px-ink)}
+.pxadd span{color:var(--px-grass);font-size:20px}
+.pxadd .tri{margin-left:auto;width:15px;height:12px;
+  background:url("arrow-down.png") center/contain no-repeat;image-rendering:pixelated}
+.pxadd:active{transform:translateY(3px);box-shadow:inset 0 0 0 2px var(--px-mint)}
+.pxpanel{background:var(--px-cream);border:3px solid var(--px-ink);border-radius:7px;
+  box-shadow:inset 0 0 0 2px var(--px-mint),0 3px 0 rgba(10,16,17,.5);padding:12px}
+
+/* The sheet has no trainer strip and no floating button: the party slot at the
+   top of the day screen is the strip, and "+ Add food" is a row in the list. */
+[data-game-theme="pixel"] .gstrip{display:none}
+[data-game-theme="pixel"] #fab{display:none}
+[data-game-theme="pixel"] body{padding-bottom:calc(78px + env(safe-area-inset-bottom))}
+/* the wordmark's second half has to read against the dark bar */
+[data-game-theme="pixel"] .mark span{color:#5FE0B4}
+[data-game-theme="pixel"] .top{padding:10px 14px}
+[data-game-theme="pixel"] .tabbar{background:var(--px-teal);border-top:3px solid var(--px-ink)}
+[data-game-theme="pixel"] .tabbar button{color:#BFE3DC}
+[data-game-theme="pixel"] .tabbar button[aria-current="true"]{
+  color:var(--px-ink);background:var(--px-green)}
+
+[data-game-theme="pixel"] .mark span{color:#6EEFC0}
