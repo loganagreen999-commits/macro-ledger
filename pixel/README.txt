@@ -1,6 +1,7 @@
 pixel/ — the Shamu theme
 
-Turn it on:  PC tab -> Look -> Shamu.  Turn it off: pick Modern or Handheld.
+Turn it on:  PC tab -> Look -> Emerald.  Turn it off: pick another look.
+There are four: Modern, Handheld, Emerald (this one), Shamu (orange/blue).
 Nothing here touches your data, and no file in this folder loads any earlier
 behaviour; the theme is entirely additive and reverting is instant.
 

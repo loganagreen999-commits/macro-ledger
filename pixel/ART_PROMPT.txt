@@ -1,0 +1,75 @@
+================================================================
+PASTE THIS WHOLE THING INTO THE IMAGE GENERATOR
+================================================================
+It asks for ONE sheet containing 16 separate small sprites.
+Do not ask it for screens or mockups — I cannot cut a mockup into
+working interface. I need the pieces; I build the screens.
+
+----------------------------------------------------------------
+THE PROMPT
+----------------------------------------------------------------
+Create a single PNG asset sheet of 16 individual pixel-art icons for
+a mobile nutrition app with a retro handheld-RPG look. Original art
+only — do not copy or trace any existing game's artwork.
+
+BACKGROUND: fully transparent. No white, no checkerboard, no colour
+behind anything. This is the single most important requirement.
+
+LAYOUT: a 4 x 4 grid. Each icon centred in its own cell with at least
+40px of empty space around it. Print its filename in small plain white
+text directly under each icon. Do not draw boxes, frames or borders
+around the cells.
+
+STYLE: crisp pixel art, roughly 2px black outline (#0A1011) around every
+shape, flat fills with one lighter tint for a highlight and one darker
+tint for shade. No gradients, no soft shadows, no anti-aliased edges,
+no glow. Read clearly at 24 pixels tall.
+
+PALETTE — use only these:
+  outline    #0A1011      cream      #F6F2E5
+  deep teal  #0B3940      mid teal   #0C6760
+  bright grn #4AC089      light grn  #9EDAA0
+  mint       #EDF3EF      slate      #3B4950
+  red        #E8524A      yellow     #E8C33C
+  blue       #4AA3E8      orange     #F2B84B
+  pink       #D46FA8      brown      #8A5A3C
+
+THE 16 ICONS, in this order:
+
+ ROW 1 — meal types, 24x24 each
+  1  icon-breakfast.png   a stack of three pancakes with a butter pat
+  2  icon-lunch.png       a green bento box with rice and vegetables
+  3  icon-dinner.png      a red bowl of food seen from above
+  4  icon-snacks.png      a small pile of pink berries
+
+ ROW 2 — water, on the same 24x24 grid except where noted
+  5  bottle.png           48x64, a clear plastic water bottle, blue
+                          cap, water visible inside
+  6  glass-empty.png      24x28, an empty drinking glass, thin blue
+                          outline, no fill
+  7  glass-full.png       24x28, the same glass filled with blue water
+  8  droplet.png          16x20, a single blue water droplet
+
+ ROW 3 — bottom tab bar icons, 24x24 each, single flat colour on
+          transparent so they can be recoloured in code
+  9  tab-day.png          a list: three horizontal lines with a dot
+                          at the left of each
+ 10  tab-meals.png        a cooking pot with a lid and steam
+ 11  tab-goals.png        a target with three rings and a centre dot
+ 12  tab-lift.png         a dumbbell seen from the side
+
+ ROW 4 — the rest of the chrome
+ 13  tab-pc.png           24x24, a boxy desktop computer with a stand
+ 14  gear.png             20x20, a settings cog, eight teeth
+ 15  plus.png             16x16, a thick plus sign
+ 16  pokeball-small.png   16x16, a simple two-tone ball with a band
+                          across the middle and a centre dot
+
+----------------------------------------------------------------
+WHEN IT COMES BACK
+----------------------------------------------------------------
+Save it into Desktop\ShamuStopper\ under any name and tell me.
+I will slice it, check each piece by eye, and wire it in.
+
+If any icon comes back on a solid background instead of transparent,
+say so — I can cut it out, but it is cleaner to regenerate.

@@ -491,6 +491,12 @@ function hpBar(m){
 /* ---- the strip along the top of the day screen ---- */
 function paint(){
   if(!G.started||!DEX) return;
+  /* the Shamu look has its own level strip; two of them stacked is a mess */
+  if(G.theme==="shamu"){
+    var old=document.getElementById("gameStrip");
+    if(old) old.remove();
+    return;
+  }
   var scr=document.getElementById("screen");
   var onDay=document.getElementById("navday")&&
             document.getElementById("navday").getAttribute("aria-current")==="true";
@@ -710,12 +716,13 @@ function pcHTML(){
       "</p></div>"+
     '<div class="sectlab">Look</div>'+
     '<div class="card"><div class="chips" id="gtheme">'+
-      [["modern","Modern"],["gba","Handheld"],["pixel","Shamu"]].map(function(t){
+      [["modern","Modern"],["gba","Handheld"],["pixel","Emerald"],["shamu","Shamu"]].map(function(t){
         return '<button data-theme="'+t[0]+'" aria-pressed="'+(G.theme===t[0])+'">'+t[1]+"</button>";
       }).join("")+"</div>"+
-      '<p class="note">Handheld is a plain retro pass. <b>Shamu</b> is the full design: the boxes, '+
+      '<p class="note">Handheld is a plain retro pass. <b>Emerald</b> is the full design: the boxes, '+
       "buttons and battle screen drawn from the art sheet, with text that types itself out. "+
-      "Switch back any time \u2014 nothing about your data changes.</p></div>";
+      "<b>Shamu</b> is the original orange and blue one, with the whale, the gator and the geese. "+
+      "Switch any time \u2014 nothing about your data changes.</p></div>";
 }
 function bindPC(el){
   el.querySelectorAll("[data-mon]").forEach(function(b){
@@ -725,9 +732,30 @@ function bindPC(el){
     b.onclick=function(){ G.theme=b.dataset.theme; save(); applyTheme(); render(); };
   });
 }
-var THEMES={gba:1,pixel:1,modern:1};
+var THEMES={gba:1,pixel:1,shamu:1,modern:1};
+/* The Shamu look already exists as a handed-out skin, so the theme reuses its
+   stylesheet and script rather than duplicating them. They are fetched once,
+   the first time anyone picks it. */
+var shamuLoaded=false;
+function loadShamu(){
+  if(shamuLoaded) return;
+  shamuLoaded=true;
+  var l=document.createElement("link");
+  l.rel="stylesheet"; l.href="shamu/shamu.css"; document.head.appendChild(l);
+  var sc=document.createElement("script");
+  sc.src="shamu/shamu.js"; sc.defer=true; document.head.appendChild(sc);
+}
 function applyTheme(){
-  document.documentElement.setAttribute("data-game-theme", THEMES[G.theme]?G.theme:"modern");
+  var t=THEMES[G.theme]?G.theme:"modern";
+  document.documentElement.setAttribute("data-game-theme", t);
+  if(t==="shamu"){
+    loadShamu();
+    document.documentElement.setAttribute("data-skin","shamu");
+  }else if(document.documentElement.getAttribute("data-skin")==="shamu"
+           && !/[?&]skin=shamu/.test(location.search)){
+    /* leave the handed-out link alone; only undo what the theme set */
+    document.documentElement.removeAttribute("data-skin");
+  }
 }
 
 /* ---- boot ---- */
