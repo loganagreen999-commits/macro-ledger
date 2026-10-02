@@ -1,2 +1,4 @@
 node_modules/
 .DS_Store
+t/node_modules/
+t/package*.json

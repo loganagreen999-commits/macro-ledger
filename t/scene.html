@@ -1,0 +1,31 @@
+<!doctype html><html><head><style>html,body{margin:0;background:#000}iframe{width:390px;height:844px;border:0;display:block}</style></head><body>
+<script>
+const q=new URLSearchParams(location.search), theme=q.get("theme")||"modern", scene=q.get("scene")||"battle";
+localStorage.clear();
+const day=n=>Date.parse("2026-09-"+String(n).padStart(2,"0")+"T18:00:00");
+localStorage.setItem("ml.game",JSON.stringify({v:1,started:true,player:{lvl:6,xp:40},party:[1],box:[],items:{pokeball:5,greatball:2,potion:2,rarecandy:1},seen:{},caught:{},nextUid:2,day:null,streak:2,mult:1.3,spent:{},goalsHit:{},missions:[],week:null,theme:theme,enc:null,log:[]}));
+const ing=(name,serving,qty,k,p)=>({name,brand:"",serving,grams:0,qty,n:[k,p,10,5,2,1,1,200,0,0,1,0,0,0,0,0,0,0]});
+localStorage.setItem("ml.recipes",JSON.stringify([{id:"r1",name:"Turkey chili",yieldQty:6,yieldUnit:"bowls",shelfDays:5,ing:[ing("Ground turkey","4 oz",4,170,22),ing("Kidney beans","1 can",2,300,20),ing("Diced tomatoes","1 can",2,80,4)],saved:1,used:3},
+  {id:"r2",name:"Overnight oats",yieldQty:4,yieldUnit:"jars",shelfDays:4,ing:[ing("Rolled oats","1/2 cup",4,150,5),ing("Greek yogurt","1 cup",2,130,22)],saved:1,used:1}]));
+localStorage.setItem("ml.batches",JSON.stringify([{id:"b1",name:"Turkey chili",cookedAt:Date.now()-2*864e5,shelfDays:5,yieldQty:9,yieldUnit:"bowls",mult:1.5,recipeId:"r1",ing:[ing("Ground turkey","4 oz",6,170,22)]},
+  {id:"b2",name:"Chicken and rice",cookedAt:Date.now()-5.5*864e5,shelfDays:5,yieldQty:6,yieldUnit:"cups",ing:[ing("Chicken","4 oz",4,180,30)]}]));
+const now=Date.now(), P=(name,group,d,qty,brand)=>({id:name,name,brand:brand||"",group,qty:qty||1,added:now,expires:now+d*864e5});
+localStorage.setItem("ml.pantry",JSON.stringify([P("Strawberries","produce",1),P("Baby spinach","produce",3),P("Greek yogurt","dairy",9,4,"Fage"),P("Chicken thighs","meat",2),P("Sourdough","bakery",5),P("Frozen peas","frozen",110),P("Jasmine rice","staples",300),P("Milk","dairy",-1)]));
+localStorage.setItem("ml.k.seg",JSON.stringify(q.get("seg")||"cooked"));
+localStorage.setItem("ml.lift",JSON.stringify({v:1,split:"ppl",unit:"lb",schedule:{[new Date().getDay()]:"dLegs"},prs:{"bench press":{e1rm:215.8,weight:185,reps:5,at:day(21),ex:"Bench press"}},draft:null,
+  days:[{id:"dPush",name:"Push"},{id:"dPull",name:"Pull"},{id:"dLegs",name:"Legs"}],
+  sessions:[{id:"s3",dayId:"dPush",dayName:"Push",at:day(28),sets:[{ex:"Bench press",reps:8,weight:165},{ex:"Bench press",reps:7,weight:165},{ex:"Incline DB press",reps:10,weight:60},{ex:"Dips",reps:12,weight:0}]},
+            {id:"s1",dayId:"dPush",dayName:"Push",at:day(21),sets:[{ex:"Bench press",reps:5,weight:185},{ex:"OHP",reps:8,weight:95},{ex:"Lateral raise",reps:15,weight:20}]}]}));
+const f=document.createElement("iframe"); f.src="app/index.html"; document.body.appendChild(f);
+f.onload=()=>setTimeout(()=>{
+  const w=f.contentWindow, d=f.contentDocument, MG=w.MLGame, S=MG.tracker();
+  if(!MG.state().box.length){ const m=MG.makeMon("charmander",12); m.u=1; m.hp=Math.round(m.max*0.62); MG.state().box.push(m); MG.state().party=[1]; MG.save(); }
+  if(scene==="battle"){ MG.startEncounter("pidgey",9); setTimeout(()=>{ const e=MG.state().enc; e.mon.hp=Math.round(e.mon.max*0.35); MG.renderBattle(); d.getElementById("bText").textContent="What will Charmander do?"; d.getElementById("bMenu").classList.remove("busy"); d.querySelectorAll("#bMenu button").forEach(b=>b.disabled=false); d.getElementById("bFoeBox").classList.add("draining"); },300); }
+  if(scene==="meals"){ S.view="meals"; w.render(); }
+  if(scene==="cook"){ S.view="meals"; w.render(); w.MLKitchen.openCook(S.recipes[0]); setTimeout(()=>{ d.querySelector('[data-mult="1.5"]').click(); const cb=d.querySelector('#kRows [data-on="1"]'); cb.checked=false; cb.dispatchEvent(new w.Event("change")); },100); }
+  if(scene==="lift"){ S.view="lift"; w.render(); }
+  if(scene==="session"){ S.view="lift"; w.render(); w.MLLift.openSession({dayId:"dPush",dayName:"Push",sets:[{ex:"Bench press",reps:8,weight:170,note:""}],at:Date.now()}); setTimeout(()=>d.querySelector('[data-ex="Bench press"]').click(),100); }
+  if(scene==="item"){ S.view="day"; w.render(); MG.award("greatball",2,"Protein goal met"); MG.award("rarecandy",1,"A personal record"); }
+  if(scene==="day"){ S.view="day"; w.render(); }
+}, 1800);
+</script></body></html>
