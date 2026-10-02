@@ -22,6 +22,12 @@ f.onload=()=>setTimeout(()=>{
   if(!MG.state().box.length){ const m=MG.makeMon("charmander",12); m.u=1; m.hp=Math.round(m.max*0.62); MG.state().box.push(m); MG.state().party=[1]; MG.save(); }
   if(scene==="battle"){ MG.startEncounter("pidgey",9); setTimeout(()=>{ const e=MG.state().enc; e.mon.hp=Math.round(e.mon.max*0.35); MG.renderBattle(); d.getElementById("bText").textContent="What will Charmander do?"; d.getElementById("bMenu").classList.remove("busy"); d.querySelectorAll("#bMenu button").forEach(b=>b.disabled=false); d.getElementById("bFoeBox").classList.add("draining"); },300); }
   if(scene==="meals"){ S.view="meals"; w.render(); }
+  if(scene==="freezer"||scene==="fridge"){
+    const B=(id,name,unit,y,days,agoDays,extra)=>Object.assign({id,name,cookedAt:Date.now()-20*864e5,shelfDays:5,yieldQty:y,yieldUnit:unit,
+      ing:[{name:"x",brand:"",serving:"1",grams:0,qty:y,n:[220,18,20,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}],frozen:true,frozenAt:Date.now()-agoDays*864e5,freezerDays:days},extra||{});
+    S.batches.push(B("f1","Turkey chili","bowls",4,90,5),B("f2","Chicken curry","cups",3,90,62),B("f3","Breakfast burritos","burritos",6,60,57),B("f4","Bolognese","cups",2,30,33));
+    w.saveBatches(); w.localStorage.setItem("ml.k.cseg",JSON.stringify(scene)); S.view="meals"; w.render(); }
+  if(scene==="freeze"){ S.view="meals"; w.render(); w.MLKitchen.openFreeze("b1"); }
   if(scene==="cook"){ S.view="meals"; w.render(); w.MLKitchen.openCook(S.recipes[0]); setTimeout(()=>{ d.querySelector('[data-mult="1.5"]').click(); const cb=d.querySelector('#kRows [data-on="1"]'); cb.checked=false; cb.dispatchEvent(new w.Event("change")); },100); }
   if(scene==="lift"){ S.view="lift"; w.render(); }
   if(scene==="session"){ S.view="lift"; w.render(); w.MLLift.openSession({dayId:"dPush",dayName:"Push",sets:[{ex:"Bench press",reps:8,weight:170,note:""}],at:Date.now()}); setTimeout(()=>d.querySelector('[data-ex="Bench press"]').click(),100); }

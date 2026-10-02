@@ -46,36 +46,156 @@ function perUnitLine(t,y,unit){
 var copy=function(o){ return JSON.parse(JSON.stringify(o)) };
 var num=function(v,d){ v=parseFloat(v); return isFinite(v)?v:d };
 
-/* =================== COOKED =================== */
+/* =================== COOKED: fridge and freezer ===================
+   Freezing a portion splits the batch in two: the frozen part runs on its own
+   freezer clock, the rest stays on the fridge one. Both keep the same
+   nutrition per unit, and anything already logged stays counted against the
+   original. Thawing does the reverse, onto a short fridge clock. */
+var SNOW='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20M4.2 6.5l15.6 9M4.2 17.5l15.6-9M9 3.5l3 2.5 3-2.5M9 20.5l3-2.5 3 2.5M3 10l3.6 1-1 3.4M21 10l-3.6 1 1 3.4M3 14l3.6-1M21 14l-3.6-1"/></svg>';
+var FREEZER_DAYS=[[30,"1 mo"],[60,"2 mo"],[90,"3 mo"],[180,"6 mo"]];
+function cseg(){ return get(K+"cseg","fridge") }
+function leftOf(b){ return Math.max(0,(parseFloat(b.yieldQty)||0)-batchUsed(b.id)) }
+/* take `portion` units off batch b into a new batch; per-unit nutrition is unchanged */
+function splitBatch(b, portion){
+  var y=parseFloat(b.yieldQty)||0; if(!(portion>0)||!(y>0)) return null;
+  var k=portion/y;
+  var nb=copy(b); nb.id=uid(); nb.yieldQty=portion;
+  nb.ing=b.ing.map(function(g){ return Object.assign(copy(g),{qty:g.qty*k}) });
+  b.ing.forEach(function(g){ g.qty=g.qty*(1-k) });
+  b.yieldQty=y-portion;
+  return nb;
+}
+function freezeBatch(id, portion, days){
+  var b=S.batches.find(function(x){return x.id===id}); if(!b) return null;
+  var left=leftOf(b), target;
+  if(portion>=left-1e-9) target=b;                  /* all of what is left: the batch itself goes in */
+  else{ target=splitBatch(b,portion); S.batches.unshift(target); }
+  target.frozen=true; target.frozenAt=Date.now(); target.freezerDays=days;
+  target.fridgeCookedAt=target.cookedAt;
+  saveBatches();
+  return target;
+}
+function thawBatch(id, portion, fridgeDays){
+  var b=S.batches.find(function(x){return x.id===id}); if(!b) return null;
+  var left=leftOf(b), target;
+  if(portion>=left-1e-9) target=b;
+  else{ target=splitBatch(b,portion); S.batches.unshift(target); }
+  target.frozen=false; target.thawedAt=Date.now();
+  target.cookedAt=Date.now(); target.shelfDays=fridgeDays;   /* the fridge clock starts at thawing */
+  saveBatches();
+  return target;
+}
+function icyBar(fr){
+  var pct=Math.round(Math.max(0,Math.min(1,fr.frac||0))*100);
+  return '<div class="icebar'+(fr.over?" spent":"")+'" role="img" aria-label="'+H(fr.label)+'">'+
+    '<i style="width:'+pct+'%"><b class="iceshine"></b></i>'+
+    '<span class="icesnow">'+SNOW+"</span></div>";
+}
+function batchCard(b){
+  var fr=freshness(b),pu=batchPerUnit(b), frozen=!!b.frozen;
+  var y=parseFloat(b.yieldQty)||0,leftQ=leftOf(b);
+  var unit=leftQ===1?singular(b.yieldUnit):b.yieldUnit;
+  var when=frozen?"Frozen "+new Date(b.frozenAt).toLocaleDateString(undefined,{month:"short",day:"numeric"})+
+      " · cooked "+new Date(b.fridgeCookedAt||b.cookedAt).toLocaleDateString(undefined,{month:"short",day:"numeric"})
+    :(b.thawedAt?"Thawed ":"Cooked ")+H(new Date(b.cookedAt).toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"}));
+  return '<div class="kcard'+(fr.over?" over":"")+(frozen?" frozen":"")+'">'+
+    '<button class="batch" data-batch="'+b.id+'">'+
+    '<div class="btop"><div><div class="bname">'+H(b.name)+(b.mult&&b.mult!==1?' <span class="kmult">×'+nQty(b.mult)+"</span>":"")+"</div>"+
+      '<div class="bsub">'+when+"</div></div>"+
+      '<span class="pill '+fr.cls+'">'+H(fr.label)+"</span></div>"+
+    (frozen?icyBar(fr):'<div class="bmeter"><i class="'+(fr.over?"gone":"")+'" style="width:'+(y>0?Math.min(100,(leftQ/y)*100):0)+'%"></i></div>')+
+    '<div class="bfoot"><span><b>'+nQty(leftQ)+" "+H(unit)+"</b>"+(frozen?" frozen":" left of "+nQty(y))+"</span>"+
+      '<span class="per">'+fmt(pu[0])+" kcal · "+fmt(pu[1])+"P "+fmt(pu[2])+"C "+fmt(pu[3])+"F / "+H(singular(b.yieldUnit))+"</span></div>"+
+    "</button>"+
+    '<div class="kside">'+
+      (frozen?'<button class="kx kthaw" data-thaw="'+b.id+'" aria-label="Thaw some of '+H(b.name)+'">'+
+          '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c3 4 6 7 6 11a6 6 0 0 1-12 0c0-4 3-7 6-11z"/></svg></button>'
+        :(leftQ>0?'<button class="kx kfreeze" data-freeze="'+b.id+'" aria-label="Freeze some of '+H(b.name)+'">'+SNOW+"</button>":""))+
+      '<button class="kx" data-toss="'+b.id+'" aria-label="Throw out what is left of '+H(b.name)+'">×</button>'+
+    "</div>"+
+  "</div>";
+}
 function cookedHTML(){
-  if(!S.batches.length)
-    return '<div class="empty"><b>Nothing cooked right now.</b><br><br>'+
+  var fridge=S.batches.filter(function(b){return !b.frozen}), freezer=S.batches.filter(function(b){return b.frozen});
+  var cur=cseg();
+  var sub='<div class="kseg2" role="tablist">'+
+    '<button role="tab" data-cseg="fridge" aria-selected="'+(cur==="fridge")+'">Fridge'+(fridge.length?" · "+fridge.length:"")+"</button>"+
+    '<button role="tab" class="ice" data-cseg="freezer" aria-selected="'+(cur==="freezer")+'">'+SNOW+"Freezer"+(freezer.length?" · "+freezer.length:"")+"</button></div>";
+  if(cur==="freezer"){
+    if(!freezer.length) return sub+'<div class="empty"><b>The freezer is empty.</b><br><br>'+
+      "Tap the snowflake on anything in the fridge to freeze some or all of it. Frozen portions get their own "+
+      "freezer timer, and you thaw them back into the fridge when you want them.</div>";
+    return sub+freezer.slice().sort(function(a,b){
+      return (a.frozenAt+(a.freezerDays||90)*864e5)-(b.frozenAt+(b.freezerDays||90)*864e5) }).map(batchCard).join("");
+  }
+  if(!fridge.length)
+    return sub+'<div class="empty"><b>Nothing in the fridge right now.</b><br><br>'+
       "Cook something from your <b>Recipe book</b> and it shows up here, with how much is left "+
       "and how many days it keeps.</div>";
-  var sorted=S.batches.slice().sort(function(a,b){return b.cookedAt-a.cookedAt});
-  return sorted.map(function(b){
-    var fr=freshness(b),pu=batchPerUnit(b);
-    var y=parseFloat(b.yieldQty)||0,used=batchUsed(b.id),leftQ=Math.max(0,y-used);
-    var unit=leftQ===1?singular(b.yieldUnit):b.yieldUnit;
-    return '<div class="kcard'+(fr.over?" over":"")+'">'+
-      '<button class="batch" data-batch="'+b.id+'">'+
-      '<div class="btop"><div><div class="bname">'+H(b.name)+(b.mult&&b.mult!==1?' <span class="kmult">×'+nQty(b.mult)+"</span>":"")+"</div>"+
-        '<div class="bsub">Cooked '+H(new Date(b.cookedAt).toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"}))+
-          " · "+b.ing.length+" ingredient"+(b.ing.length===1?"":"s")+"</div></div>"+
-        '<span class="pill '+fr.cls+'">'+H(fr.label)+"</span></div>"+
-      '<div class="bmeter"><i class="'+(fr.over?"gone":"")+'" style="width:'+(y>0?Math.min(100,(leftQ/y)*100):0)+'%"></i></div>'+
-      '<div class="bfoot"><span><b>'+nQty(leftQ)+" "+H(unit)+"</b> left of "+nQty(y)+"</span>"+
-        '<span class="per">'+fmt(pu[0])+" kcal · "+fmt(pu[1])+"P "+fmt(pu[2])+"C "+fmt(pu[3])+"F / "+H(singular(b.yieldUnit))+"</span></div>"+
-      "</button>"+
-      '<button class="kx" data-toss="'+b.id+'" aria-label="Throw out what is left of '+H(b.name)+'">×</button>'+
-    "</div>";
-  }).join("");
+  return sub+fridge.slice().sort(function(a,b){return b.cookedAt-a.cookedAt}).map(batchCard).join("");
+}
+/* how much, and for how long: a stepper and a few presets */
+function portionPicker(left, unit, id){
+  return '<div class="field"><label>How much</label><div class="qty"><button data-pstep="-1" aria-label="Less">−</button>'+
+    '<input id="'+id+'" type="text" inputmode="decimal" value="'+nQty(left)+'"><button data-pstep="1" aria-label="More">+</button>'+
+    '<span class="unit">of '+nQty(left)+" "+H(unit)+"</span></div>"+
+    '<div class="chips kpreset" style="margin-top:8px">'+
+      [[1,"1 "+singular(unit)],[left/2,"Half"],[left,"All of it"]].filter(function(x){return x[0]>0&&x[0]<=left+1e-9})
+        .map(function(x){ return '<button data-pset="'+x[0]+'">'+H(x[1])+"</button>" }).join("")+"</div></div>";
+}
+function wirePortion(id, left){
+  var inp=document.getElementById(id);
+  var step=left>=6?1:left>=2?0.5:0.25;
+  document.querySelectorAll("[data-pstep]").forEach(function(b){ b.onclick=function(){
+    var v=Math.max(step,Math.min(left,(parseFloat(inp.value)||0)+(+b.dataset.pstep)*step)); inp.value=nQty(v) } });
+  document.querySelectorAll("[data-pset]").forEach(function(b){ b.onclick=function(){ inp.value=nQty(+b.dataset.pset) } });
+  return function(){ var v=parseFloat(inp.value); return isFinite(v)&&v>0?Math.min(v,left):0 };
+}
+function openFreeze(id){
+  var b=S.batches.find(function(x){return x.id===id}); if(!b) return;
+  var left=leftOf(b), days=get(K+"freezerDays",90);
+  openSheet("Freeze "+b.name,
+    '<p class="s">Whatever you freeze moves to the <b>Freezer</b> with its own timer. The rest stays in the fridge.</p>'+
+    portionPicker(left,b.yieldUnit,"kFrQ")+
+    '<div class="field"><label>Keeps in the freezer for</label><div class="chips" id="kFrD">'+
+      FREEZER_DAYS.map(function(x){ return '<button data-fd="'+x[0]+'" aria-pressed="'+(days===x[0])+'">'+x[1]+"</button>" }).join("")+
+    "</div></div>"+
+    '<button class="btn kicebtn" id="kFrGo">'+SNOW+"Freeze it</button>",
+    function(){
+      var read=wirePortion("kFrQ",left);
+      document.querySelectorAll("[data-fd]").forEach(function(x){ x.onclick=function(){
+        days=+x.dataset.fd; document.querySelectorAll("[data-fd]").forEach(function(y){ y.setAttribute("aria-pressed",String(y===x)) }) } });
+      document.getElementById("kFrGo").onclick=function(){
+        var q=read(); if(!q){ toast("How much?"); return }
+        set(K+"freezerDays",days);
+        freezeBatch(id,q,days); set(K+"cseg","freezer");
+        closeSheet(); render(); toast(nQty(q)+" "+(q===1?singular(b.yieldUnit):b.yieldUnit)+" frozen");
+      };
+    });
+}
+function openThaw(id){
+  var b=S.batches.find(function(x){return x.id===id}); if(!b) return;
+  var left=leftOf(b), fd=3;
+  openSheet("Thaw "+b.name,
+    '<p class="s">Thawed food goes back to the <b>Fridge</b> on a fresh, short timer. Thaw only what you will eat soon.</p>'+
+    portionPicker(left,b.yieldUnit,"kThQ")+
+    '<div class="field"><label>Keeps in the fridge once thawed (days)</label><input id="kThD" type="number" inputmode="numeric" value="'+fd+'"></div>'+
+    '<button class="btn" id="kThGo">Thaw it</button>',
+    function(){
+      var read=wirePortion("kThQ",left);
+      document.getElementById("kThGo").onclick=function(){
+        var q=read(); if(!q){ toast("How much?"); return }
+        var d=num(document.getElementById("kThD").value,3)||3;
+        thawBatch(id,q,d); set(K+"cseg","fridge");
+        closeSheet(); render(); toast(nQty(q)+" "+(q===1?singular(b.yieldUnit):b.yieldUnit)+" thawing in the fridge");
+      };
+    });
 }
 function tossBatch(id){
   var b=S.batches.find(function(x){return x.id===id}); if(!b) return;
-  var left=Math.max(0,(parseFloat(b.yieldQty)||0)-batchUsed(b.id));
+  var left=leftOf(b);
   openSheet("Throw it out?",
-    '<p class="s">Clear <b>'+H(b.name)+"</b> off the list"+(left>0?" ("+nQty(left)+" "+H(b.yieldUnit)+" left)":"")+
+    '<p class="s">Clear <b>'+H(b.name)+"</b>"+(b.frozen?" from the freezer":"")+(left>0?" ("+nQty(left)+" "+H(b.yieldUnit)+" left)":"")+
     ". Anything you already logged from it stays in your log.</p>"+
     '<button class="btn danger" id="kTossYes">Throw it out</button>'+
     '<button class="btn ghost" id="kTossNo" style="margin-top:9px">Keep it</button>',
@@ -616,6 +736,9 @@ function bindKitchen(el){
   el.querySelectorAll("[data-kseg]").forEach(function(b){ b.onclick=function(){ setSeg(b.dataset.kseg) } });
   el.querySelectorAll("[data-batch]").forEach(function(b){ b.onclick=function(){ openBatch(b.dataset.batch) } });
   el.querySelectorAll("[data-toss]").forEach(function(b){ b.onclick=function(e){ e.stopPropagation(); tossBatch(b.dataset.toss) } });
+  el.querySelectorAll("[data-freeze]").forEach(function(b){ b.onclick=function(e){ e.stopPropagation(); openFreeze(b.dataset.freeze) } });
+  el.querySelectorAll("[data-thaw]").forEach(function(b){ b.onclick=function(e){ e.stopPropagation(); openThaw(b.dataset.thaw) } });
+  el.querySelectorAll("[data-cseg]").forEach(function(b){ b.onclick=function(){ set(K+"cseg",b.dataset.cseg); render() } });
   el.querySelectorAll("[data-cook]").forEach(function(b){ b.onclick=function(){
     var r=S.recipes.find(function(x){return x.id===b.dataset.cook}); if(r) openCook(r) } });
   el.querySelectorAll("[data-edit]").forEach(function(b){ b.onclick=function(){
@@ -658,7 +781,8 @@ function fabLabel(){ var s=seg(); return s==="pantry"?"Scan groceries":s==="book
 window.MLKitchen={fab:fab, html:kitchenHTML, guessGroup:guessGroup, putAway:putAway, pantry:pantry,
   daysLeft:daysLeft, startCook:startCook, cookChanges:cookChanges, makeBatch:makeBatch,
   openCook:openCook, openRecipeEditor:openRecipeEditor, openTrip:openTrip, tripAdd:tripAdd,
-  openTripReview:openTripReview, tossBatch:tossBatch, groups:GROUPS, expLabel:expLabel};
+  openTripReview:openTripReview, tossBatch:tossBatch, groups:GROUPS, expLabel:expLabel,
+  freezeBatch:freezeBatch, thawBatch:thawBatch, splitBatch:splitBatch, openFreeze:openFreeze, openThaw:openThaw};
 
 (function boot(){
   if(typeof render!=="function"||typeof openSheet!=="function"||typeof S==="undefined"){ return setTimeout(boot,60) }

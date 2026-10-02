@@ -469,6 +469,7 @@ details.more[open] summary::before{content:"− "}
 .pill.fresh{background:var(--accent-soft);color:var(--accent-ink)}
 .pill.soon{background:var(--c-soft);color:var(--c)}
 .pill.gone{background:var(--p-soft);color:var(--p)}
+.pill.frozen{background:#D8F1FF;color:#0E5C8C;box-shadow:inset 0 0 0 1px #9FD8F5}
 .bmeter{height:6px;border-radius:99px;background:var(--sunk);overflow:hidden;border:1px solid var(--line-soft);margin:10px 0 8px}
 .bmeter i{display:block;height:100%;background:var(--accent);border-radius:99px}
 .bmeter i.gone{background:var(--ink-3)}
@@ -1369,7 +1370,16 @@ function batchUsed(id){
   for(const d in S.days) for(const e of S.days[d]) if(e.batchId===id) u+=e.qty;
   return u;
 }
+function freezerLeft(ms){
+  const d=Math.ceil(ms/864e5);
+  return d>=60?Math.round(d/30)+" mo left":d>=14?Math.round(d/7)+" wk left":d+" day"+(d===1?"":"s")+" left";
+}
 function freshness(b){
+  if(b.frozen){
+    const total=(parseFloat(b.freezerDays)||90)*864e5, ms=b.frozenAt+total-Date.now();
+    if(ms<=0) return {cls:"gone",label:"Freezer burn risk",over:true,frac:0};
+    return {cls:"frozen",label:"Frozen · "+freezerLeft(ms),frac:ms/total};
+  }
   const ms=b.cookedAt+(parseFloat(b.shelfDays)||5)*864e5-Date.now();
   if(ms<=0){
     const days=Math.floor(-ms/864e5);
@@ -2531,7 +2541,7 @@ function openSearch(ctx){
             '<path d="M7 8v8M10.5 8v8M14 8v8M17 8v8"/></svg>Scan a barcode</button>'+
             '<button id="byHandBtn"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>'+
             "Add by hand</button></div>";
-          const fresh=S.batches.filter(b=>!freshness(b).over);
+          const fresh=S.batches.filter(b=>!b.frozen&&!freshness(b).over);
           if(fresh.length&&ctx.mode==="log")
             h+='<div class="sectlab">Meals in the fridge</div>'+
                fresh.map((b,i)=>resRow(batchAsFood(b),"k"+i)).join("");

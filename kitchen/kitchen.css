@@ -69,3 +69,58 @@
 [data-game-theme="pixel"] .kbtn{background:var(--px-cream);color:var(--px-ink);border:3px solid var(--px-ink);border-radius:7px;
   box-shadow:inset 0 0 0 2px var(--px-mint),0 3px 0 rgba(10,16,17,.75)}
 [data-game-theme="gba"] .kbtn,[data-game-theme="gba"] .krec,[data-game-theme="gba"] .kseg{border-radius:0!important}
+/* ---- fridge / freezer ---- */
+.kseg2{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:-4px 0 12px}
+.kseg2 button{display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 0;border-radius:10px;
+  font-size:12.5px;font-weight:600;color:var(--ink-2);background:var(--surface);border:1px solid var(--line-soft)}
+.kseg2 button svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round}
+.kseg2 button[aria-selected="true"]{background:var(--accent-soft);color:var(--accent-ink);border-color:var(--accent)}
+.kseg2 button.ice[aria-selected="true"]{background:linear-gradient(180deg,#E6F7FF,#BFE6FA);color:#0E5C8C;border-color:#7FC8EE}
+.kside{position:absolute;top:10px;right:10px;display:flex;flex-direction:column;gap:6px}
+.kside .kx{position:static}
+.kx svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.kfreeze{color:#2E8FD0!important}
+.kfreeze:active,.kfreeze:hover{background:#DDF3FF!important;color:#0E5C8C!important}
+.kthaw{color:#E07A3A!important}
+.kthaw:active,.kthaw:hover{background:var(--c-soft)!important}
+.kcard.frozen .batch{background:linear-gradient(180deg,rgba(150,215,250,.16),transparent 55%),var(--surface);
+  border-color:rgba(127,200,238,.55)}
+.kpreset button{flex:0 1 auto}
+.kicebtn{display:flex;align-items:center;justify-content:center;gap:8px;
+  background:linear-gradient(180deg,#7FD0F7,#2E8FD0)!important;color:#05263A!important}
+.kicebtn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+
+/* the freezer timer: a chunky block of video-game ice that melts down as the
+   freezer time runs out -- facets, a glint sweeping across, frost sparkles */
+.icebar{position:relative;height:18px;margin:10px 26px 9px 0;border-radius:7px;
+  background:linear-gradient(180deg,#0A2236,#123A56);border:2px solid #7FC8EE;
+  box-shadow:inset 0 2px 4px rgba(0,0,0,.45),0 0 0 1px rgba(10,40,60,.35),0 0 12px rgba(127,200,238,.35)}
+.icebar>i{position:absolute;left:0;top:0;bottom:0;border-radius:5px 3px 3px 5px;overflow:hidden;min-width:6px;
+  background:
+    repeating-linear-gradient(90deg,transparent 0 17px,rgba(20,90,140,.45) 17px 19px),
+    repeating-linear-gradient(118deg,rgba(255,255,255,.42) 0 5px,transparent 5px 11px,rgba(255,255,255,.18) 11px 13px,transparent 13px 22px),
+    linear-gradient(180deg,#F4FCFF 0%,#BDE9FC 38%,#6EC3EE 70%,#3A9AD6 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -2px 0 rgba(15,80,130,.45);
+  transition:width .9s cubic-bezier(.2,.8,.25,1)}
+.iceshine{position:absolute;top:-30%;bottom:-30%;width:26px;left:-40px;transform:skewX(-22deg);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.95),transparent);animation:iceglint 3.2s ease-in-out infinite}
+@keyframes iceglint{0%,55%{left:-40px}100%{left:110%}}
+.icebar::after{content:"";position:absolute;inset:0;border-radius:5px;pointer-events:none;
+  background:
+    radial-gradient(circle at 12% 30%,#fff 0 1px,transparent 1.6px),
+    radial-gradient(circle at 37% 70%,#fff 0 1px,transparent 1.6px),
+    radial-gradient(circle at 63% 25%,#fff 0 1.2px,transparent 1.8px),
+    radial-gradient(circle at 86% 65%,#fff 0 1px,transparent 1.6px);
+  animation:icesparkle 2.4s steps(2) infinite}
+@keyframes icesparkle{50%{opacity:.25}}
+.icesnow{position:absolute;right:-26px;top:50%;transform:translateY(-50%);width:22px;height:22px;
+  display:grid;place-items:center;border-radius:50%;background:radial-gradient(circle,#E6F7FF 0,#9ED9F7 70%);
+  box-shadow:0 0 0 2px #7FC8EE,0 0 10px rgba(127,200,238,.7);color:#0E5C8C;animation:icespin 9s linear infinite}
+.icesnow svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+@keyframes icespin{to{transform:translateY(-50%) rotate(360deg)}}
+.icebar.spent{border-color:#9AA6AD;box-shadow:inset 0 2px 4px rgba(0,0,0,.45)}
+.icebar.spent>i{filter:grayscale(.85) brightness(.8)}
+.icebar.spent .icesnow{filter:grayscale(1);animation:none}
+@media (prefers-reduced-motion:reduce){.iceshine,.icebar::after,.icesnow{animation:none}.iceshine{display:none}}
+[data-game-theme="gba"] .icebar,[data-game-theme="gba"] .icebar>i{border-radius:0!important}
+[data-game-theme="pixel"] .icebar{border:3px solid var(--px-ink);border-radius:5px}
