@@ -16,7 +16,7 @@
 @font-face{font-family:"Pixelify";src:url("pixelify-700.woff2")format("woff2");
   font-weight:700;font-display:swap}
 
-[data-game-theme="pixel"]{
+html:root[data-game-theme="pixel"]{color-scheme:light;
   --px-ink:#0A1011; --px-cream:#F6F2E5; --px-cream2:#E4E2D2;
   --px-mint:#EDF3EF; --px-green:#9EDAA0; --px-grass:#4AC089;
   --px-green2:#3EA87B; --px-teal:#0C6760; --px-deep:#0B3940; --px-slate:#3B4950;
@@ -164,69 +164,34 @@
    the whole window. It is now a fixed 3:4 stage, centred and capped, so
    it keeps a phone's shape on any display.
    ===================================================================== */
-.gbattle.px{position:fixed;inset:0;z-index:130;background:#06181C;
-  display:flex;align-items:center;justify-content:center;padding:0}
-.pxstage{position:relative;width:min(100vw,calc((100dvh - 0px) * 0.77));
-  max-width:520px;aspect-ratio:257/335;max-height:100dvh;
-  display:flex;flex-direction:column;background:var(--px-deep,#0B3940);
-  overflow:hidden}
-.pxfield{position:relative;flex:1 1 auto;min-height:0;
-  background:url("battle-bg-wide.webp") center bottom/cover no-repeat;
-  image-rendering:pixelated}
-/* stood on the platforms drawn into the supplied background, feet on the ellipse */
-.pxfoe{position:absolute;left:72%;bottom:42%;width:32%;transform:translateX(-50%)}
-.pxme{position:absolute;left:35%;bottom:6%;width:40%;transform:translateX(-50%)}
-.pxfoe img,.pxme img{width:100%;height:auto;display:block;image-rendering:pixelated;
-  filter:drop-shadow(0 3px 0 rgba(10,16,17,.35))}
-.pxme img{transform:scaleX(-1)}
-.pxplat{position:absolute;width:130%;left:-15%;bottom:-14%;z-index:-1;opacity:.95}
-/* the info boxes */
-.pxinfo{position:absolute;background:var(--px-cream,#F6F2E5);
-  border:3px solid var(--px-ink,#0A1011);border-radius:7px;
-  box-shadow:inset 0 0 0 2px var(--px-mint,#EDF3EF),0 3px 0 rgba(10,16,17,.5);
-  padding:5px 8px 6px;min-width:46%}
-.pxinfo.foe{left:4%;top:5%}
-.pxinfo.me{right:4%;bottom:26%}
-.pxinfo .nm{display:flex;justify-content:space-between;gap:10px;
-  font-size:11px;font-weight:700;text-transform:uppercase;color:var(--px-ink,#0A1011)}
-.pxinfo .hpline{display:flex;align-items:center;gap:5px;margin-top:4px}
-.pxinfo .hplab{width:26px;height:13px;flex:0 0 auto;
-  background:url("hp-label.png") left center/contain no-repeat;
-  image-rendering:pixelated;text-indent:-999px;overflow:hidden}
-.pxinfo .hpb{flex:1}
-.pxinfo .num{text-align:right;font-size:10.5px;font-weight:700;margin-top:3px}
-/* text and menu sit under the field, as in the sheet */
-.pxtext{flex:0 0 auto;margin:6px 6px 0}
-.pxacts{flex:0 0 auto;margin:6px;display:grid;grid-template-columns:1fr 1fr;gap:2px}
-.pxacts button{display:flex;align-items:center;gap:7px;padding:9px 8px;
-  font-size:13px;font-weight:700;color:var(--px-ink,#0A1011);text-align:left;border-radius:4px}
-.pxacts button::before{content:"";width:9px;height:11px;flex:0 0 auto;opacity:0;
-  background:url("arrow-right.png") center/contain no-repeat;image-rendering:pixelated}
-.pxacts button:not([disabled]):hover::before,.pxacts button.on::before{opacity:1}
-.pxacts button:active{background:var(--px-green,#9EDAA0)}
-.pxacts button[disabled]{opacity:.42}
-.pxmenuwrap{background:var(--px-cream,#F6F2E5);border:3px solid var(--px-ink,#0A1011);
-  border-radius:7px;box-shadow:inset 0 0 0 2px var(--px-mint,#EDF3EF),0 3px 0 rgba(10,16,17,.55);
-  margin:6px;padding:5px}
-/* the attack lunge and the ball wobble, done with transforms rather than art */
-@keyframes pxlunge{0%{transform:translate(0,0)}35%{transform:translate(18%,-10%)}
-  60%{transform:translate(18%,-10%)}100%{transform:translate(0,0)}}
-@keyframes pxhurt{0%,100%{opacity:1}20%,60%{opacity:.25}}
-.pxme.attacking img{animation:pxlunge .45s steps(3)}
-.pxfoe.attacking img{animation:pxlunge .45s steps(3) reverse}
-.pxhurt img{animation:pxhurt .4s steps(2)}
-@keyframes pxthrow{0%{left:8%;bottom:10%;transform:rotate(0) scale(.7)}
-  70%{left:62%;bottom:52%;transform:rotate(720deg) scale(1)}
-  100%{left:62%;bottom:44%;transform:rotate(720deg) scale(1)}}
-@keyframes pxwobble{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(12deg)}}
-.pxball{position:absolute;width:13%;z-index:5;image-rendering:pixelated;
-  animation:pxthrow .75s steps(8) forwards}
-.pxball.wobbling{animation:pxwobble .5s steps(2) 3}
-.pxburst{position:absolute;left:72%;bottom:42%;width:26%;z-index:6;transform:translateX(-50%);
-  image-rendering:pixelated;animation:pxburst .8s steps(4) forwards}
-@keyframes pxburst{0%{opacity:0;transform:translateX(-50%) scale(.4)}
-  30%{opacity:1;transform:translateX(-50%) scale(1.15)}
-  100%{opacity:0;transform:translateX(-50%) scale(1.3)}}
+.gbattle.px{background:#06181C;padding:0;align-items:center}
+.gbattle.px .bstage{width:min(100vw,520px);height:100vh;height:100dvh;background:var(--px-deep,#0B3940);overflow:hidden;
+  padding-bottom:env(safe-area-inset-bottom)}
+.gbattle.px .bfield{border:0;border-radius:0;min-height:0;
+  background:url("battle-bg-wide.webp") center bottom/cover no-repeat;image-rendering:pixelated}
+.gbattle.px .bspr.foe{left:72%;bottom:44%;width:min(32%,170px)}
+.gbattle.px .bspr.me{left:30%;bottom:5%;width:min(38%,200px)}
+.gbattle.px .bspr img{image-rendering:pixelated;filter:drop-shadow(0 3px 0 rgba(10,16,17,.35))}
+.gbattle.px .binfo{background:var(--px-cream,#F6F2E5);border:3px solid var(--px-ink,#0A1011);border-radius:7px;
+  box-shadow:inset 0 0 0 2px var(--px-mint,#EDF3EF),0 3px 0 rgba(10,16,17,.5);padding:5px 8px 6px;min-width:46%}
+.gbattle.px .binfo.foe{left:4%;top:5%}
+.gbattle.px .binfo.me{right:4%;bottom:5%}
+.gbattle.px .binfo .bname{font-size:11px;text-transform:uppercase;color:var(--px-ink,#0A1011)}
+.gbattle.px .bhplab{width:26px;height:13px;background:url("hp-label.png") left center/contain no-repeat;
+  image-rendering:pixelated;text-indent:-999px;overflow:hidden;padding:0}
+.gbattle.px .bnum{font-size:10.5px;color:var(--px-ink,#0A1011)}
+.gbattle.px .bxp{background:var(--px-slate,#3B4950);border:2px solid var(--px-ink,#0A1011);border-radius:3px;height:7px}
+.gbattle.px .bxp i{background:#4AA8E8;border-radius:0}
+.gbattle.px .btext{margin:6px 6px 0;background:var(--px-cream,#F6F2E5);color:var(--px-ink,#0A1011);
+  border:3px solid var(--px-ink,#0A1011);border-radius:7px;box-shadow:inset 0 0 0 2px var(--px-mint,#EDF3EF),0 3px 0 rgba(10,16,17,.55);
+  font-size:15px;min-height:64px}
+.gbattle.px .bcur{border-top-color:#D9695C}
+.gbattle.px .bmenu{background:var(--px-cream,#F6F2E5);border:3px solid var(--px-ink,#0A1011);border-radius:7px;
+  box-shadow:inset 0 0 0 2px var(--px-mint,#EDF3EF),0 3px 0 rgba(10,16,17,.55);margin:6px;padding:5px;gap:2px}
+.gbattle.px .bmove,.gbattle.px .bball{background:transparent;border:0;box-shadow:none;border-radius:4px;
+  color:var(--px-ink,#0A1011);font-size:13px;text-transform:none;padding:8px}
+.gbattle.px .bmove:active,.gbattle.px .bball:active{background:var(--px-green,#9EDAA0);transform:none}
+.gbattle.px .bmove u{color:#57827B}
 /* the overworld strip behind the intro, mirrored so the repeat has no seam */
 .pxworld{background:url("bg_overworld_tile.webp") repeat-x center/auto 100%;
   image-rendering:pixelated}

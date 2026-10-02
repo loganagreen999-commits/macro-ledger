@@ -1,7 +1,7 @@
 /* Shamu Stopper — orange and blue, one link only. Nothing here loads unless
    the page was opened with ?skin=shamu. */
 
-[data-skin="shamu"]{
+html:root[data-skin="shamu"]{color-scheme:dark;
   --bg:#08152B; --surface:#0F2445; --surface-2:#16305A; --sunk:#061020;
   --ink:#EAF2FF; --ink-2:#9DB6DC; --ink-3:#6B87B4;
   --line:#1E3A69; --line-soft:#152C52;
@@ -10,7 +10,7 @@
   --shadow:0 1px 2px rgba(0,0,0,.5),0 8px 24px -14px rgba(0,0,0,.9);
 }
 /* the pasta pass tab gets its own muted pink, on request */
-[data-skin="shamu"][data-pp="1"]{
+html:root[data-skin="shamu"][data-pp="1"]{color-scheme:light;
   --bg:#F6EAEE; --surface:#FFFFFF; --surface-2:#F2DDE4; --sunk:#EBD3DB;
   --ink:#3A2A31; --ink-2:#7A5D68; --ink-3:#A98D97;
   --line:#E3C7D1; --line-soft:#EFDCE3;

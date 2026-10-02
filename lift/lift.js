@@ -76,7 +76,8 @@ function finish(sess){
     if(party.length) toast("Your bench trained too — +"+monXp+" xp shared");
     if(prs.length){
       G.givePlayerXp(20+prs.length*18, prs.length===1?"a personal record":prs.length+" records");
-      G.give("rarecandy", prs.length>=3?2:1);
+      if(G.award) G.award("rarecandy", prs.length>=3?2:1, prs.length===1?"A personal record":prs.length+" personal records");
+      else G.give("rarecandy", prs.length>=3?2:1);
     }else{
       G.givePlayerXp(12,"a session logged");
     }
@@ -114,8 +115,14 @@ function liftHTML(){
       '<div class="stat"><div class="v">'+week+'</div><div class="k">sessions this week</div></div>'+
       '<div class="stat"><div class="v">'+fmt(Math.round(vol/1000))+'k</div><div class="k">'+L.unit+' lifted this week</div></div>'+
     "</div>"+
-    '<button class="btn" id="startW">'+(plan?"Log "+esc(plan.name):"Log a workout")+"</button>"+
-    (L.draft?'<button class="btn ghost" id="resumeW" style="margin-top:9px">Carry on with the one in progress</button>':"")+
+    (L.draft?'<button class="btn" id="resumeW">Carry on: '+esc(L.draft.dayName||"workout")+" · "+
+      L.draft.sets.length+" set"+(L.draft.sets.length===1?"":"s")+"</button>":"")+
+    '<div class="sectlab">Start a workout</div>'+
+    '<div class="lpick">'+L.days.map(function(d){
+      var isToday=plan&&plan.id===d.id;
+      return '<button class="lday'+(isToday?" today":"")+'" data-start="'+esc(d.id)+'"><b>'+esc(d.name)+"</b>"+
+        "<span>"+(isToday?"today":lastDone(d.id))+"</span></button>";
+    }).join("")+'<button class="lday other" data-start="__other"><b>Something else</b><span>one-off</span></button></div>'+
     '<div class="sectlab">Recent<button class="link" id="editSplit">Split</button></div>'+
     (recent.length?'<div class="card">'+recent.map(function(s){
       return '<button class="row" style="width:100%;text-align:left" data-sess="'+esc(s.id)+'">'+
@@ -150,8 +157,14 @@ function bindLift(el){
   el.querySelectorAll("[data-split]").forEach(function(b){
     b.onclick=function(){ chooseSplit(b.dataset.split) };
   });
-  var s=el.querySelector("#startW");
-  if(s) s.onclick=function(){ openSession(null) };
+  el.querySelectorAll("[data-start]").forEach(function(b){
+    b.onclick=function(){
+      if(L.draft && L.draft.sets.length && !window.confirm("You have a workout in progress ("+
+        (L.draft.dayName||"workout")+"). Start a new one and bin that?")) return;
+      var id=b.dataset.start, d=L.days.filter(function(x){return x.id===id})[0];
+      openSession({dayId:d?d.id:null, dayName:d?d.name:"Workout", sets:[], at:Date.now()});
+    };
+  });
   var r=el.querySelector("#resumeW");
   if(r) r.onclick=function(){ openSession(L.draft) };
   var e=el.querySelector("#editSplit");
@@ -226,125 +239,195 @@ function openSplitEditor(){
   });
 }
 
-/* ---------- logging a session ---------- */
+/* ---------- logging a session ----------
+   Pick the workout, then an exercise from the ones you have done in that
+   workout before. The screen then shows your heaviest lift and what you did
+   last time, with dates, and a set is two steppers and one button. */
+function lastDone(dayId){
+  for(var i=0;i<L.sessions.length;i++) if(L.sessions[i].dayId===dayId)
+    return "last "+new Date(L.sessions[i].at).toLocaleDateString(undefined,{month:"short",day:"numeric"});
+  return "not yet";
+}
+function dateShort(t){ return new Date(t).toLocaleDateString(undefined,{month:"short",day:"numeric"}) }
+/* every exercise ever logged for this workout, most recent first */
+function exForDay(dayId, dayName){
+  var seen={}, out=[];
+  L.sessions.forEach(function(s){
+    if(!(dayId ? s.dayId===dayId : key(s.dayName)===key(dayName))) return;
+    s.sets.forEach(function(x){ var k=key(x.ex); if(k&&!seen[k]){ seen[k]=1; out.push(x.ex) } });
+  });
+  return out;
+}
 function exNames(){
   var seen={}, out=[];
   L.sessions.forEach(function(s){ s.sets.forEach(function(x){
     var k=key(x.ex); if(k&&!seen[k]){ seen[k]=1; out.push(x.ex) }
   })});
-  return out.slice(0,60);
+  return out.slice(0,80);
 }
-function lastFor(ex){
+/* heaviest weight ever moved for it, the most reps at that weight, and when */
+function heaviest(ex){
+  var k=key(ex), best=null;
+  L.sessions.forEach(function(s){ s.sets.forEach(function(x){
+    if(key(x.ex)!==k) return;
+    var w=+x.weight||0, r=+x.reps||0; if(r<=0) return;
+    if(!best || w>best.weight || (w===best.weight && r>best.reps) ||
+       (w===best.weight && r===best.reps && s.at<best.at)) best={weight:w, reps:r, at:s.at};
+  })});
+  return best;
+}
+/* the most recent finished session that had it: when, and every set */
+function lastTime(ex){
   var k=key(ex);
   for(var i=0;i<L.sessions.length;i++){
     var hit=L.sessions[i].sets.filter(function(s){return key(s.ex)===k});
-    if(hit.length) return hit[hit.length-1];
+    if(hit.length) return {at:L.sessions[i].at, sets:hit, day:L.sessions[i].dayName};
   }
   return null;
 }
+function lastFor(ex){ var t=lastTime(ex); return t?t.sets[t.sets.length-1]:null }
 function openSession(draft){
   var plan=todayDay();
   var sess=draft || {dayId:plan?plan.id:null, dayName:plan?plan.name:(L.days[0]?L.days[0].name:"Workout"),
                      sets:[], at:Date.now()};
   L.draft=sess; save();
-  var pr=L.prs;
-  var body=
-    '<div class="card"><span class="lab">Which workout</span>'+
-      '<select id="wDay">'+(L.days.length?L.days.map(function(d){
-        return '<option value="'+esc(d.id)+'"'+(sess.dayId===d.id?" selected":"")+">"+esc(d.name)+"</option>";
-      }).join(""):'<option value="">Workout</option>')+
-      '<option value="__other">Something else</option></select></div>'+
-    '<div class="sectlab">Sets<button class="link" id="addSet">+ Add set</button></div>'+
-    '<div id="setList">'+setRows(sess)+"</div>"+
-    '<datalist id="exList">'+exNames().map(function(n){return '<option value="'+esc(n)+'">'}).join("")+"</datalist>"+
+  openSheet(sess.dayName||"Workout", '<div id="lSess"></div>', function(){ drawSession(sess) });
+}
+function stepFor(){ return L.unit==="kg"?2.5:5 }
+function drawSession(sess){
+  var host=document.getElementById("lSess"); if(!host) return;
+  var cur=sess.cur||null;
+  var mine=exForDay(sess.dayId, sess.dayName);
+  sess.sets.forEach(function(x){ if(x.ex && mine.map(key).indexOf(key(x.ex))<0) mine.unshift(x.ex) });
+  var info="";
+  if(cur){
+    var best=heaviest(cur), last=lastTime(cur), here=sess.sets.filter(function(x){return key(x.ex)===key(cur)});
+    var seed=here.length?here[here.length-1]:(last?last.sets[0]:null);
+    if(sess.reps===undefined||sess.curSeed!==cur){ sess.reps=seed?+seed.reps:8; sess.weight=seed?+seed.weight:0; sess.curSeed=cur; }
+    info='<div class="lcur">'+
+      '<div class="lcurname">'+esc(cur)+'<button class="link" id="lChange">change</button></div>'+
+      '<div class="lstats">'+
+        '<div class="lstat"><u>Your max</u>'+(best?"<b>"+best.weight+" "+L.unit+" × "+best.reps+"</b><span>"+dateShort(best.at)+"</span>"
+          :"<b>—</b><span>first time</span>")+"</div>"+
+        '<div class="lstat"><u>Last time</u>'+(last?"<b>"+last.sets.map(function(x){return (x.reps||0)+"×"+(x.weight||0)}).join(", ")+
+          "</b><span>"+dateShort(last.at)+(last.day&&key(last.day)!==key(sess.dayName)?" · "+esc(last.day):"")+"</span>"
+          :"<b>—</b><span>nothing yet</span>")+"</div>"+
+      "</div>"+
+      '<div class="lsteps">'+
+        '<div class="lstep"><u>Reps</u><div class="qty"><button data-adj="reps" data-d="-1" aria-label="One fewer rep">−</button>'+
+          '<input id="lReps" type="text" inputmode="numeric" value="'+sess.reps+'"><button data-adj="reps" data-d="1" aria-label="One more rep">+</button></div></div>'+
+        '<div class="lstep"><u>'+L.unit+'</u><div class="qty"><button data-adj="weight" data-d="-1" aria-label="Lighter">−</button>'+
+          '<input id="lWt" type="text" inputmode="decimal" value="'+sess.weight+'"><button data-adj="weight" data-d="1" aria-label="Heavier">+</button></div></div>'+
+      "</div>"+
+      '<p class="lhint" id="lHint"></p>'+
+      '<button class="btn" id="lLog">Log set'+(here.length?" "+(here.length+1):"")+"</button>"+
+    "</div>";
+  }
+  host.innerHTML=
+    '<div class="lwk">'+L.days.map(function(d){
+      return '<button data-wk="'+esc(d.id)+'" aria-pressed="'+(sess.dayId===d.id)+'">'+esc(d.name)+"</button>";
+    }).join("")+'<button data-wk="__other" aria-pressed="'+(!sess.dayId)+'">Other</button></div>'+
+    info+
+    (cur?"":'<div class="sectlab">'+(mine.length?"Exercises you do on "+esc(sess.dayName):"Pick an exercise")+"</div>")+
+    '<div class="lexes'+(cur?" compact":"")+'">'+mine.map(function(n){
+      var done=sess.sets.filter(function(x){return key(x.ex)===key(n)}).length;
+      return '<button class="lex'+(cur&&key(cur)===key(n)?" on":"")+'" data-ex="'+esc(n)+'">'+esc(n)+
+        (done?" <i>"+done+"</i>":"")+"</button>";
+    }).join("")+'<button class="lex add" id="lNew">+ New exercise</button></div>'+
+    '<div id="lNewBox" hidden><input id="lNewName" class="sx" list="exList" type="text" placeholder="Exercise name" autocomplete="off">'+
+      '<datalist id="exList">'+exNames().map(function(n){return '<option value="'+esc(n)+'">'}).join("")+"</datalist>"+
+      '<button class="btn ghost" id="lNewGo">Use it</button></div>'+
+    (sess.sets.length?'<div class="sectlab">This session</div><div class="card slist">'+groupSets(sess)+"</div>":"")+
     '<div class="card gsum" id="wSum"></div>'+
     '<button class="btn" id="wDone">Finish workout</button>'+
     '<button class="btn ghost" id="wBin" style="margin-top:9px">Throw this one away</button>';
-  openSheet("Log a workout", body, function(){ bindSession(sess) });
+  bindSession2(sess);
 }
-function setRows(sess){
-  if(!sess.sets.length) return '<div class="empty" style="padding:20px">No sets yet.</div>';
-  return '<div class="card slist">'+sess.sets.map(function(s,i){
-    var last=lastFor(s.ex), best=L.prs[key(s.ex)];
-    var beats = best && e1rm(s.weight,s.reps) > best.e1rm+0.01;
-    return '<div class="setrow'+(beats?" pr":"")+'">'+
-      '<input class="sx" data-f="ex" data-i="'+i+'" list="exList" type="text" placeholder="Exercise" value="'+esc(s.ex||"")+'">'+
-      '<div class="srow2">'+
-        '<input class="sn" data-f="reps" data-i="'+i+'" type="number" inputmode="numeric" placeholder="reps" value="'+(s.reps||"")+'">'+
-        '<input class="sn" data-f="weight" data-i="'+i+'" type="number" inputmode="decimal" step="any" placeholder="'+L.unit+'" value="'+(s.weight||"")+'">'+
-        '<button class="link" data-dup="'+i+'">copy</button>'+
-        '<button class="link" data-del="'+i+'">×</button>'+
-      "</div>"+
-      '<input class="sx note" data-f="note" data-i="'+i+'" type="text" placeholder="notes on this set" value="'+esc(s.note||"")+'">'+
-      '<div class="shint">'+(beats?"<b>new best</b> · ":"")+
-        (last&&last!==s?("last time "+last.reps+" x "+last.weight+L.unit):
-         best?("best "+best.weight+L.unit+" x "+best.reps):"")+"</div>"+
-    "</div>";
-  }).join("")+"</div>";
+function groupSets(sess){
+  var order=[], by={};
+  sess.sets.forEach(function(s,i){ var k=key(s.ex); if(!by[k]){ by[k]=[]; order.push(k) } by[k].push(i) });
+  return order.map(function(k){
+    var first=sess.sets[by[k][0]];
+    return '<div class="lgroup"><div class="lgname">'+esc(first.ex)+"</div>"+by[k].map(function(i,n){
+      var s=sess.sets[i], b=L.prs[key(s.ex)], pr=b?e1rm(s.weight,s.reps)>b.e1rm+0.01:!!s.ex;
+      return '<div class="lset'+(pr?" pr":"")+'"><span>Set '+(n+1)+"</span><b>"+(s.reps||0)+" × "+(s.weight||0)+" "+L.unit+"</b>"+
+        (pr?'<em>'+(b?"new best":"first")+"</em>":"")+
+        '<button class="link" data-dup="'+i+'">again</button><button class="x" data-del="'+i+'" aria-label="Delete set">×</button></div>';
+    }).join("")+"</div>";
+  }).join("");
 }
-
-function bindSession(sess){
-  var redraw=function(){
-    document.getElementById("setList").innerHTML=setRows(sess);
-    wire(); summarise();
+function bindSession2(sess){
+  var redraw=function(){ L.draft=sess; save(); drawSession(sess) };
+  var head=document.querySelector("#sheetHost .shead h3");
+  if(head) head.textContent=sess.dayName||"Workout";
+  document.querySelectorAll("[data-wk]").forEach(function(b){
+    b.onclick=function(){
+      var v=b.dataset.wk, d=L.days.filter(function(x){return x.id===v})[0];
+      sess.dayId=d?d.id:null; sess.dayName=d?d.name:"Workout"; sess.cur=null; redraw();
+    };
+  });
+  document.querySelectorAll("[data-ex]").forEach(function(b){
+    b.onclick=function(){ sess.cur=b.dataset.ex; redraw() };
+  });
+  var ch=document.getElementById("lChange"); if(ch) ch.onclick=function(){ sess.cur=null; redraw() };
+  var nb=document.getElementById("lNew");
+  if(nb) nb.onclick=function(){ var box=document.getElementById("lNewBox"); box.hidden=false;
+    var i=document.getElementById("lNewName"); i.focus(); };
+  var ng=document.getElementById("lNewGo");
+  if(ng) ng.onclick=function(){ var v=document.getElementById("lNewName").value.trim(); if(!v) return; sess.cur=v; redraw() };
+  var ni=document.getElementById("lNewName");
+  if(ni) ni.onkeydown=function(e){ if(e.key==="Enter"){ e.preventDefault(); ng.click() } };
+  var reps=document.getElementById("lReps"), wt=document.getElementById("lWt");
+  var hint=function(){
+    var h=document.getElementById("lHint"); if(!h||!sess.cur) return;
+    var b=L.prs[key(sess.cur)], score=e1rm(sess.weight,sess.reps);
+    h.innerHTML=b&&score>b.e1rm+0.01?"<b>That would be a new best</b> (est. 1RM "+score+" vs "+b.e1rm+")"
+      :b?"Est. 1RM "+score+" · best "+b.e1rm:"";
   };
-  var summarise=function(){
-    var v=Math.round(volume(sess));
-    var newBest=sess.sets.filter(function(s){
-      var b=L.prs[key(s.ex)]; return s.ex && e1rm(s.weight,s.reps) > (b?b.e1rm:0)+0.01;
-    }).length;
-    document.getElementById("wSum").innerHTML=
-      '<div class="gsumrow"><span>'+sess.sets.length+" sets</span><span>"+fmt(v)+" "+L.unit+" moved</span>"+
-      "<span>"+(newBest?newBest+" on for a record":"no records yet")+"</span></div>";
+  document.querySelectorAll("[data-adj]").forEach(function(b){
+    b.onclick=function(){
+      var f=b.dataset.adj, d=+b.dataset.d;
+      if(f==="reps"){ sess.reps=Math.max(1,(+sess.reps||0)+d); reps.value=sess.reps }
+      else{ sess.weight=Math.max(0,Math.round(((+sess.weight||0)+d*stepFor())*100)/100); wt.value=sess.weight }
+      L.draft=sess; save(); hint();
+    };
+  });
+  if(reps) reps.oninput=function(){ var v=parseInt(reps.value,10); if(v>0){ sess.reps=v; L.draft=sess; save(); hint() } };
+  if(wt) wt.oninput=function(){ var v=parseFloat(wt.value); if(v>=0){ sess.weight=v; L.draft=sess; save(); hint() } };
+  var lg=document.getElementById("lLog");
+  if(lg) lg.onclick=function(){
+    if(!(+sess.reps>0)){ toast("How many reps?"); return }
+    sess.sets.push({ex:sess.cur, reps:+sess.reps, weight:+sess.weight||0, note:""});
+    redraw(); toast("Set logged");
   };
-  var wire=function(){
-    document.querySelectorAll("#setList [data-f]").forEach(function(inp){
-      inp.oninput=function(){
-        var s=sess.sets[+inp.dataset.i]; if(!s) return;
-        var f=inp.dataset.f;
-        s[f] = (f==="ex"||f==="note") ? inp.value : (inp.value===""?"":+inp.value);
-        L.draft=sess; save(); summarise();
-      };
-      inp.onblur=function(){ if(inp.dataset.f==="ex") redraw() };
-    });
-    document.querySelectorAll("[data-dup]").forEach(function(b){
-      b.onclick=function(){
-        var s=sess.sets[+b.dataset.dup];
-        sess.sets.splice(+b.dataset.dup+1,0,{ex:s.ex,reps:s.reps,weight:s.weight,note:""});
-        L.draft=sess; save(); redraw();
-      };
-    });
-    document.querySelectorAll("[data-del]").forEach(function(b){
-      b.onclick=function(){ sess.sets.splice(+b.dataset.del,1); L.draft=sess; save(); redraw() };
-    });
-  };
-  document.getElementById("wDay").onchange=function(){
-    var v=this.value;
-    if(v==="__other"){ sess.dayId=null; sess.dayName="Workout" }
-    else{ var d=L.days.filter(function(x){return x.id===v})[0];
-          if(d){ sess.dayId=d.id; sess.dayName=d.name } }
-    L.draft=sess; save();
-  };
-  document.getElementById("addSet").onclick=function(){
-    var last=sess.sets[sess.sets.length-1];
-    sess.sets.push(last?{ex:last.ex,reps:last.reps,weight:last.weight,note:""}
-                       :{ex:"",reps:"",weight:"",note:""});
-    L.draft=sess; save(); redraw();
-    var ins=document.querySelectorAll("#setList .sx"); 
-    if(ins.length&&!last) ins[ins.length-2].focus();
-  };
+  document.querySelectorAll("[data-dup]").forEach(function(b){
+    b.onclick=function(){ var s=sess.sets[+b.dataset.dup];
+      sess.sets.push({ex:s.ex,reps:s.reps,weight:s.weight,note:""}); redraw() };
+  });
+  document.querySelectorAll("[data-del]").forEach(function(b){
+    b.onclick=function(){ sess.sets.splice(+b.dataset.del,1); redraw() };
+  });
+  var v=Math.round(volume(sess));
+  var newBest=sess.sets.filter(function(s){
+    var b=L.prs[key(s.ex)]; return s.ex && e1rm(s.weight,s.reps) > (b?b.e1rm:0)+0.01;
+  }).length;
+  document.getElementById("wSum").innerHTML=
+    '<div class="gsumrow"><span>'+sess.sets.length+" sets</span><span>"+fmt(v)+" "+L.unit+" moved</span>"+
+    "<span>"+(newBest?newBest+" on for a record":"no records yet")+"</span></div>";
   document.getElementById("wBin").onclick=function(){
+    if(sess.sets.length && !window.confirm("Throw away this workout and its "+sess.sets.length+" sets?")) return;
     L.draft=null; save(); closeSheet(); render(); toast("Binned");
   };
   document.getElementById("wDone").onclick=function(){
     sess.sets=sess.sets.filter(function(s){ return key(s.ex) && (+s.reps>0) });
-    if(!sess.sets.length){ toast("Put at least one real set in"); return }
+    if(!sess.sets.length){ toast("Log at least one set"); return }
+    delete sess.cur; delete sess.reps; delete sess.weight; delete sess.curSeed;
     var prs=finish(sess);
     closeSheet(); render();
     if(prs && prs.length) showPR(prs);
     else toast("Logged — "+sess.sets.length+" sets, "+fmt(sess.vol)+" "+L.unit);
   };
-  wire(); summarise();
+  hint();
 }
 function showPR(prs){
   var h=document.getElementById("gameFx")||document.body;
@@ -383,6 +466,7 @@ function openSession2(id){
 
 /* ---------- boot ---------- */
 window.MLLift={ state:function(){return L}, e1rm:e1rm, volume:volume, finish:finish,
+  heaviest:heaviest, lastTime:lastTime, exForDay:exForDay, openSession:openSession,
   checkPRs:checkPRs, splits:SPLITS, save:save,
   reset:function(){ L=blank(); save(); } };
 

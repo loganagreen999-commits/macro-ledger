@@ -1,0 +1,71 @@
+/* Kitchen: Cooked / Recipe book / Pantry. Colours come only from the theme
+   variables, so every look (and its dark mode) carries through. */
+.kseg{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;background:var(--surface-2);
+  border-radius:11px;padding:3px;margin:2px 0 14px}
+.kseg button{padding:8px 0;border-radius:8px;font-size:13px;font-weight:600;color:var(--ink-2)}
+.kseg button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.kdot{display:inline-block;min-width:17px;height:17px;line-height:17px;border-radius:99px;padding:0 4px;
+  background:var(--warn);color:var(--on-accent);font-size:10px;font-style:normal;vertical-align:1px}
+.kcard{position:relative}
+.kcard .batch{padding-right:46px}
+.kcard.over .batch{opacity:.85}
+.kx{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;
+  font-size:19px;line-height:1;color:var(--ink-3);background:var(--sunk);border:1px solid var(--line-soft)}
+.kx:active,.kx:hover{background:var(--p-soft);color:var(--p)}
+.kmult{font-size:12px;font-weight:600;color:var(--accent-ink);background:var(--accent-soft);padding:1px 6px;border-radius:6px}
+.kbanner{display:flex;align-items:center;gap:12px;background:var(--c-soft);color:var(--ink);border:1px solid var(--line-soft);
+  border-radius:12px;padding:11px 13px;margin-bottom:11px}
+.kbanner>div{flex:1;min-width:0}
+.kbanner b{display:block;font-size:13px}
+.kbanner span{display:block;font-size:12px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kdim{color:var(--ink-3)!important}
+.krecipes{display:flex;flex-direction:column;gap:10px}
+.krec{background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r);box-shadow:var(--shadow);
+  padding:13px 14px;display:flex;align-items:center;gap:12px}
+.krmain{flex:1;min-width:0}
+.kracts{display:flex;flex-direction:column;gap:6px;flex-shrink:0}
+.kbtn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 14px;border-radius:10px;
+  background:var(--accent);color:var(--accent-on);font-weight:600;font-size:13.5px}
+.kbtn.ghost{background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line)}
+.kbtn svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.kbtn:active{transform:scale(.97)}
+.kq{width:70px;flex-shrink:0;padding:8px;border:1px solid var(--line);border-radius:9px;background:var(--bg);
+  color:var(--ink);font-size:16px;text-align:center;font-variant-numeric:tabular-nums}
+.kq:disabled{opacity:.4}
+.ing.kcook.off .ii{opacity:.45;text-decoration:line-through}
+.ing.kchg .ii u{color:var(--accent-ink)}
+.kchk input{width:21px;height:21px;accent-color:var(--accent)}
+.kmults{align-items:center}
+.kmults button{min-width:52px}
+.kmults .mini{width:64px;flex:0 0 64px}
+.kexplain{border-radius:9px;margin:0 0 6px}
+/* pantry */
+.kptools{display:grid;grid-template-columns:1.3fr 1fr;gap:8px;margin-bottom:12px}
+.ksort{display:grid;grid-template-columns:1fr 1fr;gap:3px;background:var(--surface-2);border-radius:10px;padding:3px;margin-bottom:12px}
+.ksort button{padding:7px 0;border-radius:8px;font-size:12.5px;font-weight:600;color:var(--ink-2)}
+.ksort button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.kplist{padding:2px 12px}
+.kitem{display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--line-soft)}
+.kitem:last-child{border-bottom:0}
+.kirow{flex:1;min-width:0;display:flex;align-items:center;gap:11px;padding:11px 0;text-align:left;color:var(--ink)}
+.kirow:active{opacity:.7}
+.kitem .kx{position:static;flex-shrink:0;width:28px;height:28px;font-size:17px}
+.kg{width:10px;height:10px;border-radius:3px;flex-shrink:0;display:inline-block}
+.kimain{flex:1;min-width:0}
+.kin{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kin u{text-decoration:none;color:var(--ink-3);font-size:12px}
+.kis{font-size:11.5px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kcam{aspect-ratio:16/9}
+.krev{padding:4px 12px}
+.krevrow{padding:11px 0;border-bottom:1px solid var(--line-soft)}
+.krevrow:last-child{border-bottom:0}
+.krevtop{display:flex;gap:8px;align-items:center}
+.kname{flex:1;min-width:0;padding:9px 10px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);font-size:16px}
+.krevbot{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;align-items:center}
+.krevbot select,.field select{padding:9px 10px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);font-size:16px}
+.kdays{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ink-3)}
+.kdays input{width:60px;padding:8px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);font-size:16px;text-align:center}
+.krev .x{width:30px;height:30px;border-radius:8px;color:var(--ink-3);font-size:18px}
+[data-game-theme="pixel"] .kbtn{background:var(--px-cream);color:var(--px-ink);border:3px solid var(--px-ink);border-radius:7px;
+  box-shadow:inset 0 0 0 2px var(--px-mint),0 3px 0 rgba(10,16,17,.75)}
+[data-game-theme="gba"] .kbtn,[data-game-theme="gba"] .krec,[data-game-theme="gba"] .kseg{border-radius:0!important}

@@ -30,3 +30,66 @@
 .prpop span{display:block;font-size:12px;opacity:.92}
 [data-game-theme="gba"] .setrow.pr{background:var(--ok-soft)}
 [data-game-theme="gba"] .prpop{border:3px solid #181818;border-radius:0;box-shadow:3px 3px 0 #181818}
+/* start any workout in the split; today's is only highlighted */
+.lpick{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-bottom:6px}
+.lday{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:12px 13px;border-radius:12px;
+  background:var(--surface);border:1px solid var(--line);color:var(--ink);text-align:left}
+.lday b{font-size:14px} .lday span{font-size:11.5px;color:var(--ink-3)}
+.lday.today{background:var(--accent);border-color:var(--accent);color:var(--accent-on)}
+.lday.today span{color:var(--accent-on);opacity:.85}
+.lday.other{background:var(--surface-2)}
+.lday:active{transform:scale(.97)}
+/* the session sheet */
+.lwk{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:10px;scrollbar-width:none}
+.lwk button{flex:0 0 auto;padding:8px 13px;border-radius:99px;background:var(--surface);border:1px solid var(--line);
+  font-size:13px;font-weight:600;color:var(--ink-2)}
+.lwk button[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-ink)}
+.lexes{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}
+.lexes.compact{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.lex{flex:0 0 auto;padding:10px 13px;border-radius:11px;background:var(--surface);border:1px solid var(--line);
+  font-size:13.5px;font-weight:600;color:var(--ink);text-align:left}
+.lex i{font-style:normal;font-size:11px;background:var(--accent-soft);color:var(--accent-ink);border-radius:99px;padding:1px 7px;margin-left:4px}
+.lex.on{background:var(--accent);border-color:var(--accent);color:var(--accent-on)}
+.lex.add{background:var(--surface-2);color:var(--accent-ink);border-style:dashed}
+#lNewBox{margin-bottom:12px}
+.lcur{background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r);box-shadow:var(--shadow);
+  padding:13px 14px 14px;margin-bottom:12px}
+.lcurname{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:17px;font-weight:700;margin-bottom:10px}
+.lstats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.lstat{background:var(--sunk);border-radius:10px;padding:9px 10px;min-width:0}
+.lstat u{display:block;text-decoration:none;font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
+.lstat b{display:block;font-size:14px;font-variant-numeric:tabular-nums;margin-top:2px;overflow-wrap:anywhere}
+.lstat span{display:block;font-size:11.5px;color:var(--ink-3);margin-top:1px}
+.lsteps{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lstep u{display:block;text-decoration:none;font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);margin-bottom:4px}
+.lstep .qty{padding:4px;gap:4px}
+.lstep .qty button{width:38px;height:42px}
+.lstep .qty input{font-size:20px;min-width:0;width:100%}
+.lhint{font-size:12px;color:var(--ink-3);margin:8px 2px 0;min-height:16px}
+.lhint b{color:var(--ok)}
+.lgroup{padding:10px 0;border-bottom:1px solid var(--line-soft)}
+.lgroup:last-child{border-bottom:0}
+.lgname{font-size:13.5px;font-weight:700;margin-bottom:4px}
+.lset{display:flex;align-items:center;gap:10px;padding:5px 0;font-size:13.5px;font-variant-numeric:tabular-nums}
+.lset span{color:var(--ink-3);width:44px;flex-shrink:0;font-size:12px}
+.lset b{flex:1;font-weight:600}
+.lset em{font-style:normal;font-size:10.5px;font-weight:700;color:var(--ok);text-transform:uppercase;letter-spacing:.05em}
+.lset.pr b{color:var(--ok)}
+.lset .x{width:28px;height:28px;border-radius:8px;color:var(--ink-3);font-size:17px}
+/* page header, stat tiles and list rows used by the Lift and PC tabs. They
+   were never styled in the base look, so the tab read as loose text. */
+.head{margin:2px 3px 14px}
+.head h1{margin:0 0 2px;font-family:"Fraunces",Georgia,serif;font-size:26px;font-weight:600;letter-spacing:-.02em}
+.head p{margin:0;font-size:13px;color:var(--ink-2)}
+.big{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.stat{background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r);box-shadow:var(--shadow);padding:12px 14px}
+.stat .v{font-family:"Fraunces",Georgia,serif;font-size:28px;font-weight:600;line-height:1.05;font-variant-numeric:tabular-nums}
+.stat .k{font-size:11.5px;color:var(--ink-3);margin-top:3px}
+.card>.row{padding:11px 0}
+.row .main{flex:1;min-width:0}
+.row .nm{font-size:14.5px;font-weight:500;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.row .sub{font-size:11.5px;color:var(--ink-3);margin-top:1px}
+.row .rt{text-align:right;flex-shrink:0}
+.row .mins{font-family:"IBM Plex Mono",monospace;font-size:14px;font-variant-numeric:tabular-nums;color:var(--ink)}
+.card .lab{display:block;font-size:10px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
+.pill.done{background:var(--ok-soft);color:var(--ok)}

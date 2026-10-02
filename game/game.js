@@ -116,6 +116,50 @@ var ITEMS={
   xpshare:{n:"XP Share", kind:"misc"}
 };
 function give(item,n){ G.items[item]=(G.items[item]||0)+(n||1); }
+/* give AND tell: every item the player earns gets a proper popup with an OK
+   button, queued until nothing else is on screen */
+var itemQ=[], itemT=null;
+function award(item,n,why){
+  give(item,n);
+  itemQ.push({item:item,n:n||1,why:why||""});
+  clearTimeout(itemT); itemT=setTimeout(flushItems,250);
+}
+var ICON={
+  pokeball:'<circle cx="24" cy="24" r="20" fill="#fff" stroke="#1a1a1a" stroke-width="3"/>'+
+    '<path d="M4 24a20 20 0 0 1 40 0z" fill="#E3262E" stroke="#1a1a1a" stroke-width="3"/>'+
+    '<rect x="4" y="22" width="40" height="4" fill="#1a1a1a"/><circle cx="24" cy="24" r="6" fill="#fff" stroke="#1a1a1a" stroke-width="3"/>',
+  greatball:'<circle cx="24" cy="24" r="20" fill="#fff" stroke="#1a1a1a" stroke-width="3"/>'+
+    '<path d="M4 24a20 20 0 0 1 40 0z" fill="#2F6FD6" stroke="#1a1a1a" stroke-width="3"/>'+
+    '<path d="M11 11l7 9M37 11l-7 9" stroke="#E3262E" stroke-width="5" stroke-linecap="round"/>'+
+    '<rect x="4" y="22" width="40" height="4" fill="#1a1a1a"/><circle cx="24" cy="24" r="6" fill="#fff" stroke="#1a1a1a" stroke-width="3"/>',
+  ultraball:'<circle cx="24" cy="24" r="20" fill="#fff" stroke="#1a1a1a" stroke-width="3"/>'+
+    '<path d="M4 24a20 20 0 0 1 40 0z" fill="#2B2B2B" stroke="#1a1a1a" stroke-width="3"/>'+
+    '<path d="M13 9v12M35 9v12" stroke="#F2C230" stroke-width="5" stroke-linecap="round"/>'+
+    '<rect x="4" y="22" width="40" height="4" fill="#1a1a1a"/><circle cx="24" cy="24" r="6" fill="#fff" stroke="#1a1a1a" stroke-width="3"/>',
+  masterball:'<circle cx="24" cy="24" r="20" fill="#fff" stroke="#1a1a1a" stroke-width="3"/>'+
+    '<path d="M4 24a20 20 0 0 1 40 0z" fill="#7B3FB8" stroke="#1a1a1a" stroke-width="3"/>'+
+    '<circle cx="12" cy="15" r="4" fill="#E86AB0"/><circle cx="36" cy="15" r="4" fill="#E86AB0"/>'+
+    '<path d="M19 18v-8l5 5 5-5v8" fill="none" stroke="#fff" stroke-width="2.6" stroke-linejoin="round"/>'+
+    '<rect x="4" y="22" width="40" height="4" fill="#1a1a1a"/><circle cx="24" cy="24" r="6" fill="#fff" stroke="#1a1a1a" stroke-width="3"/>',
+  potion:'<rect x="19" y="4" width="10" height="6" rx="1" fill="#9AA3AD" stroke="#1a1a1a" stroke-width="2.5"/>'+
+    '<path d="M14 12h20l-2 6v20a6 6 0 0 1-6 6h-4a6 6 0 0 1-6-6V18z" fill="#A65BD6" stroke="#1a1a1a" stroke-width="2.5"/>'+
+    '<rect x="18" y="22" width="12" height="12" rx="2" fill="#fff" opacity=".85"/><path d="M24 24v8M20 28h8" stroke="#A65BD6" stroke-width="2.5"/>',
+  superpotion:'<rect x="19" y="4" width="10" height="6" rx="1" fill="#9AA3AD" stroke="#1a1a1a" stroke-width="2.5"/>'+
+    '<path d="M14 12h20l-2 6v20a6 6 0 0 1-6 6h-4a6 6 0 0 1-6-6V18z" fill="#F08A24" stroke="#1a1a1a" stroke-width="2.5"/>'+
+    '<rect x="18" y="22" width="12" height="12" rx="2" fill="#fff" opacity=".85"/><path d="M24 24v8M20 28h8" stroke="#E3262E" stroke-width="2.5"/>',
+  revive:'<path d="M24 4l14 20-14 20-14-20z" fill="#F7D33C" stroke="#1a1a1a" stroke-width="2.5" stroke-linejoin="round"/>'+
+    '<path d="M24 11l8 13-8 13-8-13z" fill="#FFF3A8"/><path d="M10 24h28" stroke="#1a1a1a" stroke-width="1.5" opacity=".4"/>',
+  rarecandy:'<path d="M6 16l9 8-9 8zM42 16l-9 8 9 8z" fill="#5AA9F0" stroke="#1a1a1a" stroke-width="2.5" stroke-linejoin="round"/>'+
+    '<ellipse cx="24" cy="24" rx="11" ry="9" fill="#3E7FD6" stroke="#1a1a1a" stroke-width="2.5"/>'+
+    '<path d="M18 20q6 8 12 0" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>',
+  xpshare:'<rect x="9" y="8" width="30" height="32" rx="5" fill="#C9CFD6" stroke="#1a1a1a" stroke-width="2.5"/>'+
+    '<rect x="14" y="13" width="20" height="10" rx="2" fill="#4FC1A2" stroke="#1a1a1a" stroke-width="2"/>'+
+    '<path d="M15 30h18M15 35h12" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round"/>'
+};
+function itemIcon(k,size){
+  return '<svg class="gicon" viewBox="0 0 48 48" width="'+(size||28)+'" height="'+(size||28)+'" aria-hidden="true">'+
+    (ICON[k]||ICON.pokeball)+"</svg>";
+}
 function take(item,n){ G.items[item]=Math.max(0,(G.items[item]||0)-(n||1)); }
 function has(item){ return (G.items[item]||0)>0; }
 
@@ -160,6 +204,7 @@ function givePlayerXp(n, why){
   n=Math.round(n*G.mult);
   if(n<=0) return;
   G.player.xp+=n;
+  gain={n:n, at:Date.now()};
   var ups=0;
   while(G.player.xp>=playerNeed(G.player.lvl)){
     G.player.xp-=playerNeed(G.player.lvl); G.player.lvl++; ups++;
@@ -171,15 +216,13 @@ function givePlayerXp(n, why){
 function levelPrize(lvl){
   var pool = lvl%10===0 ? GOOD : COMMON;
   var item = roll(pool);
-  give(item,1);
+  award(item,1,"Trainer level "+lvl);
   var extra=null;
   if(lvl%100===0){                       /* a century. something absurd. */
-    if(Math.random()<0.5){ give("masterball",1); extra="masterball"; }
+    if(Math.random()<0.5){ award("masterball",1,"Level "+lvl+"!"); extra="masterball"; }
     else extra="mythic";
   }
-  toast("Level "+lvl+" — got a "+ITEMS[item].n);
-  showPrize(lvl,item,extra);
-  if(extra==="mythic") setTimeout(function(){ startEncounter(pickSpecies(5), lvl) },1400);
+  if(extra==="mythic") requestEncounter(pickSpecies(5), lvl);
 }
 
 /* ---------- picking a wild species ----------
@@ -217,6 +260,28 @@ function spendToken(meal){ G.spent[tokenKey(meal)]=1; save(); }
 /* an entry only counts if it was logged in its own window */
 function inWindow(meal){ return meal===mealOfNow(); }
 
+/* Is the player in the middle of something? A sheet open, a field focused, a
+   popup up. A battle that lands on top of a half-typed recipe loses the recipe,
+   so encounters wait their turn instead. */
+function busy(){
+  var host=document.getElementById("sheetHost");
+  if(host && host.firstChild) return true;
+  var a=document.activeElement;
+  if(a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return true;
+  var fx=document.getElementById("gameFx");
+  if(fx && fx.querySelector(".gover,.gbattle,.gitem,.pxscreen")) return true;
+  return false;
+}
+function requestEncounter(species, lvl){
+  if(!DEX) return;
+  if(busy()){ G.pendingEnc={s:species||null, l:lvl||null}; save(); return; }
+  startEncounter(species||pickSpecies(), lvl);
+}
+function tryPending(){
+  if(!G||!G.pendingEnc||!DEX||G.enc||busy()) return;
+  var p=G.pendingEnc; G.pendingEnc=null; save();
+  startEncounter(p.s||pickSpecies(), p.l||undefined);
+}
 function startEncounter(species, lvl){
   if(!DEX || G.enc) return;
   var m=makeMon(species, lvl||wildLevel());
@@ -232,81 +297,131 @@ function maybeEncounter(meal, chance){
   if(meal && !tokenFree(meal)) return false;
   if(Math.random() > (chance===undefined?0.34:chance)) return false;
   if(meal) spendToken(meal);
-  startEncounter(pickSpecies());
+  requestEncounter(pickSpecies());
   return true;
 }
 
-/* ---------- battle ---------- */
+/* ---------- battle ----------
+   The rules decide the whole turn at once and save it; the screen then PLAYS
+   it back as a list of steps (text, lunges, a health bar draining), the way the
+   games do. Closing the app mid-animation loses nothing: the state is already
+   settled. */
 function battleXp(foe, won){
   var base=DEX.mon[foe.s].s.reduce(function(a,b){return a+b},0);
   return Math.round(base*foe.lvl/220 * (won?1:0.4));
 }
-function afterBattle(gained, msg){
-  /* whoever took the field earns it, fainted or not -- otherwise losing
-     teaches nobody anything and the xp silently vanishes */
-  var me=(G.enc && G.enc.active && byUid(G.enc.active)) || firstHealthy(), ups=0;
-  if(me) ups=giveMonXp(me, gained);
+function effText(r){
+  if(r.miss) return null;
+  if(r.e===0) return "It doesn't affect the foe…";
+  if(r.e>1) return "It's super effective!";
+  if(r.e<1) return "It's not very effective…";
+  return null;
+}
+/* xp for whoever took the field, as steps for the xp bar */
+function xpSteps(me, gained){
+  if(!me || gained<=0) return [];
+  var from={lvl:me.lvl, xp:me.xp}, ups=giveMonXp(me, gained);
+  var st=[{say:nameOf(me)+" gained "+Math.round(gained)+" EXP. Points!"},
+          {xp:{from:from, to:{lvl:me.lvl, xp:me.xp}}}];
+  if(ups) st.push({say:nameOf(me)+" grew to Lv. "+me.lvl+"!"});
+  return st;
+}
+function endBattle(msg){
   G.enc=null; save();
-  closeBattle();
-  toast(msg+(me?" — "+nameOf(me)+" +"+Math.round(gained)+" xp":""));
-  if(ups) toast(nameOf(me)+" reached level "+me.lvl+"!");
-  paint();
+  closeBattle(); if(msg) toast(msg); paint();
+  setTimeout(flushItems,400);
+}
+/* the foe's half of a turn, appended to the same step list */
+function foeTurn(e, steps){
+  var me=firstHealthy();
+  if(!me) return false;
+  var mv=e.mon.moves[Math.floor(Math.random()*e.mon.moves.length)];
+  var before=me.hp, r=damage(e.mon,me,mv);
+  me.hp=Math.max(0,me.hp-r.dmg);
+  steps.push({say:"Wild "+pretty(e.mon.s)+" used "+moveLabel(mv)+"!", quick:1},{lunge:"foe"});
+  if(r.miss) steps.push({say:"Its attack missed!"});
+  else{
+    steps.push({hurt:"me"},{hp:"me",from:before,to:me.hp,max:me.max});
+    if(r.crit) steps.push({say:"A critical hit!"});
+    var t=effText(r); if(t) steps.push({say:t});
+  }
+  if(me.hp<=0){
+    steps.push({faint:"me"},{say:nameOf(me)+" fainted!"});
+    var next=firstHealthy();
+    if(next){ e.active=next.u; steps.push({send:next.u},{say:"Go! "+nameOf(next)+"!"}) }
+  }
+  return true;
 }
 function playerMove(idx){
-  var e=G.enc; if(!e||e.turn!=="you") return;
+  var e=G.enc; if(!e||e.turn!=="you"||FX.busy) return;
   var me=firstHealthy();
-  if(me) e.active=me.u;
-  if(!me){ afterBattle(0,"No pokemon able to fight"); return; }
+  if(!me){ endBattle("No pokemon able to fight"); return; }
+  e.active=me.u;
   var mv=me.moves[idx]; if(!mv) return;
-  var r=damage(me,e.mon,mv);
-  e.mon.hp=Math.max(0,e.mon.hp-r.dmg);
-  e.log.push(r.miss ? nameOf(me)+"'s "+moveLabel(mv)+" missed"
-    : nameOf(me)+" used "+moveLabel(mv)+(r.e>1?" — super effective!":r.e===0?" — no effect":r.e<1?" — not very effective":"")+" ("+r.dmg+")");
-  if(e.mon.hp<=0){ afterBattle(battleXp(e.mon,true), "Wild "+pretty(e.mon.s)+" fainted"); return; }
-  e.turn="foe"; save(); renderBattle();
-  setTimeout(foeMove, 700);
-}
-function foeMove(){
-  var e=G.enc; if(!e) return;
-  var me=firstHealthy();
-  if(!me){ afterBattle(0,"Your team is out"); return; }
-  var mv=e.mon.moves[Math.floor(Math.random()*e.mon.moves.length)];
-  var r=damage(e.mon,me,mv);
-  me.hp=Math.max(0,me.hp-r.dmg);
-  e.log.push(r.miss ? "Wild "+pretty(e.mon.s)+"'s "+moveLabel(mv)+" missed"
-    : "Wild "+pretty(e.mon.s)+" used "+moveLabel(mv)+" ("+r.dmg+")");
-  if(me.hp<=0) e.log.push(nameOf(me)+" fainted");
+  var foe=e.mon, before=foe.hp, r=damage(me,foe,mv), steps=[];
+  foe.hp=Math.max(0,foe.hp-r.dmg);
+  steps.push({say:nameOf(me)+" used "+moveLabel(mv)+"!", quick:1},{lunge:"me"});
+  if(r.miss) steps.push({say:nameOf(me)+"'s attack missed!"});
+  else{
+    steps.push({hurt:"foe"},{hp:"foe",from:before,to:foe.hp,max:foe.max});
+    if(r.crit) steps.push({say:"A critical hit!"});
+    var t=effText(r); if(t) steps.push({say:t});
+  }
+  e.log.push(nameOf(me)+" used "+moveLabel(mv));
+  if(foe.hp<=0){
+    steps.push({faint:"foe"},{say:"Wild "+pretty(foe.s)+" fainted!"});
+    steps=steps.concat(xpSteps(me, battleXp(foe,true)));
+    save();
+    play(steps, function(){ endBattle() });
+    return;
+  }
+  foeTurn(e, steps);
+  if(!firstHealthy()){
+    var lost=(e.active&&byUid(e.active))||me;
+    steps.push({say:"You have no more pokemon that can fight!"});
+    steps=steps.concat(xpSteps(lost, battleXp(foe,false)));
+    save();
+    play(steps, function(){ endBattle() });
+    return;
+  }
   e.turn="you"; save();
-  if(!firstHealthy()){ afterBattle(battleXp(e.mon,false),"Your team is out of it"); return; }
-  renderBattle();
+  play(steps);
 }
 /* catch odds: the weaker and rarer it is, the more it matters which ball */
 function tryCatch(ball){
-  var e=G.enc; if(!e||!has(ball)) return;
+  var e=G.enc; if(!e||!has(ball)||FX.busy) return;
   take(ball,1);
   var d=DEX.mon[e.mon.s], hpFrac=e.mon.hp/e.mon.max;
   var rarity=[1,.9,.75,.5,.3,.12][d.r];
   var p = ITEMS[ball].rate>=255 ? 1
         : Math.min(0.95, rarity*(1.1-hpFrac*0.7)*ITEMS[ball].rate*0.75);
-  e.log.push("Threw a "+ITEMS[ball].n+"…");
-  if(Math.random()<p){
+  var ok=Math.random()<p, shakes=ok?3:Math.floor(Math.random()*3);
+  var steps=[{say:"You threw a "+ITEMS[ball].n+"!"},{ball:{kind:ball, shakes:shakes, caught:ok}}];
+  e.log.push("Threw a "+ITEMS[ball].n);
+  if(ok){
     var caught=e.mon;
     G.box.push(caught); G.caught[caught.s]=1;
     if(G.party.length<6) G.party.push(caught.u);
-    var xp=battleXp(caught,true);
-    var me=(e.active&&byUid(e.active))||firstHealthy(); if(me) giveMonXp(me,xp);
-    G.enc=null; save(); closeBattle();
-    toast("Caught "+pretty(caught.s)+(caught.shiny?" ✦ SHINY":"")+"!");
-    openNickname(caught);
-    paint();
-  }else{
-    e.log.push("It broke free!");
-    e.turn="foe"; save(); renderBattle(); setTimeout(foeMove,700);
+    var me=(e.active&&byUid(e.active))||firstHealthy();
+    steps.push({say:"Gotcha! "+pretty(caught.s)+(caught.shiny?" ✦":"")+" was caught!"});
+    steps=steps.concat(xpSteps(me, battleXp(caught,true)));
+    save();
+    play(steps, function(){ endBattle(); openNickname(caught); });
+    return;
   }
+  steps.push({say:["Oh no! The pokemon broke free!","Aww! It appeared to be caught!",
+                   "Aargh! Almost had it!"][Math.min(2,shakes)]});
+  foeTurn(e, steps);
+  if(!firstHealthy()){
+    steps.push({say:"You have no more pokemon that can fight!"});
+    save(); play(steps, function(){ endBattle() }); return;
+  }
+  save(); play(steps);
 }
 function flee(){
-  var e=G.enc; if(!e) return;
-  G.enc=null; save(); closeBattle(); toast("Got away safely"); paint();
+  var e=G.enc; if(!e||FX.busy) return;
+  G.enc=null; save();
+  play([{say:"Got away safely!"}], function(){ closeBattle(); paint(); setTimeout(flushItems,400) });
 }
 
 /* ---------- healing: only by eating properly ---------- */
@@ -360,9 +475,8 @@ function checkMissions(){
             : (entries()||[]).length;
     if(now - m.base >= m.amount){
       var mon=byUid(m.who);
-      give(m.reward,1);
+      award(m.reward,1,(mon?nameOf(mon):"Your pokemon")+" is pleased");
       if(mon) giveMonXp(mon, 26+G.player.lvl*2);
-      toast((mon?nameOf(mon):"Your pokemon")+" is pleased — got a "+ITEMS[m.reward].n);
     } else left.push(m);
   });
   G.missions=left; save();
@@ -381,7 +495,7 @@ function weekTick(hitToday){
   var n=Object.keys(G.week.days).length;
   if(n>=5 && !G.week.paid){
     G.week.paid=true;
-    give(roll(GOOD),1); give("ultraball",2);
+    award(roll(GOOD),1,"Five good days this week"); award("ultraball",2,"Five good days this week");
     var p=party(); p.forEach(function(m){ giveMonXp(m, 220+G.player.lvl*6) });
     givePlayerXp(300,"five good days this week");
     toast("Five days on goal — the whole bench levelled up hard");
@@ -417,15 +531,15 @@ function checkGoals(){
   [1,2,3].concat([0]).forEach(function(i){
     var g=goal(i); if(!g){ all=false; return; }
     var done = i===0 ? (t[0]>0 && t[0]<=g) : t[i]>=g;
-    if(done && !hit[i]){ hit[i]=1; give("pokeball",1); got++;
+    if(done && !hit[i]){ hit[i]=1; got++;
+      award("pokeball",1,(["Calorie","Protein","Carb","Fat"][i])+" goal met");
       givePlayerXp(18,"hit a goal"); }
     if(!done) all=false;
   });
-  if(got) toast("Goal met — "+got+" Poke Ball"+(got>1?"s":""));
   if(all && !hit.all){
     hit.all=1;
     healAll("every macro goal met");
-    give("revive",1);
+    award("revive",1,"All four goals today");
     givePlayerXp(60,"all four goals");
     weekTick(true);
   }
@@ -437,8 +551,19 @@ function hookWater(oz){
   maybeEncounter(null, 0.10);
   checkMissions();
 }
-function hookRecipe(){ if(G.started){ givePlayerXp(25,"saved a recipe"); maybeEncounter(null,0.5) } }
-function hookScan(){ if(G.started){ givePlayerXp(10,"scanned something"); maybeEncounter(null,0.4) } }
+function hookRecipe(id){
+  if(!G.started) return;
+  G.recipePaid=G.recipePaid||{};
+  if(id && G.recipePaid[id]) return;           /* editing a recipe again pays nothing */
+  if(id) G.recipePaid[id]=1;
+  givePlayerXp(25,"saved a recipe");          /* no encounter: a fight here ate the recipe */
+}
+var scanPaid={};
+function hookScan(){
+  if(!G.started) return;
+  var k=todayKey(); scanPaid[k]=(scanPaid[k]||0)+1;
+  if(scanPaid[k]<=12) givePlayerXp(4,"scanned something");   /* a grocery haul is not a farm */
+}
 
 /* ---------- little log so the player can see what paid ---------- */
 function note(t){ G.log.unshift({t:t,at:Date.now()}); G.log=G.log.slice(0,40); }
@@ -456,6 +581,8 @@ window.MLGame={
   nameOf:nameOf, pretty:pretty, sprite:sprite, levelPrize:levelPrize, barPct:barPct,
   scanEntries:function(){return scanEntries()}, hookWater:hookWater,
   hookRecipe:hookRecipe, hookScan:hookScan, save:save,
+  award:award, itemIcon:itemIcon, requestEncounter:requestEncounter, tryPending:tryPending,
+  busy:busy, flushItems:flushItems, fx:function(){return FX}, renderBattle:function(){return renderBattle()},
   reset:function(){ G=blank(); save(); paint(); },
   /* the tracker keeps its state in a const, so hand out a reference for
      debugging and for the tests that drive the game from outside */
@@ -507,13 +634,17 @@ function paint(){
     scr.insertBefore(strip, scr.firstChild);
   }
   var p=party(), need=playerNeed(G.player.lvl);
+  var xpNow=barPct(G.player.xp,need), xpWas=STRIP.xp, lvWas=STRIP.lvl;
   strip.innerHTML=
     '<div class="gtop"><div class="gplv">Trainer <b>Lv '+G.player.lvl+"</b></div>"+
       '<div class="gmult">'+(G.streak>0?"day "+(G.streak+1)+" · x"+G.mult.toFixed(2)+" xp":"open daily for a multiplier")+"</div></div>"+
-    '<div class="gxp"><i style="width:'+barPct(G.player.xp,need)+'%"></i></div>'+
+    '<div class="gxp" id="gTrainerXp"><i style="width:'+(xpWas===null?xpNow:xpWas)+'%"></i>'+
+      (gain&&Date.now()-gain.at<4000?'<b class="gxpgain">+'+gain.n+" xp</b>":"")+"</div>"+
     '<div class="gline">'+(p.length?p.map(function(m){
+      var was=STRIP.hp[m.u], cur=barPct(m.hp,m.max);
       return '<button class="gslot'+(m.hp<=0?" ko":"")+'" data-mon="'+m.u+'">'+
-        monImg(m)+'<span class="glv">'+m.lvl+"</span>"+hpBar(m)+"</button>";
+        monImg(m)+'<span class="glv">'+m.lvl+"</span>"+
+        '<div class="hpb"><i class="'+hpCls(was===undefined?cur:was)+'" data-to="'+cur+'" style="width:'+(was===undefined?cur:was)+'%"></i></div></button>';
     }).join(""):'<span class="gnone">No pokemon on the bench</span>')+
     '<button class="gslot gpc" id="gotoPC">PC</button></div>';
   strip.querySelectorAll("[data-mon]").forEach(function(b){
@@ -521,7 +652,27 @@ function paint(){
   });
   var pc=strip.querySelector("#gotoPC");
   if(pc) pc.onclick=function(){ S.view="pc"; render(); };
+  /* animate from what was showing to the new value, and make it noticeable */
+  var xpEl=strip.querySelector("#gTrainerXp i"), xpBox=strip.querySelector("#gTrainerXp");
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){
+    if(xpEl){
+      if(lvWas!==null && G.player.lvl>lvWas){
+        xpEl.style.width="100%"; xpBox.classList.add("gain","lvup");
+        setTimeout(function(){ xpEl.style.transition="none"; xpEl.style.width="0%"; void xpEl.offsetWidth;
+          xpEl.style.transition=""; xpEl.style.width=xpNow+"%"; },900);
+      }else if(xpWas!==null && xpNow!==xpWas){ xpEl.style.width=xpNow+"%"; xpBox.classList.add("gain"); }
+      setTimeout(function(){ xpBox.classList.remove("gain","lvup") },2200);
+    }
+    strip.querySelectorAll(".hpb i[data-to]").forEach(function(i){
+      var to=+i.dataset.to; if(parseFloat(i.style.width)!==to){ i.parentNode.classList.add("gain");
+        i.style.width=to+"%"; i.className=hpCls(to);
+        setTimeout(function(){ i.parentNode.classList.remove("gain") },1800); }
+    });
+  })});
+  STRIP.xp=xpNow; STRIP.lvl=G.player.lvl;
+  p.forEach(function(m){ STRIP.hp[m.u]=barPct(m.hp,m.max) });
 }
+var STRIP={xp:null, lvl:null, hp:{}}, gain=null;
 
 /* ---- starter ---- */
 var STARTERS=["bulbasaur","charmander","squirtle","chikorita","cyndaquil","totodile",
@@ -575,58 +726,241 @@ function openNickname(m){
   setTimeout(function(){ i.focus() },120);
 }
 
-/* ---- battle screen ---- */
-function openBattle(){
-  if(window.MLPixel && window.MLPixel.on() && window.MLPixel.renderBattle()) return;
-  renderBattle();
+/* ---- battle screen ----
+   Built once per battle and then only updated in place, so an animation that
+   has started is never wiped by a redraw. Every theme uses the same element
+   ids, so one set of animations serves Modern, Handheld and Emerald. */
+var SHOWN={foe:null, me:null};           /* the hp each bar currently DISPLAYS */
+function hpCls(p){ return p<25?"low":p<55?"mid":"" }
+function infoBox(m, who){
+  var p=barPct(m.hp,m.max), need=xpNeed(m.lvl);
+  return '<div class="binfo '+who+'" id="b'+(who==="foe"?"Foe":"Me")+'Box">'+
+    '<div class="bname"><span>'+esc2(who==="foe"?pretty(m.s):nameOf(m))+
+      (m.shiny?' <em>✦</em>':"")+'</span><span class="blv" id="b'+(who==="foe"?"Foe":"Me")+'Lv">Lv'+m.lvl+"</span></div>"+
+    '<div class="bhpline"><span class="bhplab">HP</span><div class="hpb big"><i id="b'+(who==="foe"?"Foe":"Me")+'Bar" class="'+hpCls(p)+'" style="width:'+p+'%"></i></div></div>'+
+    (who==="me"?'<div class="bnum" id="bMeNum">'+m.hp+" / "+m.max+"</div>"+
+      '<div class="bxpline"><span class="bxplab">EXP</span><div class="bxp"><i id="bMeXp" style="width:'+barPct(m.xp,need)+'%"></i></div></div>':"")+
+  "</div>";
 }
-function closeBattle(){ fxHost().innerHTML=""; }
+function battleMenu(me){
+  var e=G.enc;
+  var balls=Object.keys(ITEMS).filter(function(k){return ITEMS[k].kind==="ball"&&has(k)});
+  return (me?me.moves.map(function(mv,i){
+      var d=DEX.mv[mv];
+      return '<button class="bmove" data-mv="'+i+'">'+esc2(moveLabel(mv))+
+        "<u>"+(d?d[0]:"")+(d&&d[1]?" · "+d[1]:"")+"</u></button>";
+    }).join(""):'<button class="bmove" disabled>No pokemon standing</button>')+
+    '<div class="bballs">'+balls.map(function(k){
+      return '<button class="bball" data-ball="'+k+'">'+itemIcon(k,20)+esc2(ITEMS[k].n)+" <u>"+G.items[k]+"</u></button>";
+    }).join("")+'<button class="bball flee" id="bRun">Run</button></div>';
+}
+function openBattle(){ renderBattle(); }
+function closeBattle(){ FX.q=[]; FX.busy=false; fxHost().innerHTML=""; tryPendingSoon(); }
 function renderBattle(){
   var e=G.enc; if(!e) return;
-  if(window.MLPixel && window.MLPixel.on() && window.MLPixel.renderBattle()) return;
-  var me=firstHealthy(), foe=e.mon;
-  var balls=Object.keys(ITEMS).filter(function(k){return ITEMS[k].kind==="ball"&&has(k)});
-  fxHost().innerHTML='<div class="gbattle">'+
-    '<div class="bfield">'+
-      '<div class="bfoe"><div class="bname">'+esc2(pretty(foe.s))+(foe.shiny?' <em>SHINY</em>':"")+
-        ' <span>Lv '+foe.lvl+"</span></div>"+hpBar(foe)+monImg(foe,"big")+"</div>"+
-      '<div class="bme">'+(me?monImg(me,"big me")+
-        '<div class="bname">'+esc2(nameOf(me))+' <span>Lv '+me.lvl+"</span></div>"+hpBar(me)
-        :'<div class="bname">No pokemon standing</div>')+"</div>"+
+  var me=(e.active&&byUid(e.active)&&byUid(e.active).hp>0&&byUid(e.active))||firstHealthy(), foe=e.mon;
+  if(me) e.active=me.u;
+  SHOWN.foe=foe.hp; SHOWN.me=me?me.hp:0;
+  var px=window.MLPixel && window.MLPixel.on();
+  fxHost().innerHTML='<div class="gbattle'+(px?" px":"")+'"><div class="bstage">'+
+    '<div class="bfield'+(px?" pxfield":"")+'">'+
+      infoBox(foe,"foe")+
+      '<div class="bspr foe" id="bFoeImg">'+monImg(foe,"big")+"</div>"+
+      '<div class="bspr me" id="bMeImg">'+(me?monImg(me,"big me"):"")+"</div>"+
+      (me?infoBox(me,"me"):"")+
     "</div>"+
-    '<div class="blog">'+(e.log.slice(-3).map(esc2).join("<br>")||"A wild "+esc2(pretty(foe.s))+" appeared!")+"</div>"+
+    '<div class="btext" id="bTextBox"><span id="bText"></span><span class="bcur" id="bCur"></span></div>'+
     (me?"":'<div class="bwarn">Every pokemon you have is fainted. You can still throw a '+
       "ball or run &mdash; but nothing heals until you hit all four macro goals in a day.</div>")+
-    '<div class="bacts">'+
-      (me?me.moves.map(function(mv,i){
-        var d=DEX.mv[mv];
-        return '<button class="bmove" data-mv="'+i+'"'+(e.turn!=="you"?" disabled":"")+">"+
-          esc2(moveLabel(mv))+"<u>"+(d?d[0]:"")+(d&&d[1]?" · "+d[1]:"")+"</u></button>";
-      }).join(""):"")+
-    "</div>"+
-    '<div class="bballs">'+balls.map(function(k){
-      return '<button class="bball" data-ball="'+k+'"'+(e.turn!=="you"?" disabled":"")+">"+
-        esc2(ITEMS[k].n)+" <u>"+G.items[k]+"</u></button>";
-    }).join("")+'<button class="bball flee" id="bflee">Run</button></div>'+
-  "</div>";
-  fxHost().querySelectorAll("[data-mv]").forEach(function(b){
-    b.onclick=function(){ playerMove(+b.dataset.mv) };
-  });
-  fxHost().querySelectorAll("[data-ball]").forEach(function(b){
-    b.onclick=function(){ tryCatch(b.dataset.ball) };
-  });
-  document.getElementById("bflee").onclick=flee;
+    '<div class="bmenu" id="bMenu">'+battleMenu(me)+"</div>"+
+  "</div></div>";
+  wireBattle();
+  var first=e.log.length?null:"A wild "+pretty(foe.s)+" appeared!";
+  if(first) play([{say:first, hold:1}]);
+  else setText(e.log[e.log.length-1]+"");
+}
+function wireBattle(){
+  var h=fxHost();
+  h.querySelectorAll("[data-mv]").forEach(function(b){ b.onclick=function(){ playerMove(+b.dataset.mv) } });
+  h.querySelectorAll("[data-ball]").forEach(function(b){ b.onclick=function(){ tryCatch(b.dataset.ball) } });
+  var r=document.getElementById("bRun"); if(r) r.onclick=flee;
+  var tb=document.getElementById("bTextBox"); if(tb) tb.onclick=function(){ FX.tap() };
+}
+function setText(t){ var el=document.getElementById("bText"); if(el) el.textContent=t; }
+function lockMenu(on){
+  var m=document.getElementById("bMenu"); if(!m) return;
+  m.classList.toggle("busy",!!on);
+  m.querySelectorAll("button").forEach(function(b){ b.disabled=!!on });
 }
 
-/* ---- prizes and missions ---- */
-function showPrize(lvl,item,extra){
-  var h=document.createElement("div");
-  h.className="gpop";
-  h.innerHTML='<b>Level '+lvl+"</b><span>"+esc2(ITEMS[item].n)+
-    (extra==="masterball"?" + MASTER BALL":extra==="mythic"?" + something stirs…":"")+"</span>";
-  fxHost().appendChild(h);
-  setTimeout(function(){ h.remove() },3200);
+/* ---- the director: plays steps one after another ---- */
+var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var FX={busy:false, q:[], tapFn:null,
+  tap:function(){ if(FX.tapFn){ var f=FX.tapFn; FX.tapFn=null; f(); } }};
+function play(steps, done){
+  FX.busy=true; lockMenu(true);
+  var i=0;
+  (function next(){
+    if(!document.getElementById("bTextBox") && i<steps.length && !steps[i].say){ i++; return next(); }
+    if(i>=steps.length){
+      FX.busy=false; FX.tapFn=null;
+      var cur=document.getElementById("bCur"); if(cur) cur.classList.remove("on");
+      if(done) done(); else { lockMenu(false); var mm=byUid(G.enc&&G.enc.active); setText("What will "+(mm?nameOf(mm):"you")+" do?"); }
+      return;
+    }
+    var st=steps[i++];
+    runStep(st, next);
+  })();
 }
+function runStep(st, next){
+  if(st.say!==undefined) return say(st.say, next, st.hold, st.quick);
+  if(st.lunge) return cls(st.lunge==="me"?"bMeImg":"bFoeImg", "lunge", 380, next);
+  if(st.hurt)  return cls(st.hurt==="me"?"bMeImg":"bFoeImg", "hurt", 520, next);
+  if(st.faint) return cls(st.faint==="me"?"bMeImg":"bFoeImg", "faint", 650, next, true);
+  if(st.hp)    return drain(st.hp, st.from, st.to, st.max, next);
+  if(st.xp)    return fillXp(st.xp.from, st.xp.to, next);
+  if(st.ball)  return throwBall(st.ball, next);
+  if(st.send){ var m=byUid(st.send); swapMe(m); return setTimeout(next, 350); }
+  next();
+}
+function cls(id, c, ms, next, keep){
+  var el=document.getElementById(id);
+  if(!el||reduce){ if(el&&keep) el.classList.add(c); return setTimeout(next, reduce?60:0); }
+  el.classList.remove(c); void el.offsetWidth; el.classList.add(c);
+  setTimeout(function(){ if(!keep) el.classList.remove(c); next(); }, ms);
+}
+/* the text box: types a character at a time; a tap finishes it, the next tap
+   (or a short pause) moves on, exactly like the games */
+var TYPE_MS=26;
+function say(text, next, hold, quick){
+  var el=document.getElementById("bText"), cur=document.getElementById("bCur");
+  if(!el){ return next(); }
+  var i=0, full=String(text), timer=null, finished=false;
+  el.textContent=""; if(cur) cur.classList.remove("on");
+  function done(){
+    if(finished) return; finished=true; clearInterval(timer); el.textContent=full;
+    if(cur) cur.classList.add("on");
+    var auto=setTimeout(go, hold?1400:quick?380:900+Math.min(900,full.length*12));
+    FX.tapFn=function(){ clearTimeout(auto); go(); };
+  }
+  function go(){ FX.tapFn=null; if(cur) cur.classList.remove("on"); next(); }
+  if(reduce){ return done(); }
+  FX.tapFn=done;
+  timer=setInterval(function(){ i+=1; el.textContent=full.slice(0,i); if(i>=full.length) done(); }, TYPE_MS);
+}
+/* hp drains the way it does in the games: steadily, the colour changing as it
+   crosses each threshold, the numbers counting down, the box flashing so the
+   eye goes to it */
+function drain(who, from, to, max, next){
+  var bar=document.getElementById(who==="me"?"bMeBar":"bFoeBar");
+  var box=document.getElementById(who==="me"?"bMeBox":"bFoeBox");
+  var num=who==="me"?document.getElementById("bMeNum"):null;
+  if(!bar){ SHOWN[who]=to; return next(); }
+  var dur=reduce?1:Math.max(550, Math.min(1500, Math.abs(from-to)/Math.max(1,max)*2400));
+  if(box) box.classList.add("draining");
+  var t0=null;
+  function frame(ts){
+    if(t0===null) t0=ts;
+    var k=Math.min(1,(ts-t0)/dur), e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+    var v=Math.round(from+(to-from)*e), p=barPct(v,max);
+    bar.style.width=p+"%"; bar.className=hpCls(p);
+    if(num) num.textContent=v+" / "+max;
+    SHOWN[who]=v;
+    if(k<1) requestAnimationFrame(frame);
+    else{ if(box) box.classList.remove("draining"); setTimeout(next,180); }
+  }
+  bar.style.transition="none";
+  requestAnimationFrame(frame);
+}
+/* the xp bar fills, and on a level up it fills to the end, flashes, and starts again */
+function fillXp(from, to, next){
+  var bar=document.getElementById("bMeXp"), box=document.getElementById("bMeBox"),
+      lv=document.getElementById("bMeLv");
+  if(!bar) return next();
+  bar.style.transition="none";
+  var segs=[], l=from.lvl, x=from.xp;
+  while(l<to.lvl){ segs.push({l:l, a:x, b:xpNeed(l)}); l++; x=0; }
+  segs.push({l:to.lvl, a:x, b:to.xp});
+  if(box) box.classList.add("gaining");
+  (function seg(j){
+    if(j>=segs.length){ if(box) box.classList.remove("gaining"); return setTimeout(next,200); }
+    var s=segs[j], need=xpNeed(s.l), dur=reduce?1:Math.max(450,Math.min(1300,(s.b-s.a)/need*1600)), t0=null;
+    function frame(ts){
+      if(t0===null) t0=ts;
+      var k=Math.min(1,(ts-t0)/dur), v=s.a+(s.b-s.a)*k;
+      bar.style.width=Math.max(0,Math.min(100,v/need*100))+"%";
+      if(k<1) return requestAnimationFrame(frame);
+      if(j<segs.length-1){                       /* levelled: flash, then wrap */
+        if(lv) lv.textContent="Lv"+(s.l+1);
+        if(box){ box.classList.remove("lvup"); void box.offsetWidth; box.classList.add("lvup"); }
+        setTimeout(function(){ bar.style.width="0%"; seg(j+1); }, reduce?1:420);
+      }else seg(j+1);
+    }
+    requestAnimationFrame(frame);
+  })(0);
+}
+function swapMe(m){
+  if(!m) return;
+  var img=document.getElementById("bMeImg"), box=document.getElementById("bMeBox");
+  if(img){ img.className="bspr me enter"; img.innerHTML=monImg(m,"big me"); }
+  if(box){ var tmp=document.createElement("div"); tmp.innerHTML=infoBox(m,"me"); box.replaceWith(tmp.firstChild); }
+  SHOWN.me=m.hp;
+  var menu=document.getElementById("bMenu"); if(menu){ menu.innerHTML=battleMenu(m); wireBattle(); lockMenu(true); }
+}
+/* the ball: thrown, the foe vanishes into it, it wobbles, then pops or holds */
+function throwBall(b, next){
+  var field=document.querySelector(".gbattle .bfield"), foe=document.getElementById("bFoeImg");
+  if(!field||reduce){ if(foe&&b.caught) foe.style.visibility="hidden"; return setTimeout(next,reduce?60:0); }
+  var el=document.createElement("div");
+  el.className="bthrown"; el.innerHTML=itemIcon(b.kind,40);
+  field.appendChild(el);
+  setTimeout(function(){ if(foe) foe.classList.add("absorbed"); },620);
+  var t=900;
+  for(var k=0;k<b.shakes;k++){ (function(k){ setTimeout(function(){
+      el.classList.remove("wob"); void el.offsetWidth; el.classList.add("wob"); }, t+k*700); })(k); }
+  t+=b.shakes*700+300;
+  setTimeout(function(){
+    if(b.caught){ el.classList.add("click"); setTimeout(next,500); }
+    else{ el.remove(); if(foe){ foe.classList.remove("absorbed"); foe.classList.add("popout");
+            setTimeout(function(){ foe.classList.remove("popout") },400); } next(); }
+  }, t);
+}
+
+/* ---- item popup: an icon, what it is, why you got it, and an OK ---- */
+function flushItems(){
+  if(!itemQ.length) return;
+  if(busy()||FX.busy){ clearTimeout(itemT); itemT=setTimeout(flushItems,900); return; }
+  var batch=itemQ.splice(0,itemQ.length);
+  var merged={}; batch.forEach(function(x){
+    var k=x.item; if(!merged[k]) merged[k]={item:k,n:0,why:[]};
+    merged[k].n+=x.n; if(x.why&&merged[k].why.indexOf(x.why)<0) merged[k].why.push(x.why);
+  });
+  var list=Object.keys(merged).map(function(k){return merged[k]});
+  var head=list.length===1
+    ? "You got "+(list[0].n>1?list[0].n+" "+ITEMS[list[0].item].n+"s":"a "+ITEMS[list[0].item].n)+"!"
+    : "You got "+list.length+" items!";
+  var h=document.createElement("div");
+  h.className="gover gitem";
+  h.innerHTML='<div class="gcard gitemcard" role="dialog" aria-label="'+esc2(head)+'">'+
+    '<div class="gitemicons">'+list.map(function(x){
+      return '<div class="gitemone"><div class="gitemglow">'+itemIcon(x.item,64)+"</div>"+
+        "<b>"+esc2(ITEMS[x.item].n)+(x.n>1?" ×"+x.n:"")+"</b>"+
+        (x.why.length?"<u>"+esc2(x.why.join(" · "))+"</u>":"")+"</div>";
+    }).join("")+"</div>"+
+    '<p class="gitemhead" id="gItemHead"></p>'+
+    '<p class="gitemsub">Put away in your Bag.</p>'+
+    '<button class="gbtn" id="gItemOk">OK</button></div>';
+  fxHost().appendChild(h);
+  var hd=h.querySelector("#gItemHead");
+  if(window.MLPixel&&window.MLPixel.on()&&window.MLPixel.typeOut) window.MLPixel.typeOut(hd, head);
+  else hd.textContent=head;
+  var ok=h.querySelector("#gItemOk");
+  ok.onclick=function(){ h.remove(); paint(); if(itemQ.length) setTimeout(flushItems,200); else tryPendingSoon(); };
+  setTimeout(function(){ try{ ok.focus({preventScroll:true}) }catch(e){} },60);
+}
+function tryPendingSoon(){ setTimeout(function(){ tryPending(); flushItems(); }, 500); }
+
+/* ---- prizes and missions ---- */
 function showMission(m){
   var mon=byUid(m.who); if(!mon) return;
   var h=document.createElement("div");
@@ -701,7 +1035,7 @@ function pcHTML(){
     }).join(""):'<p class="note" style="margin:0">Nothing stored yet.</p>')+"</div>"+
     '<div class="sectlab">Bag</div>'+
     '<div class="card">'+(items.length?items.map(function(k){
-      return '<div class="row"><div class="main"><div class="nm">'+esc2(ITEMS[k].n)+"</div></div>"+
+      return '<div class="row gbagrow">'+itemIcon(k,30)+'<div class="main"><div class="nm">'+esc2(ITEMS[k].n)+"</div></div>"+
         '<div class="rt"><div class="mins">'+G.items[k]+"</div></div></div>";
     }).join(""):'<p class="note" style="margin:0">Empty.</p>')+"</div>"+
     '<div class="sectlab">Trainer</div>'+
@@ -797,9 +1131,9 @@ function boot(){
       var _sw=window.saveWater;
       window.saveWater=function(){ _sw.apply(this,arguments); try{ hookWater() }catch(e){} };
     }
-    if(typeof window.saveRecipes==="function"){
-      var _sr=window.saveRecipes;
-      window.saveRecipes=function(){ _sr.apply(this,arguments); try{ hookRecipe() }catch(e){} };
+    if(typeof window.closeSheet==="function"){
+      var _cs=window.closeSheet;
+      window.closeSheet=function(){ _cs.apply(this,arguments); tryPendingSoon(); };
     }
     if(typeof window.lookupBarcode==="function"){
       var _lb=window.lookupBarcode;
@@ -809,6 +1143,7 @@ function boot(){
       (S.days[d]||[]).forEach(function(e){ if(e.id) lastSeen[e.id]=1 });
     });
     rollDay();
+    setTimeout(tryPending, 1500);        /* an encounter owed from last time */
     if(!G.started) openStarter(); else { render(); paint();
       setTimeout(function(){ if(Math.random()<0.5) newMission() }, 9000); }
     setInterval(function(){ if(G.started&&Math.random()<0.25) newMission() }, 240000);

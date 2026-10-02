@@ -5,8 +5,7 @@
 .mon.big{max-width:170px;margin:0 auto}
 .hpb{height:5px;border-radius:99px;background:var(--sunk);overflow:hidden;
   border:1px solid var(--line-soft);box-sizing:border-box}
-.hpb i{display:block;height:100%;background:var(--ok);border-radius:99px;transition:width .4s}
-.hpb i.mid{background:#E0A62B} .hpb i.low{background:var(--warn)}
+.hpb i{display:block;height:100%;border-radius:99px;transition:width .6s cubic-bezier(.2,.8,.25,1),background-color .3s}
 
 /* strip on the day screen */
 .gstrip{background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r);
@@ -16,8 +15,8 @@
 .gmult{font-size:11px}
 .gxp{height:6px;border-radius:99px;background:var(--sunk);overflow:hidden;margin:7px 0 10px;
   border:1px solid var(--line-soft)}
-.gxp i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--ok));
-  border-radius:99px;transition:width .8s cubic-bezier(.2,.8,.25,1)}
+.gxp i{display:block;height:100%;background:linear-gradient(90deg,var(--xp),var(--accent));
+  border-radius:99px;transition:width .9s cubic-bezier(.2,.8,.25,1)}
 .gxp.small{height:5px;margin:8px 0 4px}
 .gline{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
 .gslot{flex:0 0 54px;width:54px;padding:3px;border-radius:10px;background:var(--sunk);
@@ -49,34 +48,116 @@
   font-weight:600;font-size:14.5px}
 .gbtn.ghost{background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line)}
 
-/* battle */
-.gbattle{position:fixed;inset:0;z-index:130;background:var(--bg);display:flex;flex-direction:column;
-  padding:calc(14px + env(safe-area-inset-top)) 14px calc(14px + env(safe-area-inset-bottom))}
-.bfield{flex:1;display:flex;flex-direction:column;justify-content:space-between;
-  background:linear-gradient(180deg,var(--surface-2),var(--surface));border-radius:16px;
-  padding:14px;border:1px solid var(--line);min-height:0}
-.bfoe{align-self:flex-end;text-align:right;max-width:56%}
-.bme{align-self:flex-start;text-align:left;max-width:56%}
-.bname{font-size:12.5px;font-weight:600;margin-bottom:4px}
-.bname span{color:var(--ink-3);font-weight:500}
-.bname em{color:#E0A62B;font-style:normal;font-size:10px;font-weight:700}
-.bfoe .mon.big,.bme .mon.big{max-width:130px}
-.bme .mon.me{transform:scaleX(-1)}
-.blog{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:11px 13px;
-  font-size:13px;line-height:1.5;margin:10px 0;min-height:58px}
+/* battle -- one layout for every theme; Emerald restyles it in pixel.css */
+.gbattle{position:fixed;inset:0;z-index:130;background:var(--bg);display:flex;justify-content:center;
+  padding:calc(10px + env(safe-area-inset-top)) 10px calc(10px + env(safe-area-inset-bottom))}
+.bstage{width:100%;max-width:520px;display:flex;flex-direction:column;min-height:0}
+.bfield{position:relative;flex:1 1 auto;min-height:250px;border-radius:16px;overflow:hidden;
+  border:1px solid var(--line);background:
+   radial-gradient(ellipse 34% 7% at 72% 44%,var(--plat),transparent 70%),
+   radial-gradient(ellipse 40% 8% at 30% 92%,var(--plat),transparent 70%),
+   linear-gradient(180deg,var(--sky) 0%,var(--surface-2) 58%,var(--surface) 100%)}
+.bspr{position:absolute;transition:opacity .3s}
+.bspr.foe{left:72%;bottom:46%;width:min(34%,150px);transform:translateX(-50%)}
+.bspr.me{left:30%;bottom:6%;width:min(40%,180px);transform:translateX(-50%)}
+.bspr .mon.big{max-width:none;width:100%}
+.bspr .mon.me{transform:scaleX(-1)}
+/* the info boxes, laid out as in the games: foe top left, yours bottom right */
+.binfo{position:absolute;background:var(--surface);color:var(--ink);border:2px solid var(--line);
+  border-radius:12px;padding:7px 10px 8px;min-width:48%;max-width:62%;
+  box-shadow:0 3px 0 rgba(0,0,0,.18);transition:box-shadow .2s,transform .2s}
+.binfo.foe{left:3%;top:4%}
+.binfo.me{right:3%;bottom:4%}
+.binfo .bname{display:flex;justify-content:space-between;gap:10px;font-size:13px;font-weight:700;margin:0}
+.binfo .bname em{color:#E0A62B;font-style:normal}
+.blv{color:var(--ink-2);font-weight:600}
+.bhpline,.bxpline{display:flex;align-items:center;gap:6px;margin-top:5px}
+.bhplab{font-size:10px;font-weight:800;letter-spacing:.04em;color:#F2C230;background:#2B3A3A;
+  padding:0 4px;border-radius:3px;line-height:14px}
+.bxplab{font-size:9px;font-weight:800;color:var(--xp);letter-spacing:.04em}
+.bhpline .hpb{flex:1}
+.bnum{text-align:right;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:3px}
+.bxp{flex:1;height:5px;border-radius:99px;background:var(--sunk);overflow:hidden;border:1px solid var(--line-soft)}
+.bxp i{display:block;height:100%;width:0;background:var(--xp);border-radius:99px}
+/* draws the eye while something is happening to it */
+.binfo.draining{animation:bpulse .5s ease-in-out infinite alternate}
+.binfo.gaining{box-shadow:0 0 0 3px var(--xp),0 3px 0 rgba(0,0,0,.18)}
+.binfo.lvup{animation:blvup .6s ease}
+@keyframes bpulse{from{box-shadow:0 0 0 0 transparent,0 3px 0 rgba(0,0,0,.18)}
+  to{box-shadow:0 0 0 4px var(--warn),0 3px 0 rgba(0,0,0,.18);transform:translateY(-1px)}}
+@keyframes blvup{0%{transform:scale(1)}40%{transform:scale(1.07);box-shadow:0 0 0 5px #F2C230}100%{transform:scale(1)}}
+/* the moves */
+.bspr.lunge .mon{animation:blunge .38s ease-in-out}
+.bspr.foe.lunge .mon{animation-name:blungefoe}
+@keyframes blunge{0%,100%{translate:0 0}45%{translate:22% -10%}}
+@keyframes blungefoe{0%,100%{translate:0 0}45%{translate:-22% 10%}}
+.bspr.hurt{animation:bblink .52s steps(1)}
+@keyframes bblink{0%,24%,50%,76%{opacity:1}12%,37%,63%,88%{opacity:0}}
+.bspr.faint{animation:bfaint .65s ease-in forwards}
+@keyframes bfaint{to{transform:translate(-50%,40%);opacity:0}}
+.bspr.enter{animation:benter .4s ease-out}
+@keyframes benter{from{transform:translate(-90%,0);opacity:0}}
+.bspr.absorbed{transform:translateX(-50%) scale(.1);opacity:0;transition:transform .3s,opacity .3s}
+.bspr.popout{animation:bpop .35s ease-out}
+@keyframes bpop{from{transform:translateX(-50%) scale(.2);opacity:0}}
+.bthrown{position:absolute;left:66%;bottom:50%;width:40px;height:40px;z-index:5;
+  animation:bthrow .6s cubic-bezier(.3,.6,.4,1) forwards}
+.bthrown .gicon{width:40px;height:40px;display:block}
+@keyframes bthrow{0%{left:8%;bottom:8%;transform:rotate(0) scale(.6)}
+  70%{left:66%;bottom:60%;transform:rotate(600deg) scale(1)}100%{left:66%;bottom:50%;transform:rotate(720deg)}}
+.bthrown.wob{animation:bwob .5s ease-in-out;left:66%;bottom:50%}
+@keyframes bwob{0%,100%{transform:rotate(0)}25%{transform:rotate(-22deg)}75%{transform:rotate(22deg)}}
+.bthrown.click{left:66%;bottom:50%;filter:drop-shadow(0 0 8px #F2C230);animation:bclick .5s ease}
+@keyframes bclick{50%{transform:scale(1.2)}}
+/* the text box: types out, a blinking arrow when it is waiting for you */
+.btext{position:relative;background:var(--surface);color:var(--ink);border:2px solid var(--line);
+  border-radius:12px;padding:12px 30px 12px 14px;font-size:15px;line-height:1.45;margin:8px 0;
+  min-height:70px;cursor:pointer;user-select:none;-webkit-user-select:none}
+.bcur{position:absolute;right:12px;bottom:10px;width:0;height:0;border-left:6px solid transparent;
+  border-right:6px solid transparent;border-top:8px solid var(--warn);opacity:0}
+.bcur.on{opacity:1;animation:bbob .7s ease-in-out infinite}
+@keyframes bbob{50%{transform:translateY(3px)}}
 .bwarn{background:var(--warn-soft);color:var(--warn);border-radius:11px;padding:10px 13px;
   font-size:12.5px;line-height:1.5;margin-bottom:8px}
-.bacts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.bmenu{display:grid;grid-template-columns:1fr 1fr;gap:8px;transition:opacity .2s}
+.bmenu.busy{opacity:.45}
 .bmove{padding:12px 10px;border-radius:11px;background:var(--surface-2);border:1px solid var(--line);
-  font-size:13.5px;font-weight:600;text-align:left}
+  color:var(--ink);font-size:13.5px;font-weight:600;text-align:left}
 .bmove u{display:block;text-decoration:none;font-size:10px;color:var(--ink-3);font-weight:500;margin-top:2px}
-.bmove[disabled]{opacity:.4}
-.bballs{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
-.bball{flex:1;min-width:88px;padding:11px 8px;border-radius:11px;background:var(--accent-soft);
-  color:var(--accent-ink);font-size:12.5px;font-weight:600}
-.bball u{text-decoration:none;opacity:.7}
+.bmove[disabled]{opacity:.55}
+.bballs{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap}
+.bball{flex:1;min-width:96px;padding:9px 8px;border-radius:11px;background:var(--accent-soft);
+  color:var(--accent-ink);font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:6px;justify-content:center}
+.bball u{text-decoration:none;opacity:.75}
 .bball.flee{background:var(--surface-2);color:var(--ink-2)}
-.bball[disabled]{opacity:.4}
+.bball[disabled]{opacity:.55}
+.gicon{flex:0 0 auto;display:inline-block;vertical-align:middle}
+
+/* the hp colours, the same thresholds everywhere */
+.hpb i{background:var(--hp-hi)} .hpb i.mid{background:var(--hp-mid)} .hpb i.low{background:var(--hp-lo)}
+.hpb.big{height:8px}
+.hpb.gain,.gxp.gain{box-shadow:0 0 0 2px var(--xp)}
+.gxp{position:relative;overflow:visible}
+.gxp.gain i{box-shadow:0 0 10px var(--xp)}
+.gxp.lvup{animation:blvup .7s ease}
+.gxpgain{position:absolute;right:0;top:-18px;font-size:11px;font-weight:800;color:var(--xp);
+  animation:gfloat 2.4s ease forwards;pointer-events:none}
+@keyframes gfloat{0%{opacity:0;transform:translateY(6px)}15%{opacity:1;transform:none}80%{opacity:1}100%{opacity:0;transform:translateY(-8px)}}
+
+/* item popup */
+.gitem{z-index:150}
+.gitemcard{animation:gitemin .35s cubic-bezier(.2,1.4,.4,1)}
+@keyframes gitemin{from{transform:scale(.8);opacity:0}}
+.gitemicons{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin:4px 0 10px}
+.gitemone{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:96px}
+.gitemone b{font-size:14px} .gitemone u{text-decoration:none;font-size:11.5px;color:var(--ink-3);max-width:160px}
+.gitemglow{width:84px;height:84px;display:grid;place-items:center;border-radius:50%;
+  background:radial-gradient(circle,var(--accent-soft) 0,transparent 70%);animation:gbob 1.6s ease-in-out infinite}
+.gitemglow .gicon{width:64px;height:64px}
+@keyframes gbob{50%{transform:translateY(-5px) rotate(-6deg)}}
+.gitemhead{font-size:16px!important;font-weight:700;color:var(--ink)!important;margin:4px 0 2px!important;min-height:22px}
+.gitemsub{font-size:12px!important;margin-bottom:14px!important}
+.gbagrow{display:flex;align-items:center;gap:10px}
 
 /* pops */
 .gpop{position:fixed;left:50%;transform:translateX(-50%);top:calc(14px + env(safe-area-inset-top));
@@ -87,6 +168,7 @@
 .gpop b{display:block;font-size:13px} .gpop span{font-size:12px;opacity:.85}
 .gpop .mon{width:38px;flex:0 0 38px}
 .gpop.mission{background:var(--surface);color:var(--ink);border:1px solid var(--line)}
+@media (prefers-reduced-motion:reduce){.binfo.draining,.gitemglow,.bcur.on,.gxpgain{animation:none}}
 
 /* one pokemon */
 .gmon{text-align:center}
@@ -119,32 +201,47 @@
 .gcell:active{transform:scale(.96)}
 
 /* ---- handheld look ---- */
-[data-game-theme="gba"]{
+html:root[data-game-theme="gba"]{
   --bg:#F8F8F0; --surface:#FFFFFF; --surface-2:#E8E8D8; --sunk:#D8D8C0;
   --ink:#181818; --ink-2:#484848; --ink-3:#787868;
   --line:#181818; --line-soft:#A8A890;
   --accent:#F03028; --accent-ink:#B01818; --accent-soft:#F8D8D0; --on-accent:#FFFFFF;
   --ok:#38B048; --ok-soft:#D8F0D8; --warn:#F03028; --warn-soft:#F8D8D0;
-  --r:0px; --shadow:3px 3px 0 #181818;
+  --r:0px; --shadow:3px 3px 0 #181818; --sky:#C8E0D0; --plat:rgba(24,24,24,.16); color-scheme:light;
 }
+@media (prefers-color-scheme:dark){
+  html:root[data-game-theme="gba"]:not([data-theme="light"]){
+    --bg:#1E2018; --surface:#2A2D22; --surface-2:#353829; --sunk:#16180F;
+    --ink:#E8E8D8; --ink-2:#B8B8A0; --ink-3:#8C8C74;
+    --line:#E8E8D8; --line-soft:#5A5C48;
+    --accent:#F05048; --accent-ink:#FF8A80; --accent-soft:#4A1E1A; --on-accent:#FFFFFF;
+    --ok:#58C868; --ok-soft:#1E3A22; --warn:#FF6A5E; --warn-soft:#45201C;
+    --shadow:3px 3px 0 #000; --sky:#2E3326; --plat:rgba(232,232,216,.18); color-scheme:dark}}
+html:root[data-game-theme="gba"][data-theme="dark"]{
+    --bg:#1E2018; --surface:#2A2D22; --surface-2:#353829; --sunk:#16180F;
+    --ink:#E8E8D8; --ink-2:#B8B8A0; --ink-3:#8C8C74;
+    --line:#E8E8D8; --line-soft:#5A5C48;
+    --accent:#F05048; --accent-ink:#FF8A80; --accent-soft:#4A1E1A; --on-accent:#FFFFFF;
+    --ok:#58C868; --ok-soft:#1E3A22; --warn:#FF6A5E; --warn-soft:#45201C;
+    --shadow:3px 3px 0 #000; --sky:#2E3326; --plat:rgba(232,232,216,.18); color-scheme:dark}
 [data-game-theme="gba"] *{font-family:"IBM Plex Mono",ui-monospace,monospace!important;
   letter-spacing:0!important}
 [data-game-theme="gba"] .card,[data-game-theme="gba"] .hero,[data-game-theme="gba"] .stat,
-[data-game-theme="gba"] .gstrip,[data-game-theme="gba"] .gcard,[data-game-theme="gba"] .blog,
-[data-game-theme="gba"] .bfield{border:3px solid #181818!important;border-radius:0!important;
-  box-shadow:3px 3px 0 #181818!important}
+[data-game-theme="gba"] .gstrip,[data-game-theme="gba"] .gcard,
+[data-game-theme="gba"] .bfield,[data-game-theme="gba"] .binfo,[data-game-theme="gba"] .btext{
+  border:3px solid var(--line)!important;border-radius:0!important;box-shadow:3px 3px 0 var(--line)!important}
 [data-game-theme="gba"] .btn,[data-game-theme="gba"] .gbtn,[data-game-theme="gba"] .bmove,
-[data-game-theme="gba"] .bball{border:3px solid #181818!important;border-radius:0!important;
-  box-shadow:2px 2px 0 #181818!important;text-transform:uppercase;font-size:12px!important}
+[data-game-theme="gba"] .bball{border:3px solid var(--line)!important;border-radius:0!important;
+  box-shadow:2px 2px 0 var(--line)!important;text-transform:uppercase;font-size:12px!important}
 [data-game-theme="gba"] .mon{image-rendering:pixelated}
-[data-game-theme="gba"] .tabbar{border-top:3px solid #181818}
+[data-game-theme="gba"] .tabbar{border-top:3px solid var(--line)}
 /* Retro bars are taller and square, but the border stays 1px: with
    box-sizing:border-box a thicker border shrinks the content box, and the
    fill's width is a percentage of that, so the same value would read as a
    different amount full in each theme. */
 [data-game-theme="gba"] .hpb,[data-game-theme="gba"] .gxp,[data-game-theme="gba"] .track,
 [data-game-theme="gba"] .xbar{
-  border:1px solid #181818!important;border-radius:0!important;height:10px}
+  border:1px solid var(--line)!important;border-radius:0!important;height:10px}
 [data-game-theme="gba"] .hpb i,[data-game-theme="gba"] .gxp i,
 [data-game-theme="gba"] .track i,[data-game-theme="gba"] .xbar i{border-radius:0!important}
 [data-game-theme="gba"] h1,[data-game-theme="gba"] h2,[data-game-theme="gba"] h3,

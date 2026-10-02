@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="game/game.css">
 <link rel="stylesheet" href="lift/lift.css">
 <link rel="stylesheet" href="pixel/pixel.css">
+<link rel="stylesheet" href="kitchen/kitchen.css">
 <meta name="theme-color" media="(prefers-color-scheme:light)" content="#F1F4F1">
 <meta name="theme-color" media="(prefers-color-scheme:dark)" content="#0D1211">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -31,7 +32,9 @@
   --accent:#0E6B57; --accent-ink:#0E6B57; --accent-on:#FFFFFF; --accent-soft:#DEEDE7;
   --p:#AC4227; --c:#9C7407; --f:#455F94;
   --p-soft:#F5E2DC; --c-soft:#F4EAD1; --f-soft:#DFE6F2;
-  --warn:#A83A22;
+  --warn:#A83A22; --warn-soft:#F6DED6; --ok:#2E9B5F; --ok-soft:#DCF1E4; --on-accent:#FFFFFF;
+  --hp-hi:#3DBE5C; --hp-mid:#E5B323; --hp-lo:#E2463B; --xp:#3E8BE0;
+  --sky:#DDEFF7; --plat:rgba(19,26,22,.13);
   --shadow:0 1px 2px rgba(19,26,22,.05), 0 8px 24px -12px rgba(19,26,22,.18);
   --r:14px;
   color-scheme:light;
@@ -44,7 +47,9 @@
     --accent:#4FC1A2; --accent-ink:#4FC1A2; --accent-on:#07201A; --accent-soft:#153029;
     --p:#E58163; --c:#DCAB44; --f:#7F9DD4;
     --p-soft:#2D1A14; --c-soft:#2C2311; --f-soft:#161F2E;
-    --warn:#E5714F;
+    --warn:#E5714F; --warn-soft:#3A1A12; --ok:#4FC17F; --ok-soft:#14301F; --on-accent:#07201A;
+    --hp-hi:#4CD26B; --hp-mid:#F0C23A; --hp-lo:#F0574B; --xp:#5AA6F5;
+    --sky:#16242A; --plat:rgba(230,237,233,.12);
     --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
     color-scheme:dark;
   }
@@ -56,7 +61,9 @@
   --accent:#4FC1A2; --accent-ink:#4FC1A2; --accent-on:#07201A; --accent-soft:#153029;
   --p:#E58163; --c:#DCAB44; --f:#7F9DD4;
   --p-soft:#2D1A14; --c-soft:#2C2311; --f-soft:#161F2E;
-  --warn:#E5714F;
+  --warn:#E5714F; --warn-soft:#3A1A12; --ok:#4FC17F; --ok-soft:#14301F; --on-accent:#07201A;
+  --hp-hi:#4CD26B; --hp-mid:#F0C23A; --hp-lo:#F0574B; --xp:#5AA6F5;
+  --sky:#16242A; --plat:rgba(230,237,233,.12);
   --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
   color-scheme:dark;
 }
@@ -247,7 +254,7 @@ button,[role="tab"]{-webkit-tap-highlight-color:transparent}
 
 
 /* ---- skins. Handed out one person at a time with ?skin=<name>. ---- */
-[data-skin="gator"]{
+html:root[data-skin="gator"]{color-scheme:dark;
   --bg:#0A1A3C; --surface:#12275A; --surface-2:#1A3370; --sunk:#081537;
   --ink:#FFF4E6; --ink-2:#FFB380; --ink-3:#8FA8D8;
   --line:#24418A; --line-soft:#1B3271;
@@ -262,7 +269,7 @@ button,[role="tab"]{-webkit-tap-highlight-color:transparent}
   font-size:30px;z-index:5;opacity:.9;pointer-events:none}
 
 [data-skin="comic"] *{font-family:"Comic Sans MS","Chalkboard SE","Comic Neue",cursive!important}
-[data-skin="comic"]{
+html:root[data-skin="comic"]{color-scheme:light;
   --bg:#FFF8E7; --surface:#FFFFFF; --surface-2:#FFEFC7; --sunk:#FFE3A3;
   --ink:#3B2A00; --ink-2:#7A5A10; --ink-3:#A98B45;
   --line:#F0C860; --line-soft:#F7E0A8;
@@ -272,7 +279,7 @@ button,[role="tab"]{-webkit-tap-highlight-color:transparent}
 [data-skin="comic"] .card{transform:rotate(.35deg)}
 [data-skin="comic"] .card:nth-child(even){transform:rotate(-.4deg)}
 
-[data-skin="bee"]{
+html:root[data-skin="bee"]{color-scheme:light;
   --bg:#FFE873; --surface:#FFF6C9; --surface-2:#FFDE45; --sunk:#F5CE1E;
   --ink:#1A1600; --ink-2:#4A3F00; --ink-3:#7A6A10;
   --line:#1A1600; --line-soft:#C9A800;
@@ -283,7 +290,7 @@ button,[role="tab"]{-webkit-tap-highlight-color:transparent}
 [data-skin="bee"] body::after{content:"";position:fixed;inset:0 0 auto 0;height:9px;z-index:60;
   background:repeating-linear-gradient(45deg,#141200 0 14px,#FFD400 14px 28px);pointer-events:none}
 
-[data-skin="barbie"]{
+html:root[data-skin="barbie"]{color-scheme:light;
   --bg:#FFE3F1; --surface:#FFFFFF; --surface-2:#FFD0E8; --sunk:#FFC0E0;
   --ink:#3D0025; --ink-2:#8A0A55; --ink-3:#C25E96;
   --line:#FFA8D5; --line-soft:#FFCCE6;
@@ -292,7 +299,7 @@ button,[role="tab"]{-webkit-tap-highlight-color:transparent}
 }
 [data-skin="barbie"] .btn,[data-skin="barbie"] .card{box-shadow:0 4px 0 #FFA8D5!important}
 
-[data-skin="matrix"]{
+html:root[data-skin="matrix"]{color-scheme:dark;
   --bg:#000600; --surface:#020D02; --surface-2:#041604; --sunk:#000300;
   --ink:#33FF66; --ink-2:#1FBF48; --ink-3:#128030;
   --line:#0B3D18; --line-soft:#072711;
@@ -312,7 +319,10 @@ button,[role="tab"]{-webkit-tap-highlight-color:transparent}
   box-shadow:0 -8px 40px -10px rgba(0,0,0,.4);animation:up .26s cubic-bezier(.2,.8,.3,1)}
 @keyframes up{from{transform:translateY(100%)}}
 @media (prefers-reduced-motion:reduce){.sheet,.scrim{animation:none}.track i,.macro .mt i{transition:none}}
-.sheet.tall{height:94vh;height:var(--sheetmax,94dvh)}
+.sheet.tall,.sheet.kbopen{height:94vh;height:var(--sheetmax,94dvh)}
+/* a field you are typing in always has room to scroll above the keyboard */
+.sheet.kbopen .sbody{padding-bottom:calc(40vh + env(safe-area-inset-bottom))}
+body.locked{position:fixed;left:0;right:0;overflow:hidden}
 .sheet>.inner{max-width:500px;margin:0 auto;width:100%;display:flex;flex-direction:column;min-height:0;flex:1}
 .grab{width:36px;height:4px;border-radius:99px;background:var(--line);margin:9px auto 0;flex-shrink:0}
 .shead{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px 8px;flex-shrink:0}
@@ -2091,8 +2101,16 @@ function openScanner(ctx){
 const CAM={video:{facingMode:{ideal:"environment"},width:{ideal:1280},height:{ideal:720}},audio:false};
 
 async function runScan(vid,ctx){
-  let done=false;
-  const finish=code=>{ if(done)return; done=true; stopScanner(); lookupBarcode(code,ctx) };
+  let done=false, lastCode="", lastAt=0;
+  const finish=code=>{
+    if(done)return;
+    if(ctx&&ctx.continuous){
+      const now=Date.now();
+      if(code===lastCode&&now-lastAt<2500)return;     /* the same box held in view */
+      lastCode=code;lastAt=now;ctx.onCode(code);return;
+    }
+    done=true; stopScanner(); lookupBarcode(code,ctx);
+  };
   const camError=e=>scanStatus(e&&e.name==="NotAllowedError"
     ? "Camera blocked. Allow it in Settings, or type the number."
     : "No camera here. Type the number instead.");
@@ -2416,6 +2434,49 @@ if(window.visualViewport){
 }
 window.addEventListener("resize",fitSheet);
 
+/* iOS ignores overflow:hidden on body, so the page behind a sheet scrolls and
+   jumps whenever a field gets focus. Pin the page where it is instead. */
+let lockY=0;
+function lockPage(){
+  if(document.body.classList.contains("locked"))return;
+  lockY=window.scrollY||0;
+  document.body.style.top=(-lockY)+"px";
+  document.body.classList.add("locked");
+}
+function unlockPage(){
+  if(!document.body.classList.contains("locked"))return;
+  document.body.classList.remove("locked");
+  document.body.style.top="";
+  window.scrollTo(0,lockY);
+}
+/* keep the field being typed in visible: once the keyboard has finished
+   opening, scroll it to the middle of what is left of the sheet */
+function revealField(el){
+  if(!el||!el.closest)return;
+  const box=el.closest(".sbody"); if(!box)return;
+  const sheet=el.closest(".sheet"); if(sheet)sheet.classList.add("kbopen");
+  const go=()=>{
+    const r=el.getBoundingClientRect(),b=box.getBoundingClientRect();
+    const mid=b.top+Math.min(b.height,(window.visualViewport?visualViewport.height:innerHeight)-b.top)*0.4;
+    if(r.top<b.top+8||r.bottom>mid+r.height) box.scrollTop+=r.top-mid;
+  };
+  setTimeout(go,60);setTimeout(go,360);
+}
+document.addEventListener("focusin",e=>{
+  const t=e.target;
+  if(t&&/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)&&t.closest&&t.closest("#sheetHost"))revealField(t);
+});
+document.addEventListener("focusout",()=>setTimeout(()=>{
+  const a=document.activeElement;
+  if(!(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))){
+    const sh=document.querySelector("#sheetHost .sheet.kbopen"); if(sh)sh.classList.remove("kbopen");
+  }
+},250));
+if(window.visualViewport)visualViewport.addEventListener("resize",()=>{
+  const a=document.activeElement;
+  if(a&&a.closest&&a.closest("#sheetHost"))revealField(a);
+});
+
 function openSheet(title,body,mount,rightHTML,cls){
   const host=document.getElementById("sheetHost");
   /* .sbody is the only thing that scrolls, so guarantee one rather than
@@ -2438,14 +2499,15 @@ function openSheet(title,body,mount,rightHTML,cls){
       scroller+"</div></div>";
   document.getElementById("scrim").onclick=closeSheet;
   const c=document.getElementById("sheetClose"); if(c)c.onclick=closeSheet;
-  document.body.style.overflow="hidden";
+  lockPage();
   fitSheet();
   if(mount)mount(host);
 }
 function closeSheet(){
   stopScanner();
+  if(typeof closeSheet.before==="function"){ try{closeSheet.before()}catch(e){} closeSheet.before=null }
   document.getElementById("sheetHost").innerHTML="";
-  document.body.style.overflow="";
+  unlockPage();
 }
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeSheet()});
 
@@ -2454,7 +2516,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeSheet()});
 function openSearch(ctx){
   ctx=ctx||{mode:"log"};
   if(ctx.mode==="log"&&!ctx.meal)ctx.meal=mealOfNow();
-  const title=ctx.mode==="recipe"?"Add an ingredient":"Add to "+ctx.meal.toLowerCase();
+  const title=ctx.title||(ctx.mode==="recipe"?"Add an ingredient":"Add to "+ctx.meal.toLowerCase());
   openSheet(title,
     '<div class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5" stroke-linecap="round"/></svg>'+
     '<input id="q" type="search" placeholder="Search foods and brands" autocomplete="off" autocapitalize="off" spellcheck="false"></div>'+
@@ -2565,8 +2627,10 @@ function openDetail(food,ctx,editId){
       document.getElementById("save").onclick=()=>{
         if(!(qty>0))return;
         if(recipe){
-          draft.ing.push({name:food.name,brand:food.brand||"",serving:food.serving,
-            grams:food.grams||0,qty:qty,n:food.n.slice()});
+          const ing={name:food.name,brand:food.brand||"",serving:food.serving,
+            grams:food.grams||0,qty:qty,n:food.n.slice()};
+          if(typeof ctx.onPick==="function"){ctx.onPick(ing);toast("Ingredient added");return}
+          draft.ing.push(ing);
           openBatchForm();
           toast("Ingredient added");
           return;
@@ -2721,8 +2785,18 @@ function openBatchForm(existing){
       };
       const mr=document.getElementById("mRecipe");
       if(mr)mr.onclick=()=>{read();saveDraftAsRecipe()};
+      const repaint=()=>{
+        const t=batchTotals(draft),yy=parseFloat(draft.yieldQty)||0,u=yy>0?t.map(v=>v/yy):t.map(()=>0);
+        document.getElementById("mPrev").innerHTML=
+          '<div class="pk">'+fmt(u[0])+'<small>kcal per '+esc(singular(draft.yieldUnit))+"</small></div>"+
+          '<div class="pmac"><span><u>Protein</u>'+fmt(u[1],1)+" g</span>"+
+            '<span><u>Carbs</u>'+fmt(u[2],1)+" g</span>"+
+            '<span><u>Fat</u>'+fmt(u[3],1)+" g</span></div>"+
+          '<div class="pmg"><div><span>Whole batch</span><b>'+fmt(t[0])+" kcal</b></div>"+
+            "<div><span>Ingredients</span><b>"+draft.ing.length+"</b></div></div>";
+      };
       ["mName","mYield","mUnit","mShelf","mDate"].forEach(id=>{
-        document.getElementById(id).onchange=()=>{read();openBatchForm()};
+        document.getElementById(id).oninput=()=>{read();repaint()};
       });
       document.getElementById("addIng").onclick=()=>{read();openSearch({mode:"recipe"})};
       document.querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{
@@ -2798,7 +2872,9 @@ function openSettings(){
     ()=>{
       document.getElementById("tCopy").onclick=()=>{
         const data=JSON.stringify({app:"macro-ledger",v:2,exported:new Date().toISOString(),
-          days:S.days,foods:S.foods,recents:S.recents,batches:S.batches,goals:S.goals,body:S.body},null,1);
+          days:S.days,foods:S.foods,recents:S.recents,batches:S.batches,goals:S.goals,body:S.body,
+          recipes:S.recipes,water:S.water,pantry:lsGet("ml.pantry",[]),
+          game:lsGet("ml.game",null),lift:lsGet("ml.lift",null)},null,1);
         const url=URL.createObjectURL(new Blob([data],{type:"application/json"}));
         const a=document.createElement("a");
         a.href=url;a.download="macro-ledger-"+dkey(new Date())+".json";
@@ -2814,6 +2890,11 @@ function openSettings(){
           if(d.foods)S.foods=d.foods;
           if(d.recents)S.recents=d.recents;
           if(d.batches)S.batches=d.batches;
+          if(d.recipes){S.recipes=d.recipes;saveRecipes()}
+          if(d.water){S.water=d.water;saveWater()}
+          if(d.pantry)lsSet("ml.pantry",d.pantry);
+          if(d.game)lsSet("ml.game",d.game);
+          if(d.lift)lsSet("ml.lift",d.lift);
           if(d.body)S.body=Object.assign(S.body,d.body);
           if(d.goals)Object.keys(d.goals).forEach(k=>{const v=parseFloat(d.goals[k]);if(isFinite(v))S.goals[k]=v});
           else if(d.targets){const t=d.targets;                 /* a v1 backup */
@@ -2842,6 +2923,7 @@ function openSettings(){
 
 /* ---------------- wiring ---------------- */
 document.getElementById("fab").onclick=()=>{
+  if(S.view==="meals"&&window.MLKitchen){window.MLKitchen.fab();return}
   if(S.view==="meals"){draft=newDraft();openBatchForm()}
   else openSearch({mode:"log"});
 };
@@ -2854,7 +2936,7 @@ render();
 /* offline: cache the whole app on first load, then never need the network */
 /* the collecting game: its own module, loaded after the tracker is up */
 (function(){
-  ["game/game.js","lift/lift.js","pixel/pixel.js"].forEach(function(src){
+  ["game/game.js","lift/lift.js","pixel/pixel.js","kitchen/kitchen.js"].forEach(function(src){
     var sc=document.createElement("script");
     sc.src=src; sc.defer=true;
     document.head.appendChild(sc);
